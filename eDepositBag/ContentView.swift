@@ -28,7 +28,7 @@ struct ContentView: View {
                 .padding(.horizontal, 30.0)
                 
                 NavigationLink(destination: Screen3BagInfoEdit()) {
-                    Text("Create / Edit Profile")
+                    Text("Submit Virtual Deposit Bags")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()

@@ -17,6 +17,7 @@ struct Screen3BagInfoEdit: View {
     @State private var department = "Duke Stores"
     @State private var retailLocation = "University Store"
     @State private var POSName = "7200 - Reg - 13"
+    
     var body: some View {
            VStack(spacing: 20) {
                Group{
@@ -29,6 +30,7 @@ struct Screen3BagInfoEdit: View {
                            .textFieldStyle(RoundedBorderTextFieldStyle())
                            .frame(width: 200)
                    }
+
                    HStack {
                        Text("Retail Location")
                            .fontWeight(.medium)
@@ -38,6 +40,7 @@ struct Screen3BagInfoEdit: View {
                            .textFieldStyle(RoundedBorderTextFieldStyle())
                            .frame(width: 200)
                    }
+
                    HStack {
                        Text("POS Name")
                            .fontWeight(.medium)

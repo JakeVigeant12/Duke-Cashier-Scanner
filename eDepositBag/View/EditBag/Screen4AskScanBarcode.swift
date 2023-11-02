@@ -18,7 +18,6 @@ struct Screen4AskScanBarcode: View {
     @State private var retailLocation = "University Store"
     @State private var POSName = "7200 - Reg - 13"
     @State private var revenueDate = "2023.11.11"
-    
     @State private var bagNum = 0
     
     enum ShowView{
@@ -82,6 +81,23 @@ struct Screen4AskScanBarcode: View {
                    }
                }
                .padding([.top, .leading, .trailing], 20)
+               
+               if(showView == .next){
+                   HStack {
+                       Text("Bag Number")
+                           .fontWeight(.medium)
+                       Spacer()
+
+                       Text("\(bagNum)")
+                           .multilineTextAlignment(.center)
+                           .textFieldStyle(RoundedBorderTextFieldStyle())
+                           .frame(width: 200)
+                           .foregroundColor(.blue)
+                   }
+                   .padding([.top, .leading, .trailing], 20)
+               }
+
+               
                
                Spacer().frame(height: 30)
 
