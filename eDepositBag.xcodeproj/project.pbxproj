@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E5DDB752AF403FF0021FF64 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DDB742AF403FF0021FF64 /* Bag.swift */; };
+		2EE9DC932AF6DB9F004A668C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE9DC922AF6DB9F004A668C /* Person.swift */; };
 		B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88172AF355E50084C733 /* eDepositBagApp.swift */; };
 		B62F881A2AF355E50084C733 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88192AF355E50084C733 /* ContentView.swift */; };
 		B62F881C2AF355E50084C733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B62F881B2AF355E50084C733 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		2E5DDB742AF403FF0021FF64 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = SOURCE_ROOT; };
+		2EE9DC922AF6DB9F004A668C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = SOURCE_ROOT; };
 		B62F88142AF355E50084C733 /* eDepositBag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eDepositBag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62F88172AF355E50084C733 /* eDepositBagApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDepositBagApp.swift; sourceTree = "<group>"; };
 		B62F88192AF355E50084C733 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				2E5DDB742AF403FF0021FF64 /* Bag.swift */,
+				2EE9DC922AF6DB9F004A668C /* Person.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				B63E38E82AF365370024AEB6 /* Screen5FileScan.swift in Sources */,
 				B63E38E42AF3645B0024AEB6 /* Screen3BagInfoEdit.swift in Sources */,
 				B62F881A2AF355E50084C733 /* ContentView.swift in Sources */,
+				2EE9DC932AF6DB9F004A668C /* Person.swift in Sources */,
 				B63E38EF2AF377CB0024AEB6 /* DocScan.swift in Sources */,
 				B63E38E22AF3643A0024AEB6 /* Screen2ProfileEdit.swift in Sources */,
 				B63E38E62AF3649A0024AEB6 /* Screen4AskScanBarcode.swift in Sources */,
