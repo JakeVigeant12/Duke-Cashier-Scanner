@@ -3,13 +3,16 @@
 //  eDepositBag
 //
 //  Created by Jake Vigeant on 11/2/23.
-class Bag {
-    var cashier: Person = Person()
-    var department: String = ""
-    var retailLocation: String = ""
-    var POSName: String = ""
-    var bagNum: Int?
-    var imageScans: [String:String] = [:]
-    var revenueDate: String = ""
+
+import Foundation
+class Bag : ObservableObject{
+    //@Published var cashier: Person = Person()
+    @Published var department: String = ""
+    @Published var retailLocation: String = ""
+    @Published var POSName: String = ""
+    @Published var bagNum: Int?
+    @Published var imageScans: [String:String] = [:]
+    @Published var revenueDate: String = ""
+    
     
 }

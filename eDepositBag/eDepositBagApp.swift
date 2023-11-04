@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct eDepositBagApp: App {
+    @StateObject var bag = Bag()
+    @StateObject var activePerson: Person?
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(bag)
+                .environmentObject(activePerson)
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class Person {
+class Person : ObservableObject{
     private var name = "Martha Davidson"
     private var duid = "654321"
     private var phone = "919-812-1234"
