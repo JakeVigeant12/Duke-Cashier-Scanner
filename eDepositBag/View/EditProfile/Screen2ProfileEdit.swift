@@ -117,6 +117,7 @@ struct Screen2ProfileEdit: View {
 
                Button(action: {
                    presentationMode.wrappedValue.dismiss()
+                   submit()
                }) {
                    Text("Save")
                        .foregroundColor(.white)
@@ -134,7 +135,11 @@ struct Screen2ProfileEdit: View {
            .navigationTitle("User Profile")
            .navigationBarTitleDisplayMode(.inline)
        }
+    func submit(){
+        (bag.cashier == nil) ? (bag.cashier = Person(name: name, duid: duid, phone: phone, email: email, department: department, retailLocation: retailLocation, POSName: POSName)) : print("HI")
+    }
 }
+
 
 struct Screen2ProfileEdit_Previews: PreviewProvider {
     static var previews: some View {

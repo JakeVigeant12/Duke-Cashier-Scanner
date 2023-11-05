@@ -21,7 +21,7 @@ struct ContentView: View {
                 // Buttons
                 NavigationLink(destination: Screen2ProfileEdit(bag: bag)
                    ) {
-                    Text("Create Profile")
+                    Text((bag.cashier != nil) ? "Edit Profile" : "Create Profile" )
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -44,7 +44,7 @@ struct ContentView: View {
                 .padding(.horizontal, 30.0)
                 
                 Button(action: {}) {
-                    Text((bag.cashier != nil) ? "Edit Profile" : "Login")
+                    Text((bag.cashier != nil) ? "Logout" : "Login")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()

@@ -7,12 +7,23 @@
 
 import Foundation
 class Person : ObservableObject{
-     var name = "Martha Davidson"
-     var duid = "654321"
-     var phone = "919-812-1234"
-     var email = "Martha.Davidson@duke.edu"
-     var department = "Duke Stores"
-     var retailLocation = "University Store"
-     var POSName = "7200 - Reg - 13"
+    var name: String
+    var duid: String
+    var phone: String
+    var email: String
+    var department: String
+    var retailLocation: String
+    var POSName: String
+
+    init(name: String, duid: String, phone: String, email: String, department: String, retailLocation: String, POSName: String) {
+        self.name = name
+        self.duid = duid
+        self.phone = phone
+        self.email = email
+        self.department = department
+        self.retailLocation = retailLocation
+        self.POSName = POSName
+    }
+
 
 }
