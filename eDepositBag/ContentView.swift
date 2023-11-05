@@ -9,6 +9,8 @@ import SwiftUI
 
 // main menu
 struct ContentView: View {
+    @EnvironmentObject var bag: Bag
+
     var body: some View {
         
         NavigationView{
@@ -17,8 +19,9 @@ struct ContentView: View {
                 Spacer().frame(height: 10)
                 
                 // Buttons
-                NavigationLink(destination: Screen2ProfileEdit()) {
-                    Text("Create / Edit Profile")
+                NavigationLink(destination: Screen2ProfileEdit(bag: bag)
+                   ) {
+                    Text("Create Profile")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -27,7 +30,10 @@ struct ContentView: View {
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
                 
-                NavigationLink(destination: Screen3BagInfoEdit()) {
+                NavigationLink(destination: Screen3BagInfoEdit()
+                    
+
+                ) {
                     Text("Submit Virtual Deposit Bags")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -38,7 +44,7 @@ struct ContentView: View {
                 .padding(.horizontal, 30.0)
                 
                 Button(action: {}) {
-                    Text("[Future Development]")
+                    Text((bag.cashier != nil) ? "Edit Profile" : "Login")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -71,6 +77,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let bag = Bag()
+
         ContentView()
+            .environmentObject(bag)
     }
 }

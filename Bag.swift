@@ -6,7 +6,7 @@
 
 import Foundation
 class Bag : ObservableObject{
-    //@Published var cashier: Person = Person()
+    @Published var cashier: Person?
     @Published var department: String = ""
     @Published var retailLocation: String = ""
     @Published var POSName: String = ""
@@ -14,5 +14,7 @@ class Bag : ObservableObject{
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
     
-    
+    func printit(){   
+        print("hi")
+    }
 }

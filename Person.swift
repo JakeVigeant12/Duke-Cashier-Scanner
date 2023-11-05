@@ -7,12 +7,12 @@
 
 import Foundation
 class Person : ObservableObject{
-    private var name = "Martha Davidson"
-    private var duid = "654321"
-    private var phone = "919-812-1234"
-    private var email = "Martha.Davidson@duke.edu"
-    private var department = "Duke Stores"
-    private var retailLocation = "University Store"
-    private var POSName = "7200 - Reg - 13"
+     var name = "Martha Davidson"
+     var duid = "654321"
+     var phone = "919-812-1234"
+     var email = "Martha.Davidson@duke.edu"
+     var department = "Duke Stores"
+     var retailLocation = "University Store"
+     var POSName = "7200 - Reg - 13"
 
 }

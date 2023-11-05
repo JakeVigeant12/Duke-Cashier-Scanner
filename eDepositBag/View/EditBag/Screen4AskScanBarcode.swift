@@ -9,7 +9,8 @@ import SwiftUI
 
 struct Screen4AskScanBarcode: View {
     @Environment(\.presentationMode) var presentationMode
-    
+    @EnvironmentObject var bag: Bag
+
     @State private var name = "Martha Davidson"
     @State private var duid = "654321"
     @State private var phone = "919-812-1234"
@@ -115,6 +116,8 @@ struct Screen4AskScanBarcode: View {
                            Button(action: {
                                withAnimation{
                                    showView = .next
+                                   submit()
+
                                }
                            }) {
                                Text("No")
@@ -130,6 +133,7 @@ struct Screen4AskScanBarcode: View {
                            Button(action: {
                                withAnimation{
                                    showView = .showBagNum
+
                                }
                            }) {
                                Text("Yes")
@@ -217,6 +221,10 @@ struct Screen4AskScanBarcode: View {
                BarcodeScan()
            }
        }
+    func submit(){
+        bag.revenueDate = revenueDate
+        bag.printit()
+    }
     
 }
 
