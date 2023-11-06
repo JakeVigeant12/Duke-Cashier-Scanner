@@ -29,21 +29,20 @@ struct ContentView: View {
                 .background(Color.blue)
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
-                
-                NavigationLink(destination: Screen3BagInfoEdit()
+                if (bag.cashier != nil){
+                    NavigationLink(destination: Screen3BagInfoEdit())
+                    {
+                        Text("Submit Virtual Deposit Bags")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
                     
-
-                ) {
-                    Text("Submit Virtual Deposit Bags")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                    .background(Color.blue)
+                    .cornerRadius(15)
+                    .padding(.horizontal, 30.0)
                 }
-                .background(Color.blue)
-                .cornerRadius(15)
-                .padding(.horizontal, 30.0)
-                
-                Button(action: {bag.load(url: Bag.sandboxUser)}) {
+                Button(action: {let _ = bag.load(url: Bag.sandboxUser)}) {
                     Text((bag.cashier != nil) ? "Logout" : "Login")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)

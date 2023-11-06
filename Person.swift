@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class Person : ObservableObject, Codable{
+class Person : ObservableObject, Codable, Identifiable{
     var name: String
     var duid: String
     var phone: String
