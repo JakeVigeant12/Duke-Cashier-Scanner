@@ -30,7 +30,7 @@ struct ContentView: View {
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
                 if (bag.cashier != nil){
-                    NavigationLink(destination: Screen3BagInfoEdit())
+                    NavigationLink(destination: Screen3BagInfoEdit(bag: bag))
                     {
                         Text("Submit Virtual Deposit Bags")
                             .foregroundColor(.white)
@@ -61,7 +61,7 @@ struct ContentView: View {
                 Spacer()
             }
             .padding(.vertical)
-            .navigationTitle("Virtual Depost Bags")
+            .navigationTitle("Virtual Deposit Bags")
             
             .toolbar {
                 ToolbarItem(placement: .principal) {  // principal means bisides the title

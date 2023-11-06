@@ -11,14 +11,33 @@ struct Screen3BagInfoEdit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
 
-    @State private var name = "Martha Davidson"
-    @State private var duid = "654321"
-    @State private var phone = "919-812-1234"
-    @State private var email = "Martha.Davidson@duke.edu"
-    @State private var department = "Duke Stores"
-    @State private var retailLocation = "University Store"
-    @State private var POSName = "7200 - Reg - 13"
+    @State private var name:String
+    @State private var duid:String
+    @State private var phone:String
+    @State private var email:String
+    @State private var department:String
+    @State private var retailLocation: String
+    @State private var POSName: String
     
+    init(bag: Bag) {
+        _name = State(initialValue: "")
+        _duid = State(initialValue: "")
+        _phone = State(initialValue: "")
+        _email = State(initialValue: "")
+        _department = State(initialValue: "")
+        _retailLocation = State(initialValue: "")
+        _POSName = State(initialValue: "")
+
+        if let cashier = bag.cashier {
+            _name = State(initialValue: cashier.name)
+            _duid = State(initialValue: cashier.duid)
+            _phone = State(initialValue: cashier.phone)
+            _email = State(initialValue: cashier.email)
+            _department = State(initialValue: cashier.department)
+            _retailLocation = State(initialValue: cashier.retailLocation)
+            _POSName = State(initialValue: cashier.POSName)
+        }
+    }
     var body: some View {
         VStack(spacing: 20) {
             Group {
@@ -57,28 +76,28 @@ struct Screen3BagInfoEdit: View {
             
             Spacer().frame(height: 30)
             
-            Text("Is information correct?")
+            Text("Enter Information for Today")
                 .font(.title2)
                 .foregroundColor(Color.blue)
                 .padding(.bottom)
             
             HStack(spacing: 40) {
                 
-                NavigationLink(destination: Screen2ProfileEdit(bag: bag)) {
-                    Text("No")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.red)
-                        .opacity(0.8)
-                        .cornerRadius(15)
-                }
-                .simultaneousGesture(TapGesture().onEnded {
-                    submit()
-                })
+//                NavigationLink(destination: Screen2ProfileEdit(bag: bag)) {
+//                    Text("No")
+//                        .foregroundColor(.white)
+//                        .frame(maxWidth: .infinity)
+//                        .padding()
+//                        .background(Color.red)
+//                        .opacity(0.8)
+//                        .cornerRadius(15)
+//                }
+//                .simultaneousGesture(TapGesture().onEnded {
+//                    submit()
+//                })
                 
-                NavigationLink(destination: Screen4AskScanBarcode()) {
-                    Text("Yes")
+                NavigationLink(destination: Screen4AskScanBarcode(bag: bag)) {
+                    Text("Done")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -99,6 +118,7 @@ struct Screen3BagInfoEdit: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     func submit(){
+        //set this information for the bag, account defaults should be changed separate
         bag.POSName = POSName
         bag.retailLocation = retailLocation
         bag.department = department
@@ -108,6 +128,8 @@ struct Screen3BagInfoEdit: View {
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
     static var previews: some View {
-        Screen3BagInfoEdit()
+        let bag = Bag()
+        Screen3BagInfoEdit(bag : bag)
+            .environmentObject(bag)
     }
 }

@@ -15,7 +15,7 @@ class Bag : ObservableObject{
     @Published var department: String = ""
     @Published var retailLocation: String = ""
     @Published var POSName: String = ""
-    @Published var bagNum: Int?
+    @Published var bagNum: Int = 0
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
     
