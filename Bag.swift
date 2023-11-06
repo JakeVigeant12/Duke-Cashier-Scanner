@@ -30,10 +30,10 @@ class Bag : ObservableObject{
        if Bag.fileManager.fileExists(atPath: url.path){
            do {
                tempData = try Data(contentsOf: url)
-//               print(tempData)
-//               if tempData.count == 0{
-//                   print("hi")
-//               }
+               print(tempData)
+               if tempData.count == 0{
+                   print("hi")
+               }
            } catch let error as NSError {
                print(error)
                return false

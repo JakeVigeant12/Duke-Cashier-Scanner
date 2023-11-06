@@ -43,7 +43,7 @@ struct ContentView: View {
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
                 
-                Button(action: {}) {
+                Button(action: {bag.load(url: Bag.sandboxUser)}) {
                     Text((bag.cashier != nil) ? "Logout" : "Login")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
