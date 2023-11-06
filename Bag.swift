@@ -20,6 +20,9 @@ class Bag : ObservableObject{
     @Published var revenueDate: String = ""
     
 
+    func logout() {
+        cashier = nil
+    }
     //load Person object from saved user
     func load(url :URL) -> Bool{
        
