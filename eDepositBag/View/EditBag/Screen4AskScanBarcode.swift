@@ -223,7 +223,6 @@ struct Screen4AskScanBarcode: View {
        }
     func submit(){
         bag.revenueDate = revenueDate
-        bag.printit()
     }
     
 }

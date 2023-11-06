@@ -20,8 +20,7 @@ struct Screen2ProfileEdit: View {
     @State private var POSName: String
     
     init(bag: Bag) {
-        self.bag = bag // Initialize the bag property
-
+        self.bag = bag
         _name = State(initialValue: "")
         _duid = State(initialValue: "")
         _phone = State(initialValue: "")
@@ -136,7 +135,8 @@ struct Screen2ProfileEdit: View {
            .navigationBarTitleDisplayMode(.inline)
        }
     func submit(){
-        (bag.cashier == nil) ? (bag.cashier = Person(name: name, duid: duid, phone: phone, email: email, department: department, retailLocation: retailLocation, POSName: POSName)) : print("HI")
+        bag.cashier = Person(name: name, duid: duid, phone: phone, email: email, department: department, retailLocation: retailLocation, POSName: POSName)
+        let _  = bag.save()
     }
 }
 

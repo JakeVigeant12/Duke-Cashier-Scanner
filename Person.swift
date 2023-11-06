@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class Person : ObservableObject{
+class Person : ObservableObject, Codable{
     var name: String
     var duid: String
     var phone: String
@@ -24,6 +24,6 @@ class Person : ObservableObject{
         self.retailLocation = retailLocation
         self.POSName = POSName
     }
-
+    
 
 }
