@@ -9,6 +9,39 @@ import SwiftUI
 
 struct Screen4AskScanBarcode: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var bag: Bag
+
+
+    @State private var name:String
+    @State private var duid:String
+    @State private var phone:String
+    @State private var email:String
+    @State private var department:String
+    @State private var retailLocation: String
+    @State private var POSName: String
+    @State private var revenueDate: String
+    init(bag: Bag) {
+        _name = State(initialValue: "")
+        _duid = State(initialValue: "")
+        _phone = State(initialValue: "")
+        _email = State(initialValue: "")
+        _department = State(initialValue: "")
+        _retailLocation = State(initialValue: "")
+        _POSName = State(initialValue: "")
+        _revenueDate = State(initialValue: "11-11-2023")
+
+        if let cashier = bag.cashier {
+            _name = State(initialValue: cashier.name)
+            _duid = State(initialValue: cashier.duid)
+            _phone = State(initialValue: cashier.phone)
+            _email = State(initialValue: cashier.email)
+        }
+        
+        _department = State(initialValue: bag.department)
+        _retailLocation = State(initialValue: bag.retailLocation)
+        _POSName = State(initialValue: bag.POSName)
+
+    }
     
     @State private var name = "Martha Davidson"
     @State private var duid = "654321"
@@ -263,6 +296,7 @@ struct Screen4AskScanBarcode: View {
 
 struct Screen4AskScanBarcode_Previews: PreviewProvider {
     static var previews: some View {
-        Screen4AskScanBarcode()
+        let bag = Bag()
+        Screen4AskScanBarcode(bag:bag)
     }
 }

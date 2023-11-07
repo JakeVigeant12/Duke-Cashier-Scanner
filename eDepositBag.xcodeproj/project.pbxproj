@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2E5DDB752AF403FF0021FF64 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DDB742AF403FF0021FF64 /* Bag.swift */; };
+		2E81DB082AF86024004BD934 /* Departments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E81DB072AF86024004BD934 /* Departments.swift */; };
+		2EE9DC932AF6DB9F004A668C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE9DC922AF6DB9F004A668C /* Person.swift */; };
 		B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88172AF355E50084C733 /* eDepositBagApp.swift */; };
 		B62F881A2AF355E50084C733 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88192AF355E50084C733 /* ContentView.swift */; };
 		B62F881C2AF355E50084C733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B62F881B2AF355E50084C733 /* Assets.xcassets */; };
@@ -23,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		2E5DDB742AF403FF0021FF64 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = SOURCE_ROOT; };
+		2E81DB072AF86024004BD934 /* Departments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Departments.swift; sourceTree = "<group>"; };
+		2EE9DC922AF6DB9F004A668C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = SOURCE_ROOT; };
 		B62F88142AF355E50084C733 /* eDepositBag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eDepositBag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62F88172AF355E50084C733 /* eDepositBagApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDepositBagApp.swift; sourceTree = "<group>"; };
 		B62F88192AF355E50084C733 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +52,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2E81DB062AF85FFF004BD934 /* LocationValues */ = {
+			isa = PBXGroup;
+			children = (
+				2E81DB072AF86024004BD934 /* Departments.swift */,
+			);
+			path = LocationValues;
+			sourceTree = "<group>";
+		};
 		B62F880B2AF355E50084C733 = {
 			isa = PBXGroup;
 			children = (
@@ -67,7 +79,6 @@
 		B62F88162AF355E50084C733 /* eDepositBag */ = {
 			isa = PBXGroup;
 			children = (
-				B63E38CB2AF357400024AEB6 /* ViewModel */,
 				B63E38CA2AF357240024AEB6 /* View */,
 				B63E38C92AF3571C0024AEB6 /* Model */,
 				B62F88172AF355E50084C733 /* eDepositBagApp.swift */,
@@ -89,7 +100,9 @@
 		B63E38C92AF3571C0024AEB6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2E81DB062AF85FFF004BD934 /* LocationValues */,
 				2E5DDB742AF403FF0021FF64 /* Bag.swift */,
+				2EE9DC922AF6DB9F004A668C /* Person.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -103,13 +116,6 @@
 				B63E38F22AF390980024AEB6 /* Submit */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		B63E38CB2AF357400024AEB6 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B63E38CC2AF35EE30024AEB6 /* EditProfile */ = {
@@ -175,7 +181,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					B62F88132AF355E50084C733 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -221,12 +227,14 @@
 				B63E38E82AF365370024AEB6 /* Screen5FileScan.swift in Sources */,
 				B63E38E42AF3645B0024AEB6 /* Screen3BagInfoEdit.swift in Sources */,
 				B62F881A2AF355E50084C733 /* ContentView.swift in Sources */,
+				2EE9DC932AF6DB9F004A668C /* Person.swift in Sources */,
 				B63E38EF2AF377CB0024AEB6 /* DocScan.swift in Sources */,
 				B63E38E22AF3643A0024AEB6 /* Screen2ProfileEdit.swift in Sources */,
 				B63E38E62AF3649A0024AEB6 /* Screen4AskScanBarcode.swift in Sources */,
 				B63E38ED2AF377BB0024AEB6 /* BarcodeScan.swift in Sources */,
 				B63E38F12AF3867E0024AEB6 /* Screen6Submit.swift in Sources */,
 				B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */,
+				2E81DB082AF86024004BD934 /* Departments.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +277,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -329,6 +338,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

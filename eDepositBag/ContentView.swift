@@ -9,6 +9,8 @@ import SwiftUI
 
 // main menu
 struct ContentView: View {
+    @EnvironmentObject var bag: Bag
+    
     var body: some View {
         
         NavigationView{
@@ -17,8 +19,9 @@ struct ContentView: View {
                 Spacer().frame(height: 10)
                 
                 // Buttons
-                NavigationLink(destination: Screen2ProfileEdit()) {
-                    Text("Create / Edit Profile")
+                NavigationLink(destination: Screen2ProfileEdit(bag: bag)
+                ) {
+                    Text((bag.cashier != nil) ? "Edit Profile" : "Create Profile" )
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -26,32 +29,40 @@ struct ContentView: View {
                 .background(Color.blue)
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
-                
-                NavigationLink(destination: Screen3BagInfoEdit()) {
-                    Text("Submit Virtual Deposit Bags")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                if (bag.cashier != nil){
+                    NavigationLink(destination: Screen3BagInfoEdit(bag: bag))
+                    {
+                        Text("Submit Virtual Deposit Bags")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    
+                    .background(Color.blue)
+                    .cornerRadius(15)
+                    .padding(.horizontal, 30.0)
                 }
-                .background(Color.blue)
-                .cornerRadius(15)
-                .padding(.horizontal, 30.0)
-                
-                Button(action: {}) {
-                    Text("[Future Development]")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                //TODO add functionality to logout/set cashier to nil
+                Button(action: {if bag.cashier != nil {
+                    bag.logout()
+                    return
                 }
-                .background(Color.blue)
-                .cornerRadius(15)
-                .padding(.horizontal, 30.0)
+                    
+                    let _ = bag.load(url: Bag.sandboxUser)}) {
+                        Text((bag.cashier != nil) ? "Logout" : "Login")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(Color.blue)
+                    .cornerRadius(15)
+                    .padding(.horizontal, 30.0)
                 
                 Spacer()
             }
             .padding(.vertical)
-            .navigationTitle("Virtual Depost Bags")
-
+            .navigationTitle("Virtual Deposit Bags")
+            
             .toolbar {
                 ToolbarItem(placement: .principal) {  // principal means bisides the title
                     HStack {
@@ -71,6 +82,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let bag = Bag()
+        
         ContentView()
+            .environmentObject(bag)
     }
 }
