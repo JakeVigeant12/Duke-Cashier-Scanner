@@ -7,7 +7,7 @@
 
 import Foundation
 class Person : ObservableObject, Codable, Identifiable{
-    var name: String
+    var name: String 
     var duid: String
     var phone: String
     var email: String

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Screen2ProfileEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    
     var bag: Bag
 
     @State private var name:String
