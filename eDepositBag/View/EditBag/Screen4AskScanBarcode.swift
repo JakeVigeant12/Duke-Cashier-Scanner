@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct Screen4AskScanBarcode: View {
     @Environment(\.presentationMode) var presentationMode
@@ -42,15 +43,6 @@ struct Screen4AskScanBarcode: View {
         _POSName = State(initialValue: bag.POSName)
 
     }
-    
-    @State private var name = "Martha Davidson"
-    @State private var duid = "654321"
-    @State private var phone = "919-812-1234"
-    @State private var email = "Martha.Davidson@duke.edu"
-    @State private var department = "Duke Stores"
-    @State private var retailLocation = "University Store"
-    @State private var POSName = "7200 - Reg - 13"
-    @State private var revenueDate = "2023.11.11"
 
     @State private var bagNum: Int?
     @State private var scannedCode: String?
@@ -110,10 +102,18 @@ struct Screen4AskScanBarcode: View {
                         .frame(width: 200)
                         .disabled(true)
                 }else{
-                    TextField("Revenue Date", text: $revenueDate)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+                    TextField("Revenue Date", text: Binding(
+                        get: { self.revenueDate },
+                        set: { newValue in
+                            self.revenueDate = newValue
+                            bag.revenueDate = newValue
+                        }
+                    ))
+                    .multilineTextAlignment(.center)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 200)
+
+
                 }
             }
             .padding([.top, .leading, .trailing], 20)
@@ -195,6 +195,7 @@ struct Screen4AskScanBarcode: View {
                         withAnimation{
                             showView = .ask
                             
+                            
                         }
                     }) {
                         Text("Back")
@@ -206,7 +207,7 @@ struct Screen4AskScanBarcode: View {
                     .opacity(0.8)
                     .cornerRadius(15)
                     
-                    NavigationLink(destination: Screen5FileScan()) {
+                    NavigationLink(destination: Screen5FileScan(bag:bag)) {
                         Text("Next")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -291,6 +292,7 @@ struct Screen4AskScanBarcode: View {
             showView = .next
         }
     }
+    
     
 }
 
