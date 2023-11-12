@@ -65,7 +65,7 @@ struct Screen3BagInfoEdit: View {
                     Spacer()
                     VStack{
                         Picker("Location", selection: $retailLocation) {
-                            ForEach(bag.departments, id: \.self) { location in
+                            ForEach(getLocations(), id: \.self) { location in
                                 Text(location)
                             }
                         }
@@ -145,6 +145,9 @@ struct Screen3BagInfoEdit: View {
         bag.POSName = POSName
         bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : retailLocation
         bag.department = department
+    }
+    func getLocations() -> [String]{
+        return bag.locationSelections[department] ?? []
     }
 
 
