@@ -8,6 +8,7 @@ import Foundation
 class Bag : ObservableObject{
     static let fileManager = FileManager.default
     static let sandboxUser = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("myProfile.json")
+    static let selectionOptions = Bundle.main.url(forResource: "selection_options", withExtension: "json") 
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
 
@@ -18,6 +19,10 @@ class Bag : ObservableObject{
     @Published var bagNum: Int = 0
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
+    var departments: [String] = []
+    var locationSelections: [String:[String]] = [:]
+    var POSNameSelections: [String:[String]] = [:]
+
     
 
     func logout() {
@@ -64,5 +69,32 @@ class Bag : ObservableObject{
             return false
         }
     }
+    
+    func parseOptions(url: URL) -> Bool {
+        do {
+            let jsonData = try Data(contentsOf: url)
+            // Now you have the JSON data from the
+            do {
+                if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
+                   let dept = jsonObject["departments"] as? [String], let locs = jsonObject["locations"] as? [String:[String]] {
+                    self.departments = dept
+                    self.locationSelections = locs
+                }
+                return true
+            } catch {
+                print("Error parsing JSON: \(error)")
+                return false
+            }            // You can parse the JSON data as needed
+        } catch {
+            print("Error loading JSON: \(error)")
+            return false
+        }
+    }
+
+
+
+
+    
+    
 
 }

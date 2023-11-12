@@ -19,46 +19,7 @@ enum Department : String, CaseIterable{
 
 
 enum DiningOption : String, CaseIterable{
-    static var allCases: [DiningOption] {
-        return [
-            .BellaUnion,
-            .BeyuBlue,
-            .BseisuCoffeeBar,
-            .CafeAtDukeLaw,
-            .ChefsKitchen,
-            .Commons,
-            .DevilsKrafthouse,
-            .DivinityCafe,
-            .DolceVita,
-            .Farmstead,
-            .FreemanCenter,
-            .GingerAndSoy,
-            .Gyotaku,
-            .IlForno,
-            .JBS,
-            .Loop,
-            .MarketplaceALaCarte,
-            .MarketplaceBoardAUCE,
-            .McDonalds,
-            .NasherCafe,
-            .PandaExpress,
-            .Panera,
-            .Perk,
-            .PitchforkProvisions,
-            .Quenchers,
-            .RedMango,
-            .SanfordDeli,
-            .Sazon,
-            .Skillet,
-            .Sprout,
-            .Tandor,
-            .TerraceCafe,
-            .TheCafe,
-            .ThriveKitchenAndCatering,
-            .TrinityCafe,
-            .Twinnies
-        ]
-    }
+
     
     case BellaUnion = "Bella Union"
     case BeyuBlue = "Beyu Blue"
@@ -96,6 +57,8 @@ enum DiningOption : String, CaseIterable{
     case ThriveKitchenAndCatering = "Thrive Kitchen And Catering"
     case TrinityCafe = "Trinity Cafe"
     case Twinnies = "Twinnies"
+    case Other
+
 }
 
 enum SchoolOfNursingOption : String, CaseIterable{
@@ -104,6 +67,7 @@ enum SchoolOfNursingOption : String, CaseIterable{
 }
 
 enum DukeStoresOption : String, CaseIterable{
+    case ComputerRepair = "Computer Repair"
     case DivinityStore = "Divinity Store"
         case PG1 = "PG1"
         case MedicalOffice = "Medical Office"
@@ -130,15 +94,20 @@ enum DukeStoresOption : String, CaseIterable{
         case TextbookStore = "Textbook Store"
         case UniversityStore = "University Store"
         case Warehouse = "Warehouse"
+        case Other
 
 }
 
 enum ParkingOption : String, CaseIterable{
     case ParkingOffice = "Parking Office"
+    case Other
+
 }
 
 enum DukeCardOption : String, CaseIterable{
     case CampusOffice = "Campus Office"
     case MedicalOffice = "Medical Office"
     case TheLink = "The Link"
+    case Other
+
 }
