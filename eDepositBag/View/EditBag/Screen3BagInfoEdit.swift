@@ -36,7 +36,7 @@ struct Screen3BagInfoEdit: View {
             _duid = State(initialValue: cashier.duid)
             _phone = State(initialValue: cashier.phone)
             _email = State(initialValue: cashier.email)
-            _department = State(initialValue: "")
+            _department = State(initialValue: cashier.department)
             _retailLocation = State(initialValue: cashier.retailLocation)
             _POSName = State(initialValue: cashier.POSName)
         }

@@ -7,6 +7,7 @@
 import Foundation
 class Bag : ObservableObject{
     static let fileManager = FileManager.default
+    static let testURL = Bundle.main.url(forResource: "test_pdf", withExtension: "pdf")
     static let sandboxUser = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("myProfile.json")
     static let selectionOptions = Bundle.main.url(forResource: "selection_options", withExtension: "json") 
     let decoder = JSONDecoder()
@@ -56,6 +57,7 @@ class Bag : ObservableObject{
        }
         return false
        }
+    
     //update the users profile in sandbox
     func save() -> Bool {
         print("Saving to \(Bag.sandboxUser)")
@@ -73,8 +75,8 @@ class Bag : ObservableObject{
     func parseOptions(url: URL) -> Bool {
         do {
             let jsonData = try Data(contentsOf: url)
-            // Now you have the JSON data from the
             do {
+                //extract all of the selection options
                 if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any],
                    let dept = jsonObject["departments"] as? [String], let locs = jsonObject["locations"] as? [String:[String]] {
                     self.departments = dept
@@ -84,7 +86,7 @@ class Bag : ObservableObject{
             } catch {
                 print("Error parsing JSON: \(error)")
                 return false
-            }            // You can parse the JSON data as needed
+            }
         } catch {
             print("Error loading JSON: \(error)")
             return false
