@@ -21,6 +21,7 @@ struct Screen4AskScanBarcode: View {
     @State private var retailLocation: String
     @State private var POSName: String
     @State private var revenueDate: String
+    @State private var revenueDatePicker: Date = Date()
     init(bag: Bag) {
         _name = State(initialValue: "")
         _duid = State(initialValue: "")
@@ -29,7 +30,7 @@ struct Screen4AskScanBarcode: View {
         _department = State(initialValue: "")
         _retailLocation = State(initialValue: "")
         _POSName = State(initialValue: "")
-        _revenueDate = State(initialValue: "11-11-2023")
+        _revenueDate = State(initialValue: getDateString(currentDate:Date()))
 
         if let cashier = bag.cashier {
             _name = State(initialValue: cashier.name)
@@ -96,22 +97,25 @@ struct Screen4AskScanBarcode: View {
                     .fontWeight(.medium)
                 Spacer()
                 if(showView == .next){
-                    TextField("Revenue Date", text: $revenueDate)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+                    DatePicker("Select a date", selection: $revenueDatePicker, displayedComponents: .date)
+                        .datePickerStyle(CompactDatePickerStyle())                         .labelsHidden()
                         .disabled(true)
                 }else{
-                    TextField("Revenue Date", text: Binding(
-                        get: { self.revenueDate },
-                        set: { newValue in
-                            self.revenueDate = newValue
-                            bag.revenueDate = newValue
-                        }
-                    ))
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 200)
+                    DatePicker("Select a date", selection: $revenueDatePicker, displayedComponents: .date)
+                        .datePickerStyle(CompactDatePickerStyle())                         .labelsHidden()
+               
+                    
+                    
+//                    TextField("Revenue Date", text: Binding(
+//                        get: { self.revenueDate },
+//                        set: { newValue in
+//                            self.revenueDate = newValue
+//                            bag.revenueDate = newValue
+//                        }
+//                    ))
+//                    .multilineTextAlignment(.center)
+//                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//                    .frame(width: 200)
 
 
                 }
@@ -159,6 +163,7 @@ struct Screen4AskScanBarcode: View {
 
                         
                         Button(action: {
+                            bag.revenueDate = getDateString(currentDate: revenueDatePicker)
                             withAnimation{
                                 scannedCode = nil
                                 showView = .next
@@ -220,7 +225,7 @@ struct Screen4AskScanBarcode: View {
                 .padding(.horizontal, 50.0)
             case .showBagNum:
                 Group{
-                    Text("Please press the button below to sacn the barcode on the deposit bag.")
+                    Text("Please press the button below to scan the barcode on the deposit bag.")
                         .font(.title2)
                         .foregroundColor(Color.blue)
                         .padding(.bottom)
@@ -290,12 +295,20 @@ struct Screen4AskScanBarcode: View {
     func scanSheetDismissed() {
         if(!isScanFail){
             showView = .next
+            //Not sure if this is correct state var
+            bag.bagNum = bagNum!
+
         }
     }
-    
-    
+
 }
 
+func getDateString(currentDate:Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    let dateString = dateFormatter.string(from: currentDate)
+    return dateString
+}
 struct Screen4AskScanBarcode_Previews: PreviewProvider {
     static var previews: some View {
         let bag = Bag()
