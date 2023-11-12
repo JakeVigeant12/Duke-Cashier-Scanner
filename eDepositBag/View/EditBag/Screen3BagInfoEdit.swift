@@ -15,7 +15,7 @@ struct Screen3BagInfoEdit: View {
     @State private var duid:String
     @State private var phone:String
     @State private var email:String
-    @State private var department:String
+    @State private var department:Department
     @State private var retailLocation: String
     @State private var POSName: String
     
@@ -24,7 +24,7 @@ struct Screen3BagInfoEdit: View {
         _duid = State(initialValue: "")
         _phone = State(initialValue: "")
         _email = State(initialValue: "")
-        _department = State(initialValue: "")
+        _department = State(initialValue: .Other)
         _retailLocation = State(initialValue: "")
         _POSName = State(initialValue: "")
 
@@ -33,7 +33,7 @@ struct Screen3BagInfoEdit: View {
             _duid = State(initialValue: cashier.duid)
             _phone = State(initialValue: cashier.phone)
             _email = State(initialValue: cashier.email)
-            _department = State(initialValue: cashier.department)
+            _department = State(initialValue: Department(rawValue: cashier.department) ?? .Other)
             _retailLocation = State(initialValue: cashier.retailLocation)
             _POSName = State(initialValue: cashier.POSName)
         }
@@ -45,20 +45,37 @@ struct Screen3BagInfoEdit: View {
                     Text("Department")
                         .fontWeight(.medium)
                     Spacer()
-                    TextField("Department", text: $department)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+                    Picker("Department", selection: $department) {
+                        ForEach(Department.allCases, id: \.self) { department in
+                            Text(department.rawValue)
+                        }
+
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .multilineTextAlignment(.center)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: 200)
                 }
                 
                 HStack {
                     Text("Retail Location")
                         .fontWeight(.medium)
                     Spacer()
-                    TextField("Retail Location", text: $retailLocation)
+                    Picker("Location", selection: $retailLocation) {
+                        ForEach(getLocationsForDept(), id: \.self) { location in
+                            Text(location)
+                        }
+                    }
+
+                        .pickerStyle(MenuPickerStyle())
                         .multilineTextAlignment(.center)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 200)
+
+//                    TextField("Retail Location", text: $retailLocation)
+//                        .multilineTextAlignment(.center)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .frame(width: 200)
                 }
                 
                 HStack {
@@ -121,10 +138,27 @@ struct Screen3BagInfoEdit: View {
         //set this information for the bag, account defaults should be changed separate
         bag.POSName = POSName
         bag.retailLocation = retailLocation
-        bag.department = department
+        bag.department = department.rawValue
     }
+    func getLocationsForDept() -> [String]{
+        switch department {
+        case .Dining:
+            return DiningOption.allCases.map { $0.rawValue }
+        case .SchoolOfNursing:
+            return SchoolOfNursingOption.allCases.map { $0.rawValue }
+        case .DukeStores:
+            return DukeStoresOption.allCases.map { $0.rawValue }
+        case .DukeCard:
+            return DukeCardOption.allCases.map { $0.rawValue }
+        case .Parking:
+            return ParkingOption.allCases.map { $0.rawValue }
+        case .Other:
+            return ["Other"]
+        }
     }
 
+    }
+    
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
     static var previews: some View {

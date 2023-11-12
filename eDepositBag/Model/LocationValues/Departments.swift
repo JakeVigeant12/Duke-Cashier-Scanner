@@ -6,108 +6,139 @@
 //
 
 import Foundation
-enum Location {
+enum Department : String, CaseIterable{
+    static var allCases: [Department] {return [.Dining, .SchoolOfNursing, .Parking, .Other]}
+    
     case Dining
-    case SchoolOfNursing
+    case SchoolOfNursing = "School Of Nursing"
     case DukeStores
     case DukeCard
     case Parking
-    case Other(String)
+    case Other
 }
 
 
-enum LocationSelection {
-    case Dining(DiningOption)
-    case SchoolOfNursing(SchoolOfNursingOption)
-    case DukeStores(DukeStoresOption)
-    case Parking(ParkingOption)
-    case DukeCard(DukeCardOption)
+enum DiningOption : String, CaseIterable{
+    static var allCases: [DiningOption] {
+        return [
+            .BellaUnion,
+            .BeyuBlue,
+            .BseisuCoffeeBar,
+            .CafeAtDukeLaw,
+            .ChefsKitchen,
+            .Commons,
+            .DevilsKrafthouse,
+            .DivinityCafe,
+            .DolceVita,
+            .Farmstead,
+            .FreemanCenter,
+            .GingerAndSoy,
+            .Gyotaku,
+            .IlForno,
+            .JBS,
+            .Loop,
+            .MarketplaceALaCarte,
+            .MarketplaceBoardAUCE,
+            .McDonalds,
+            .NasherCafe,
+            .PandaExpress,
+            .Panera,
+            .Perk,
+            .PitchforkProvisions,
+            .Quenchers,
+            .RedMango,
+            .SanfordDeli,
+            .Sazon,
+            .Skillet,
+            .Sprout,
+            .Tandor,
+            .TerraceCafe,
+            .TheCafe,
+            .ThriveKitchenAndCatering,
+            .TrinityCafe,
+            .Twinnies
+        ]
+    }
+    
+    case BellaUnion = "Bella Union"
+    case BeyuBlue = "Beyu Blue"
+    case BseisuCoffeeBar = "Bseisu Coffee Bar"
+    case CafeAtDukeLaw = "Cafe at Duke Law"
+    case ChefsKitchen = "Chefs Kitchen"
+    case Commons = "Commons"
+    case DevilsKrafthouse = "Devils Krafthouse"
+    case DivinityCafe = "Divinity Cafe"
+    case DolceVita = "Dolce Vita"
+    case Farmstead = "Farmstead"
+    case FreemanCenter = "Freeman Center"
+    case GingerAndSoy = "Ginger And Soy"
+    case Gyotaku = "Gyotaku"
+    case IlForno = "Il Forno"
+    case JBS = "JBS"
+    case Loop = "Loop"
+    case MarketplaceALaCarte = "Marketplace A La Carte"
+    case MarketplaceBoardAUCE = "Marketplace Board AUCE"
+    case McDonalds = "McDonald's"
+    case NasherCafe = "Nasher Cafe"
+    case PandaExpress = "Panda Express"
+    case Panera = "Panera"
+    case Perk = "Perk"
+    case PitchforkProvisions = "Pitchfork Provisions"
+    case Quenchers = "Quenchers"
+    case RedMango = "Red Mango"
+    case SanfordDeli = "Sanford Deli"
+    case Sazon = "Sazon"
+    case Skillet = "Skillet"
+    case Sprout = "Sprout"
+    case Tandor = "Tandor"
+    case TerraceCafe = "Terrace Cafe"
+    case TheCafe = "The Cafe"
+    case ThriveKitchenAndCatering = "Thrive Kitchen And Catering"
+    case TrinityCafe = "Trinity Cafe"
+    case Twinnies = "Twinnies"
 }
 
-enum DiningOption {
-    case BellaUnion
-    case BeyuBlue
-    case BseisuCoffeeBar
-    case CafeAtDukeLaw
-    case ChefsKitchen
-    case Commons
-    case DevilsKrafthouse
-    case DivinityCafe
-    case DolceVita
-    case Farmstead
-    case FreemanCenter
-    case GingerAndSoy
-    case Gyotaku
-    case IlForno
-    case JBS
-    case Loop
-    case MarketplaceALaCarte
-    case MarketplaceBoardAUCE
-    case McDonalds
-    case NasherCafe
-    case PandaExpress
-    case Panera
-    case Perk
-    case PitchforkProvisions
-    case Quenchers
-    case RedMango
-    case SanfordDeli
-    case Sazon
-    case Skillet
-    case Sprout
-    case Tandor
-    case TerraceCafe
-    case TheCafe
-    case ThriveKitchenAndCatering
-    case TrinityCafe
-    case Twinnies
-    case Other(String)
+enum SchoolOfNursingOption : String, CaseIterable{
+    case SoNCafe = "School of Nursing Cafe"
+    case Other
 }
 
-enum SchoolOfNursingOption {
-    case SoNCafe
-    case Other(String)
-}
-
-enum DukeStoresOption {
-    case DivinityStore
-    case PG1
-    case MedicalOffice
-    case PG2
-    case DukeChildrensHospital
-    case PG3
-    case DukeSouthClinics
-    case PG4
-    case DukeMedicalPavilion
-    case PG5
-    case DukeNorthHospital
-    case PG7
-    case EastStore
-    case GothicBookstore
-    case LobbyShop
-    case eStoreFormerlyMailOrder
-    case MerchandiseMailOrderConcessions
-    case MedicalStore
-    case NasherStore
-    case OfficeProducts
-    case TeamStore
-    case TechnologyCenter
-    case TerraceShop
-    case TextbookStore
-    case UniversityStore
-    case Warehouse
-    case Other(String)
+enum DukeStoresOption : String, CaseIterable{
+    case DivinityStore = "Divinity Store"
+        case PG1 = "PG1"
+        case MedicalOffice = "Medical Office"
+        case PG2 = "PG2"
+        case DukeChildrensHospital = "Duke Children's Hospital"
+        case PG3 = "PG3"
+        case DukeSouthClinics = "Duke South Clinics"
+        case PG4 = "PG4"
+        case DukeMedicalPavilion = "Duke Medical Pavilion"
+        case PG5 = "PG5"
+        case DukeNorthHospital = "Duke North Hospital"
+        case PG7 = "PG7"
+        case EastStore = "East Store"
+        case GothicBookstore = "Gothic Bookstore"
+        case LobbyShop = "Lobby Shop"
+        case eStoreFormerlyMailOrder = "eStore (Formerly Mail Order)"
+        case MerchandiseMailOrderConcessions = "Merchandise Mail Order Concessions"
+        case MedicalStore = "Medical Store"
+        case NasherStore = "Nasher Store"
+        case OfficeProducts = "Office Products"
+        case TeamStore = "Team Store"
+        case TechnologyCenter = "Technology Center"
+        case TerraceShop = "Terrace Shop"
+        case TextbookStore = "Textbook Store"
+        case UniversityStore = "University Store"
+        case Warehouse = "Warehouse"
 
 }
 
-enum ParkingOption {
-    case ParkingOffice
-    case Other(String)
+enum ParkingOption : String, CaseIterable{
+    case ParkingOffice = "Parking Office"
 }
 
-enum DukeCardOption {
-    case CampusOffice
-    case MedicalOffice
-    case TheLink
-    case Other(String)
+enum DukeCardOption : String, CaseIterable{
+    case CampusOffice = "Campus Office"
+    case MedicalOffice = "Medical Office"
+    case TheLink = "The Link"
 }

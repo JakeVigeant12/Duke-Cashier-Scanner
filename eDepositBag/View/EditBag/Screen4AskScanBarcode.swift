@@ -20,7 +20,6 @@ struct Screen4AskScanBarcode: View {
     @State private var department:String
     @State private var retailLocation: String
     @State private var POSName: String
-    @State private var revenueDate: String
     @State private var revenueDatePicker: Date = Date()
     init(bag: Bag) {
         _name = State(initialValue: "")
@@ -30,8 +29,7 @@ struct Screen4AskScanBarcode: View {
         _department = State(initialValue: "")
         _retailLocation = State(initialValue: "")
         _POSName = State(initialValue: "")
-        _revenueDate = State(initialValue: getDateString(currentDate:Date()))
-
+        
         if let cashier = bag.cashier {
             _name = State(initialValue: cashier.name)
             _duid = State(initialValue: cashier.duid)
@@ -294,6 +292,7 @@ struct Screen4AskScanBarcode: View {
     
     func scanSheetDismissed() {
         if(!isScanFail){
+            bag.revenueDate = getDateString(currentDate: revenueDatePicker)
             showView = .next
             //Not sure if this is correct state var
             bag.bagNum = bagNum!
