@@ -16,6 +16,7 @@ struct Screen3BagInfoEdit: View {
     @State private var phone:String
     @State private var email:String
     @State private var department:String
+    @State private var departmentOther: String = ""
     @State private var retailLocation: String
     @State private var retailLocationOther: String = ""
     @State private var POSName: String
@@ -47,16 +48,25 @@ struct Screen3BagInfoEdit: View {
                     Text("Department")
                         .fontWeight(.medium)
                     Spacer()
-                    Picker("Department", selection: $department) {
-                        ForEach(bag.departments, id: \.self) { dept in
-                            Text(dept)
+                    VStack{
+                        Picker("Department", selection: $department) {
+                            ForEach(bag.departments, id: \.self) { dept in
+                                Text(dept)
+                            }
+                            
                         }
-
+                        .pickerStyle(MenuPickerStyle())
+                        .multilineTextAlignment(.center)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(width: 200)
+                        if (department == "Other"){
+                            TextField("Department", text: $departmentOther)
+                                .multilineTextAlignment(.center)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 200)                        }
                     }
-                    .pickerStyle(MenuPickerStyle())
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: 200)
+
+                    
                 }
                 
                 HStack {
@@ -144,7 +154,7 @@ struct Screen3BagInfoEdit: View {
         //set this information for the bag, account defaults should be changed separate
         bag.POSName = POSName
         bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : retailLocation
-        bag.department = department
+        bag.department = (department == "Other") ?  departmentOther : department
     }
     func getLocations() -> [String]{
         return bag.locationSelections[department] ?? []

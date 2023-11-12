@@ -20,9 +20,11 @@
       "Warehouse", "Other"
     ],
     "Duke Card": ["Campus Office", "Medical Office", "The Link", "Other"],
-    "Parking": ["Parking Office", "Other"]
+    "Parking": ["Parking Office", "Other"],
+    "Other" : ["Other"]
   },
   "POSNames": {
-    "Sazon": ["p1"]
+    "Sazon": ["p1"],
+    "Other":["Other"]
   }
 }
