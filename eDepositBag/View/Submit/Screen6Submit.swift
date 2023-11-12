@@ -20,7 +20,7 @@ struct Screen6Submit: View {
     @State private var POSName: String
     @State private var revenueDate: String
     @State private var fileType:String
-    @State private var isPresented = false
+    @State private var isPresentedPDF = false
 
     
     init(bag: Bag) {
@@ -187,7 +187,7 @@ struct Screen6Submit: View {
                             .cornerRadius(15)
         
                             Button(action: {
-                                isPresented.toggle()
+                                isPresentedPDF.toggle()
                             }) {
                                 Text("Preview")
                                     .foregroundColor(.white)
@@ -198,7 +198,7 @@ struct Screen6Submit: View {
                             .opacity(0.8)
                             .cornerRadius(15)
                         }
-                        .sheet(isPresented: $isPresented) {
+                        .sheet(isPresented: $isPresentedPDF) {
                                         UploadPDFView(docURL: Bag.testURL!)
                                     }
                         .padding(.horizontal, 50.0)

@@ -3,7 +3,7 @@
 //  eDepositBag
 //
 //  Created by Jake Vigeant on 11/12/23.
-// https://www.youtube.com/watch?v=hxKS8mZ-alE
+// PDF View structure taken from https://www.youtube.com/watch?v=hxKS8mZ-alE
 
 import SwiftUI
 import PDFKit
@@ -16,7 +16,10 @@ struct UploadPDFView: UIViewRepresentable {
     func makeUIView(context : Context) -> some UIView {
         let pdfView = PDFView()
         pdfView.autoScales = true
+        pdfView.displayDirection = .vertical
         pdfView.document = PDFDocument(url: self.documentURL)
+        pdfView.isUserInteractionEnabled = true
+
         return pdfView
     }
     
