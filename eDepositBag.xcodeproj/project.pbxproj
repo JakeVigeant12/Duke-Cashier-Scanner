@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2E5DDB752AF403FF0021FF64 /* Bag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5DDB742AF403FF0021FF64 /* Bag.swift */; };
-		2E81DB082AF86024004BD934 /* Departments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E81DB072AF86024004BD934 /* Departments.swift */; };
+		2E81DB0A2B009CDA004BD934 /* selection_options.json in Resources */ = {isa = PBXBuildFile; fileRef = 2E81DB092B009CDA004BD934 /* selection_options.json */; };
+		2E81DB0E2B019415004BD934 /* UploadPDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E81DB0D2B019415004BD934 /* UploadPDFView.swift */; };
+		2E81DB102B0197E8004BD934 /* test_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 2E81DB0F2B0197E8004BD934 /* test_pdf.pdf */; };
 		2EE9DC932AF6DB9F004A668C /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE9DC922AF6DB9F004A668C /* Person.swift */; };
 		B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88172AF355E50084C733 /* eDepositBagApp.swift */; };
 		B62F881A2AF355E50084C733 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62F88192AF355E50084C733 /* ContentView.swift */; };
@@ -25,7 +27,9 @@
 
 /* Begin PBXFileReference section */
 		2E5DDB742AF403FF0021FF64 /* Bag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bag.swift; sourceTree = SOURCE_ROOT; };
-		2E81DB072AF86024004BD934 /* Departments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Departments.swift; sourceTree = "<group>"; };
+		2E81DB092B009CDA004BD934 /* selection_options.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = selection_options.json; sourceTree = "<group>"; };
+		2E81DB0D2B019415004BD934 /* UploadPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPDFView.swift; sourceTree = "<group>"; };
+		2E81DB0F2B0197E8004BD934 /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = test_pdf.pdf; path = eDepositBag/test_pdf.pdf; sourceTree = SOURCE_ROOT; };
 		2EE9DC922AF6DB9F004A668C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = SOURCE_ROOT; };
 		B62F88142AF355E50084C733 /* eDepositBag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eDepositBag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62F88172AF355E50084C733 /* eDepositBagApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDepositBagApp.swift; sourceTree = "<group>"; };
@@ -55,7 +59,6 @@
 		2E81DB062AF85FFF004BD934 /* LocationValues */ = {
 			isa = PBXGroup;
 			children = (
-				2E81DB072AF86024004BD934 /* Departments.swift */,
 			);
 			path = LocationValues;
 			sourceTree = "<group>";
@@ -103,6 +106,8 @@
 				2E81DB062AF85FFF004BD934 /* LocationValues */,
 				2E5DDB742AF403FF0021FF64 /* Bag.swift */,
 				2EE9DC922AF6DB9F004A668C /* Person.swift */,
+				2E81DB0F2B0197E8004BD934 /* test_pdf.pdf */,
+				2E81DB092B009CDA004BD934 /* selection_options.json */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 				B63E38CD2AF35F780024AEB6 /* EditBag */,
 				B63E38D52AF361A60024AEB6 /* FileScan */,
 				B63E38F22AF390980024AEB6 /* Submit */,
+				2E81DB0D2B019415004BD934 /* UploadPDFView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -212,6 +218,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B62F881F2AF355E50084C733 /* Preview Assets.xcassets in Resources */,
+				2E81DB102B0197E8004BD934 /* test_pdf.pdf in Resources */,
+				2E81DB0A2B009CDA004BD934 /* selection_options.json in Resources */,
 				B62F881C2AF355E50084C733 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,10 +239,10 @@
 				B63E38EF2AF377CB0024AEB6 /* DocScan.swift in Sources */,
 				B63E38E22AF3643A0024AEB6 /* Screen2ProfileEdit.swift in Sources */,
 				B63E38E62AF3649A0024AEB6 /* Screen4AskScanBarcode.swift in Sources */,
+				2E81DB0E2B019415004BD934 /* UploadPDFView.swift in Sources */,
 				B63E38ED2AF377BB0024AEB6 /* BarcodeScan.swift in Sources */,
 				B63E38F12AF3867E0024AEB6 /* Screen6Submit.swift in Sources */,
 				B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */,
-				2E81DB082AF86024004BD934 /* Departments.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

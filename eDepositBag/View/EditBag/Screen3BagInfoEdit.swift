@@ -16,10 +16,13 @@ struct Screen3BagInfoEdit: View {
     @State private var phone:String
     @State private var email:String
     @State private var department:String
+    @State private var departmentOther: String = ""
     @State private var retailLocation: String
+    @State private var retailLocationOther: String = ""
     @State private var POSName: String
     
     init(bag: Bag) {
+        let _ = bag.parseOptions(url: Bag.selectionOptions!)
         _name = State(initialValue: "")
         _duid = State(initialValue: "")
         _phone = State(initialValue: "")
@@ -45,20 +48,49 @@ struct Screen3BagInfoEdit: View {
                     Text("Department")
                         .fontWeight(.medium)
                     Spacer()
-                    TextField("Department", text: $department)
+                    VStack{
+                        Picker("Department", selection: $department) {
+                            ForEach(bag.departments, id: \.self) { dept in
+                                Text(dept)
+                            }
+                            
+                        }
+                        .pickerStyle(MenuPickerStyle())
                         .multilineTextAlignment(.center)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 200)
+                        if (department == "Other"){
+                            TextField("Department", text: $departmentOther)
+                                .multilineTextAlignment(.center)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 200)                        }
+                    }
+
+                    
                 }
                 
                 HStack {
                     Text("Retail Location")
                         .fontWeight(.medium)
                     Spacer()
-                    TextField("Retail Location", text: $retailLocation)
+                    VStack{
+                        Picker("Location", selection: $retailLocation) {
+                            ForEach(getLocations(), id: \.self) { location in
+                                Text(location)
+                            }
+                        }
+                        
+                        .pickerStyle(MenuPickerStyle())
                         .multilineTextAlignment(.center)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 200)
+                        if (retailLocation == "Other"){
+                            TextField("Retail Location", text: $retailLocationOther)
+                                .multilineTextAlignment(.center)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 200)                        }
+                    }
+
                 }
                 
                 HStack {
@@ -74,6 +106,7 @@ struct Screen3BagInfoEdit: View {
             .font(.body)
             .padding([.leading, .trailing], 20)
             
+
             Spacer().frame(height: 30)
             
             Text("Enter Information for Today")
@@ -120,11 +153,16 @@ struct Screen3BagInfoEdit: View {
     func submit(){
         //set this information for the bag, account defaults should be changed separate
         bag.POSName = POSName
-        bag.retailLocation = retailLocation
-        bag.department = department
+        bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : retailLocation
+        bag.department = (department == "Other") ?  departmentOther : department
     }
+    func getLocations() -> [String]{
+        return bag.locationSelections[department] ?? []
     }
 
+
+    }
+    
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
     static var previews: some View {

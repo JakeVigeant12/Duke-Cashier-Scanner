@@ -20,6 +20,8 @@ struct Screen6Submit: View {
     @State private var POSName: String
     @State private var revenueDate: String
     @State private var fileType:String
+    @State private var isPresentedPDF = false
+
     
     init(bag: Bag) {
         self.bag = bag
@@ -121,7 +123,7 @@ struct Screen6Submit: View {
                             Text("IRIs")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text("Yes")
+                            Text(bag.imageScans["IRI"] != nil ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -130,7 +132,7 @@ struct Screen6Submit: View {
                             Text("House Charge")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text("Yes")
+                            Text(bag.imageScans["House Charge"] != nil ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -139,7 +141,7 @@ struct Screen6Submit: View {
                             Text("Settlement Reports")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text("No")
+                            Text(bag.imageScans["Settlement Reports"] != nil ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -148,7 +150,7 @@ struct Screen6Submit: View {
                             Text("CARS")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text("No")
+                            Text(bag.imageScans["CARS"] != nil ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -185,8 +187,7 @@ struct Screen6Submit: View {
                             .cornerRadius(15)
         
                             Button(action: {
-                                // do somthing
-        
+                                isPresentedPDF.toggle()
                             }) {
                                 Text("Preview")
                                     .foregroundColor(.white)
@@ -197,6 +198,9 @@ struct Screen6Submit: View {
                             .opacity(0.8)
                             .cornerRadius(15)
                         }
+                        .sheet(isPresented: $isPresentedPDF) {
+                                        UploadPDFView(docURL: Bag.testURL!)
+                                    }
                         .padding(.horizontal, 50.0)
                     case .submit:
                         HStack(spacing: 40){
@@ -240,9 +244,3 @@ struct Screen6Submit: View {
     
 }
 
-
-//struct Screen6Submit_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Screen6Submit()
-//    }
-//}
