@@ -9,7 +9,10 @@ import SwiftUI
 
 struct Screen6Submit: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var imageTypeList: ImageTypeList
+    
     private var bag: Bag
+    
     @State private var bagNum:String
     @State private var name:String
     @State private var duid:String
