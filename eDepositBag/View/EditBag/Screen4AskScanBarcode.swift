@@ -11,7 +11,7 @@ import Combine
 struct Screen4AskScanBarcode: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
-
+    @EnvironmentObject var imageTypeList: ImageTypeList
 
     @State private var name:String
     @State private var duid:String
@@ -211,7 +211,8 @@ struct Screen4AskScanBarcode: View {
                     .opacity(0.8)
                     .cornerRadius(15)
                     
-                    NavigationLink(destination: Screen5FileScan(bag:bag)) {
+                    NavigationLink(destination: Screen5FileScan(bag:bag)
+                        .environmentObject(imageTypeList)) {
                         Text("Next")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -312,8 +313,10 @@ func getDateString(currentDate:Date) -> String {
     return dateString
 }
 struct Screen4AskScanBarcode_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         Screen4AskScanBarcode(bag:bag)
+            .environmentObject(imageTypeList)
     }
 }

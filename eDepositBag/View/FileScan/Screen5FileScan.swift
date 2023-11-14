@@ -9,11 +9,10 @@ import SwiftUI
 
 struct Screen5FileScan: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var imageTypeList: ImageTypeList
     
     @State private var startScan = false
     @State private var selectedType: Int?
-    
-    @StateObject var imageTypeList = ImageTypeList()
     
     private var bag:Bag
     @State private var bagNum: Int
@@ -109,8 +108,10 @@ struct Screen5FileScan: View {
 
 
 struct Screen5FileScan_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         Screen5FileScan(bag:bag)
+            .environmentObject(imageTypeList)
     }
 }

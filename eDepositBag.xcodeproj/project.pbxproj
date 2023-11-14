@@ -23,6 +23,7 @@
 		B63E38ED2AF377BB0024AEB6 /* BarcodeScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63E38EC2AF377BB0024AEB6 /* BarcodeScan.swift */; };
 		B63E38EF2AF377CB0024AEB6 /* DocScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63E38EE2AF377CB0024AEB6 /* DocScan.swift */; };
 		B63E38F12AF3867E0024AEB6 /* Screen6Submit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63E38F02AF3867E0024AEB6 /* Screen6Submit.swift */; };
+		B6654F222B0345AB009676E9 /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6654F212B0345AB009676E9 /* PDFCreator.swift */; };
 		B6AD93DB2B01D8FF00039AA7 /* ListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD93DA2B01D8FF00039AA7 /* ListRow.swift */; };
 		B6AD93DE2B01E08B00039AA7 /* Docs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD93DD2B01E08B00039AA7 /* Docs.swift */; };
 		B6AD93E22B01EC4600039AA7 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD93E12B01EC4600039AA7 /* ImageView.swift */; };
@@ -49,6 +50,7 @@
 		B63E38EC2AF377BB0024AEB6 /* BarcodeScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScan.swift; sourceTree = "<group>"; };
 		B63E38EE2AF377CB0024AEB6 /* DocScan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocScan.swift; sourceTree = "<group>"; };
 		B63E38F02AF3867E0024AEB6 /* Screen6Submit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screen6Submit.swift; sourceTree = "<group>"; };
+		B6654F212B0345AB009676E9 /* PDFCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		B6AD93DA2B01D8FF00039AA7 /* ListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRow.swift; sourceTree = "<group>"; };
 		B6AD93DD2B01E08B00039AA7 /* Docs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Docs.swift; sourceTree = "<group>"; };
 		B6AD93E12B01EC4600039AA7 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
@@ -133,7 +135,6 @@
 				B63E38CD2AF35F780024AEB6 /* EditBag */,
 				B63E38D52AF361A60024AEB6 /* FileScan */,
 				B63E38F22AF390980024AEB6 /* Submit */,
-				2E81DB0D2B019415004BD934 /* UploadPDFView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -169,6 +170,8 @@
 		B63E38F22AF390980024AEB6 /* Submit */ = {
 			isa = PBXGroup;
 			children = (
+				2E81DB0D2B019415004BD934 /* UploadPDFView.swift */,
+				B6654F212B0345AB009676E9 /* PDFCreator.swift */,
 				B63E38F02AF3867E0024AEB6 /* Screen6Submit.swift */,
 			);
 			path = Submit;
@@ -283,6 +286,7 @@
 				B6AD93DB2B01D8FF00039AA7 /* ListRow.swift in Sources */,
 				B63E38F12AF3867E0024AEB6 /* Screen6Submit.swift in Sources */,
 				B62F88182AF355E50084C733 /* eDepositBagApp.swift in Sources */,
+				B6654F222B0345AB009676E9 /* PDFCreator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

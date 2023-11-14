@@ -10,6 +10,7 @@ import SwiftUI
 // main menu
 struct ContentView: View {
     @EnvironmentObject var bag: Bag
+    @EnvironmentObject var imageTypeList: ImageTypeList
     
     var body: some View {
         
@@ -20,6 +21,7 @@ struct ContentView: View {
                 
                 // Buttons
                 NavigationLink(destination: Screen2ProfileEdit(bag: bag)
+                    .environmentObject(imageTypeList)
                 ) {
                     Text((bag.cashier != nil) ? "Edit Profile" : "Create Profile" )
                         .foregroundColor(.white)
@@ -30,7 +32,8 @@ struct ContentView: View {
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
                 if (bag.cashier != nil){
-                    NavigationLink(destination: Screen3BagInfoEdit(bag: bag))
+                    NavigationLink(destination: Screen3BagInfoEdit(bag: bag)
+                        .environmentObject(imageTypeList))
                     {
                         Text("Submit Virtual Deposit Bags")
                             .foregroundColor(.white)
@@ -81,10 +84,12 @@ struct ContentView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         
         ContentView()
             .environmentObject(bag)
+            .environmentObject(imageTypeList)
     }
 }

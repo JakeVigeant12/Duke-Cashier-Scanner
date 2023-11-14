@@ -9,6 +9,7 @@ import SwiftUI
 
 struct Screen2ProfileEdit: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var imageTypeList: ImageTypeList
     
     var bag: Bag
 
@@ -143,9 +144,11 @@ struct Screen2ProfileEdit: View {
 
 
 struct Screen2ProfileEdit_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         Screen2ProfileEdit(bag: bag)
+            .environmentObject(imageTypeList)
 
     }
 }
