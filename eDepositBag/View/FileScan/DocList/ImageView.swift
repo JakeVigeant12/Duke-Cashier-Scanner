@@ -13,26 +13,26 @@ struct ImageView: View {
     @Binding var images: [UIImage]
     // for image scaling
     @State private var scale: CGFloat = 1.0
+    @State private var select = 0
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            if let index = selectedImage, images.indices.contains(index) {
-                Image(uiImage: images[index])
-                    .resizable()
-                    .scaledToFit()
-                    .scaleEffect(scale)  // apply the scaling factor
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                    .clipped()
-                    .gesture(MagnificationGesture()
-                        .onChanged { value in
-                            self.scale = value  // update the scaling ratio
-                        }
-                    )
-            } else {
-                Text("Image not found")
+            // image view, able to slide
+            TabView(selection: $select) {
+                ForEach(images.indices, id: \.self) { index in
+                    Image(uiImage: images[index])
+                        .resizable()
+                        .scaledToFit()
+                        .tag(index)  // set tags to indicate current image
+                }
             }
-
-            VStack{
+            .tabViewStyle(PageTabViewStyle())
+            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            .onAppear(){
+                select = selectedImage!
+            }
+            
+            VStack {
                 Spacer()
                     .frame(height: 720)
                 HStack(spacing: 60) {
@@ -65,22 +65,26 @@ struct ImageView: View {
                 }
                 
             }
-
         }
     }
 
     func deleteImage() {
-        if let index = selectedImage {
-            images.remove(at: index)
-            selectedImage = nil
-        }
-        presentationMode.wrappedValue.dismiss()
+        images.remove(at: select)
+        // deleted the last image
+        if images.count == select{
+            // set as the former one
+            if images.count != 0 {
+                select -= 1
+            }else{
+                presentationMode.wrappedValue.dismiss()
+            }
+        }// else select remains the same
+
     }
 }
 
-
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageView(selectedImage: .constant(0), images: .constant([UIImage(named: "test_image")!, UIImage(named: "test_image")!]))
+        ImageView(selectedImage: .constant(1), images: .constant([UIImage(named: "test_image")!, UIImage(named: "test_image")!]))
     }
 }
