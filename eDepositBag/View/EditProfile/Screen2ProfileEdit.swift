@@ -62,6 +62,9 @@ struct Screen2ProfileEdit: View {
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 200)
                     }
+                    
+                    // TODO: need pickers
+                    
                     HStack {
                         Text("Department")
                             .fontWeight(.medium)

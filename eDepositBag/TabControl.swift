@@ -32,6 +32,11 @@ struct TabControl: View {
                 .tag(Tab.bag)
         }
         .navigationBarBackButtonHidden(true)
+        
+        .onAppear(){
+            // Parse
+            let _ = bag.parseOptions(url: Bag.selectionOptions!)
+        }
     }//body
 
 }

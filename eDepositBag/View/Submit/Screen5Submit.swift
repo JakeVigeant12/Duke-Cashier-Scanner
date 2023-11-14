@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Screen6Submit: View {
+struct Screen5Submit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
@@ -269,11 +269,11 @@ struct Screen6Submit: View {
 }
 
 
-struct Screen6Submit_Previews: PreviewProvider {
+struct Screen5Submit_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
     static var bag = Bag()
     static var previews: some View {
-        Screen6Submit()
+        Screen5Submit()
             .environmentObject(bag)
             .environmentObject(imageTypeList)
     }

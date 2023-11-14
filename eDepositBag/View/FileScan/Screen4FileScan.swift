@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Screen5FileScan: View {
+struct Screen4FileScan: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
@@ -46,7 +46,7 @@ struct Screen5FileScan: View {
 
             
             NavigationLink(destination:
-                            Screen6Submit()
+                            Screen5Submit()
                                 .environmentObject(bag)
                                 .environmentObject(imageTypeList)
             ) {
@@ -72,12 +72,12 @@ struct Screen5FileScan: View {
 
 
 
-struct Screen5FileScan_Previews: PreviewProvider {
+struct Screen4FileScan_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
     static var bag = Bag()
     static var previews: some View {
 
-        Screen5FileScan()
+        Screen4FileScan()
             .environmentObject(bag)
             .environmentObject(imageTypeList)
     }
