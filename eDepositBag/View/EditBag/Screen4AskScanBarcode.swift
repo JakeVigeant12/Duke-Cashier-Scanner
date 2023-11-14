@@ -13,36 +13,14 @@ struct Screen4AskScanBarcode: View {
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
 
-    @State private var name:String
-    @State private var duid:String
-    @State private var phone:String
-    @State private var email:String
-    @State private var department:String
-    @State private var retailLocation: String
-    @State private var POSName: String
+    @State private var name: String = ""
+    @State private var duid: String = ""
+    @State private var phone: String = ""
+    @State private var email: String = ""
+    @State private var department: String = ""
+    @State private var retailLocation: String = ""
+    @State private var POSName: String = ""
     @State private var revenueDatePicker: Date = Date()
-    
-    init(bag: Bag) {
-        _name = State(initialValue: "")
-        _duid = State(initialValue: "")
-        _phone = State(initialValue: "")
-        _email = State(initialValue: "")
-        _department = State(initialValue: "")
-        _retailLocation = State(initialValue: "")
-        _POSName = State(initialValue: "")
-        
-        if let cashier = bag.cashier {
-            _name = State(initialValue: cashier.name)
-            _duid = State(initialValue: cashier.duid)
-            _phone = State(initialValue: cashier.phone)
-            _email = State(initialValue: cashier.email)
-        }
-        
-        _department = State(initialValue: bag.department)
-        _retailLocation = State(initialValue: bag.retailLocation)
-        _POSName = State(initialValue: bag.POSName)
-
-    }
 
     @State private var bagNum: Int?
     @State private var scannedCode: String?
@@ -199,7 +177,6 @@ struct Screen4AskScanBarcode: View {
                         withAnimation{
                             showView = .ask
                             
-                            
                         }
                     }) {
                         Text("Back")
@@ -211,7 +188,8 @@ struct Screen4AskScanBarcode: View {
                     .opacity(0.8)
                     .cornerRadius(15)
                     
-                    NavigationLink(destination: Screen5FileScan(bag:bag)
+                    NavigationLink(destination: Screen5FileScan()
+                        .environmentObject(bag)
                         .environmentObject(imageTypeList)) {
                         Text("Next")
                             .foregroundColor(.white)
@@ -282,12 +260,21 @@ struct Screen4AskScanBarcode: View {
         
         .onAppear{
             // TODO
-            
-            if let num = bagNum {
-                scannedCode = String(num)
+            if bag.bagNum != 0 {
+                scannedCode = String(bag.bagNum)
             }else{
                 scannedCode = nil
             }
+            
+            if let cashier = bag.cashier {
+                name = cashier.name
+                duid = cashier.duid
+                phone = cashier.phone
+                email = cashier.email
+            }
+            department = bag.department
+            retailLocation = bag.retailLocation
+            POSName = bag.POSName
         }
     }
     
@@ -314,9 +301,10 @@ func getDateString(currentDate:Date) -> String {
 }
 struct Screen4AskScanBarcode_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
+    static var bag = Bag()
     static var previews: some View {
-        let bag = Bag()
-        Screen4AskScanBarcode(bag:bag)
+        Screen4AskScanBarcode()
+            .environmentObject(bag)
             .environmentObject(imageTypeList)
     }
 }
