@@ -7,49 +7,13 @@
 
 import SwiftUI
 
-struct Screen5FileScan: View {
+struct Screen4FileScan: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-    
+
     @State private var startScan = false
     @State private var selectedType: Int?
-    
-    private var bag:Bag
-    @State private var bagNum: Int
-    @State private var name:String
-    @State private var duid:String
-    @State private var phone:String
-    @State private var email:String
-    @State private var department:String
-    @State private var retailLocation: String
-    @State private var POSName: String
-    @State private var revenueDate: String
-    
-    init(bag: Bag) {
-        self.bag = bag
-        _name = State(initialValue: "")
-        _duid = State(initialValue: "")
-        _phone = State(initialValue: "")
-        _email = State(initialValue: "")
-        _department = State(initialValue: "")
-        _retailLocation = State(initialValue: "")
-        _POSName = State(initialValue: "")
-        _revenueDate = State(initialValue: "")
-
-        if let cashier = bag.cashier {
-            _name = State(initialValue: cashier.name)
-            _duid = State(initialValue: cashier.duid)
-            _phone = State(initialValue: cashier.phone)
-            _email = State(initialValue: cashier.email)
-        }
-        
-        _department = State(initialValue: bag.department)
-        _retailLocation = State(initialValue: bag.retailLocation)
-        _POSName = State(initialValue: bag.POSName)
-        _revenueDate = State(initialValue: bag.revenueDate)
-        _bagNum = State(initialValue: bag.bagNum)
-
-    }
     
     var body: some View {
         VStack{
@@ -82,7 +46,8 @@ struct Screen5FileScan: View {
 
             
             NavigationLink(destination:
-                            Screen6Submit(bag:bag)
+                            Screen5Submit()
+                                .environmentObject(bag)
                                 .environmentObject(imageTypeList)
             ) {
                 Text("Done")
@@ -107,11 +72,13 @@ struct Screen5FileScan: View {
 
 
 
-struct Screen5FileScan_Previews: PreviewProvider {
+struct Screen4FileScan_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
+    static var bag = Bag()
     static var previews: some View {
-        let bag = Bag()
-        Screen5FileScan(bag:bag)
+
+        Screen4FileScan()
+            .environmentObject(bag)
             .environmentObject(imageTypeList)
     }
 }

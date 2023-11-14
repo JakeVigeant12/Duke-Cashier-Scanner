@@ -7,10 +7,13 @@
 
 import SwiftUI
 
+enum Tab {
+    case bag
+    case person
+}
+
 // main menu
 struct ContentView: View {
-    @EnvironmentObject var bag: Bag
-    @EnvironmentObject var imageTypeList: ImageTypeList
     
     var body: some View {
         
@@ -19,11 +22,9 @@ struct ContentView: View {
                 // Header
                 Spacer().frame(height: 10)
                 
-                // Buttons
-                NavigationLink(destination: Screen2ProfileEdit(bag: bag)
-                    .environmentObject(imageTypeList)
+                NavigationLink(destination: TabControl(selection: Tab.person)
                 ) {
-                    Text((bag.cashier != nil) ? "Edit Profile" : "Create Profile" )
+                    Text("Edit Defalt User Information")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .padding()
@@ -31,39 +32,22 @@ struct ContentView: View {
                 .background(Color.blue)
                 .cornerRadius(15)
                 .padding(.horizontal, 30.0)
-                if (bag.cashier != nil){
-                    NavigationLink(destination: Screen3BagInfoEdit(bag: bag)
-                        .environmentObject(imageTypeList))
-                    {
-                        Text("Submit Virtual Deposit Bags")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    
-                    .background(Color.blue)
-                    .cornerRadius(15)
-                    .padding(.horizontal, 30.0)
-                }
-                //TODO add functionality to logout/set cashier to nil
-                Button(action: {if bag.cashier != nil {
-                    bag.logout()
-                    return
-                }
-                    
-                    let _ = bag.load(url: Bag.sandboxUser)}) {
-                        Text((bag.cashier != nil) ? "Logout" : "Login")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(Color.blue)
-                    .cornerRadius(15)
-                    .padding(.horizontal, 30.0)
                 
+                NavigationLink(destination: TabControl(selection: Tab.bag)
+                ) {
+                    Text("Create a Virtual Deposit Bag")
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                }
+                .background(Color.blue)
+                .cornerRadius(15)
+                .padding(.horizontal, 30.0)
+
                 Spacer()
             }
             .padding(.vertical)
+            
             .navigationTitle("Virtual Deposit Bags")
             
             .toolbar {
@@ -84,12 +68,7 @@ struct ContentView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
-    static var imageTypeList = ImageTypeList()
     static var previews: some View {
-        let bag = Bag()
-        
         ContentView()
-            .environmentObject(bag)
-            .environmentObject(imageTypeList)
     }
 }
