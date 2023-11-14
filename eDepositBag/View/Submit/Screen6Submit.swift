@@ -9,7 +9,10 @@ import SwiftUI
 
 struct Screen6Submit: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var imageTypeList: ImageTypeList
+    
     private var bag: Bag
+    
     @State private var bagNum:String
     @State private var name:String
     @State private var duid:String
@@ -123,7 +126,7 @@ struct Screen6Submit: View {
                             Text("IRIs")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text(bag.imageScans["IRI"] != nil ? "Yes" : "No")
+                            Text(imageTypeList.imageTypes[0].images.count != 0 ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -132,7 +135,7 @@ struct Screen6Submit: View {
                             Text("House Charge")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text(bag.imageScans["House Charge"] != nil ? "Yes" : "No")
+                            Text(imageTypeList.imageTypes[1].images.count != 0 ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -141,7 +144,7 @@ struct Screen6Submit: View {
                             Text("Settlement Reports")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text(bag.imageScans["Settlement Reports"] != nil ? "Yes" : "No")
+                            Text(imageTypeList.imageTypes[2].images.count != 0 ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -150,7 +153,7 @@ struct Screen6Submit: View {
                             Text("CARS")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text(bag.imageScans["CARS"] != nil ? "Yes" : "No")
+                            Text(imageTypeList.imageTypes[3].images.count != 0 ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -159,7 +162,7 @@ struct Screen6Submit: View {
                             Text("Other")
                                 .fontWeight(.medium)
                             Spacer()
-                            Text("No")
+                            Text(imageTypeList.imageTypes[4].images.count != 0 ? "Yes" : "No")
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 200)
@@ -176,6 +179,22 @@ struct Screen6Submit: View {
                                 withAnimation(){
                                     showView = .submit
                                 }
+                                // TODO: some action. here just delete the temp pdf
+
+                                let pdfURL = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
+
+                                do {
+                                    if FileManager.default.fileExists(atPath: pdfURL.path) {
+                                        try FileManager.default.removeItem(at: pdfURL)
+                                        print("PDF file deleted successfully.")
+                                    } else {
+                                        print("PDF file does not exist.")
+                                    }
+                                } catch {
+                                    print("An error occurred while trying to delete the PDF file: \(error)")
+                                }
+                                
+                                
                             }) {
                                 Text("Save")
                                     .foregroundColor(.white)
@@ -187,6 +206,11 @@ struct Screen6Submit: View {
                             .cornerRadius(15)
         
                             Button(action: {
+                                // TODO: create pdf
+                                PDFCreator.createPDF(from: imageTypeList)
+                                
+                                
+                                
                                 isPresentedPDF.toggle()
                             }) {
                                 Text("Preview")
@@ -199,7 +223,8 @@ struct Screen6Submit: View {
                             .cornerRadius(15)
                         }
                         .sheet(isPresented: $isPresentedPDF) {
-                                        UploadPDFView(docURL: Bag.testURL!)
+//                                        UploadPDFView(docURL: Bag.testURL!)
+                            UploadPDFView(docURL: FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf"))
                                     }
                         .padding(.horizontal, 50.0)
                     case .submit:
@@ -244,3 +269,14 @@ struct Screen6Submit: View {
     
 }
 
+
+
+
+struct Screen6Submit_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
+    static var previews: some View {
+        let bag = Bag()
+        Screen6Submit(bag:bag)
+            .environmentObject(imageTypeList)
+    }
+}

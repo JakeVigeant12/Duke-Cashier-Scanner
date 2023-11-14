@@ -1,0 +1,48 @@
+//
+//  DocList.swift
+//  eDepositBag
+//
+//  Created by Fall 2023 on 11/12/23.
+//
+
+import SwiftUI
+
+struct ListRow: View {
+    @ObservedObject var imageType: ImageType
+    @State private var showImage = false
+    @State private var selectedImage: Int?
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(alignment: .top, spacing: 0) {
+                ForEach(imageType.images.indices, id: \.self) {index in
+                    Button(action: {
+                        withAnimation {
+                            selectedImage = index
+                            showImage = true
+                        }
+                    }) {
+                        Image(uiImage: imageType.images[index])
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.blue)
+                            .padding()
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showImage) {
+            ImageView(selectedImage: $selectedImage, images: $imageType.images)
+        }
+    }
+}
+
+
+struct ListRow_Previews: PreviewProvider {
+    @State static var imageType = ImageType(name: "haha", images: [UIImage(named: "test_image")!,UIImage(named: "test_image")!])
+
+    static var previews: some View {
+        ListRow(imageType: imageType)
+    }
+}

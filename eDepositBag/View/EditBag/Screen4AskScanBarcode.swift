@@ -11,7 +11,7 @@ import Combine
 struct Screen4AskScanBarcode: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
-
+    @EnvironmentObject var imageTypeList: ImageTypeList
 
     @State private var name:String
     @State private var duid:String
@@ -21,6 +21,7 @@ struct Screen4AskScanBarcode: View {
     @State private var retailLocation: String
     @State private var POSName: String
     @State private var revenueDatePicker: Date = Date()
+    
     init(bag: Bag) {
         _name = State(initialValue: "")
         _duid = State(initialValue: "")
@@ -210,7 +211,8 @@ struct Screen4AskScanBarcode: View {
                     .opacity(0.8)
                     .cornerRadius(15)
                     
-                    NavigationLink(destination: Screen5FileScan(bag:bag)) {
+                    NavigationLink(destination: Screen5FileScan(bag:bag)
+                        .environmentObject(imageTypeList)) {
                         Text("Next")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -274,13 +276,12 @@ struct Screen4AskScanBarcode: View {
         .navigationTitle("Date and Bag Number")
         .navigationBarTitleDisplayMode(.inline)
         
-        .sheet(isPresented: $startScan,onDismiss: scanSheetDismissed) {
+        .sheet(isPresented: $startScan, onDismiss: scanSheetDismissed) {
             BarcodeScan(isPresentingScanner: self.$startScan, scannedCode: self.$scannedCode, isScanFail: self.$isScanFail)
         }
         
         .onAppear{
             // TODO
-            
             
             if let num = bagNum {
                 scannedCode = String(num)
@@ -294,9 +295,12 @@ struct Screen4AskScanBarcode: View {
         if(!isScanFail){
             bag.revenueDate = getDateString(currentDate: revenueDatePicker)
             showView = .next
-            //Not sure if this is correct state var
-            bag.bagNum = bagNum!
-
+            
+            if let scanned = scannedCode {
+                if let num = Int(scanned) {
+                    bag.bagNum = num
+                }
+            }
         }
     }
 
@@ -309,8 +313,10 @@ func getDateString(currentDate:Date) -> String {
     return dateString
 }
 struct Screen4AskScanBarcode_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         Screen4AskScanBarcode(bag:bag)
+            .environmentObject(imageTypeList)
     }
 }

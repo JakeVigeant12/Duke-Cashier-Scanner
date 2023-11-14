@@ -10,7 +10,8 @@ import SwiftUI
 struct Screen3BagInfoEdit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
-
+    @EnvironmentObject var imageTypeList: ImageTypeList
+    
     @State private var name:String
     @State private var duid:String
     @State private var phone:String
@@ -129,7 +130,8 @@ struct Screen3BagInfoEdit: View {
 //                    submit()
 //                })
                 
-                NavigationLink(destination: Screen4AskScanBarcode(bag: bag)) {
+                NavigationLink(destination: Screen4AskScanBarcode(bag: bag)
+                    .environmentObject(imageTypeList)) {
                     Text("Done")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -165,9 +167,11 @@ struct Screen3BagInfoEdit: View {
     
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
+    static var imageTypeList = ImageTypeList()
     static var previews: some View {
         let bag = Bag()
         Screen3BagInfoEdit(bag : bag)
             .environmentObject(bag)
+            .environmentObject(imageTypeList)
     }
 }
