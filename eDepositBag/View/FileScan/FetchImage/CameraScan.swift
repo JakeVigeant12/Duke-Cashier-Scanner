@@ -8,30 +8,44 @@
 import SwiftUI
 import VisionKit
 
-// handle the result of scanning
-class DocumentScannerDelegate: NSObject, VNDocumentCameraViewControllerDelegate {
-    var completionHandler: ((UIImage) -> Void)?
-
-    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-        // handle result
-        if scan.pageCount > 0 {
-            let image = scan.imageOfPage(at: 0) // first one
-            completionHandler?(image)
-        }
-        controller.dismiss(animated: true)
-    }
-}
-
 struct VNDocumentCameraViewControllerRepresentable: UIViewControllerRepresentable {
-    var scannerDelegate: DocumentScannerDelegate
-    var completionHandler: ((UIImage) -> Void)?
+    
+    // return and handle the result
+    var completionHandler: (([UIImage]) -> Void)?
 
+    // coordinator to manage delegate methods
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    // create the UIViewController
     func makeUIViewController(context: Context) -> VNDocumentCameraViewController {
         let viewController = VNDocumentCameraViewController()
-        viewController.delegate = scannerDelegate
-        scannerDelegate.completionHandler = completionHandler
+        viewController.delegate = context.coordinator // Set the coordinator as delegate
         return viewController
     }
 
+    // not used
     func updateUIViewController(_ uiViewController: VNDocumentCameraViewController, context: Context) { }
+
+    class Coordinator: NSObject, VNDocumentCameraViewControllerDelegate {
+        var parent: VNDocumentCameraViewControllerRepresentable
+
+        init(_ parent: VNDocumentCameraViewControllerRepresentable) {
+            self.parent = parent
+        }
+
+        // handle the result of the scanning
+        func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
+            var images: [UIImage] = []
+            for pageIndex in 0..<scan.pageCount {
+                let image = scan.imageOfPage(at: pageIndex)
+                images.append(image)
+            }
+
+            // return the result
+            parent.completionHandler?(images)
+            controller.dismiss(animated: true)
+        }
+    }
 }

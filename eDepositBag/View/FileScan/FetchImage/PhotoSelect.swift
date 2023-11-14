@@ -9,33 +9,56 @@ import SwiftUI
 import PhotosUI // on iOS 14 and above
 
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var selectedImage: UIImage?
-    @Environment(\.presentationMode) var presentationMode
+    // hold the selected images
+    var completionHandler: (([UIImage]) -> Void)?
 
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var configuration = PHPickerConfiguration()
+        configuration.selectionLimit = 0 // 0 for no limit
+        configuration.filter = .images // only images
+
+        let picker = PHPickerViewController(configuration: configuration)
         picker.delegate = context.coordinator
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    class Coordinator: NSObject, PHPickerViewControllerDelegate {
         var parent: ImagePicker
 
         init(_ parent: ImagePicker) {
             self.parent = parent
         }
 
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                parent.selectedImage = image
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            let itemProviders = results.map(\.itemProvider)
+            var images: [UIImage] = []
+
+            for item in itemProviders {
+                if item.canLoadObject(ofClass: UIImage.self) {
+                    item.loadObject(ofClass: UIImage.self) { (object, error) in
+                        if let image = object as? UIImage {
+                            images.append(image)
+
+                            // call the completion handler if this is the last
+                            if images.count == itemProviders.count {
+                                DispatchQueue.main.async {
+                                    self.parent.completionHandler?(images)
+                                }
+                            }
+                            
+                        }
+                    }
+                }
             }
-            parent.presentationMode.wrappedValue.dismiss()
-        }
-    }
+            
+            picker.dismiss(animated: true)
+            
+        }// picker
+    }// coordinator
 }

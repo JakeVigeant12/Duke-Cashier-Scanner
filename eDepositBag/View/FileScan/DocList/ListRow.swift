@@ -8,45 +8,41 @@
 import SwiftUI
 
 struct ListRow: View {
-    @Binding var images: [String]
+    @ObservedObject var imageType: ImageType
     @State private var showImage = false
     @State private var selectedImage: Int?
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(alignment: .top, spacing: 0) {
-                ForEach(images.indices, id: \.self) {index in
+                ForEach(imageType.images.indices, id: \.self) {index in
                     Button(action: {
                         withAnimation {
                             selectedImage = index
                             showImage = true
                         }
                     }) {
-                        Image(systemName: images[index])
+                        Image(uiImage: imageType.images[index])
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 100, height: 100)
                             .foregroundColor(.blue)
                             .padding()
                     }
-                    .opacity(0.7)
-                    .cornerRadius(15)
-                    .frame(width: 200)
                 }
             }
         }
-        .frame(height: 130)
         .sheet(isPresented: $showImage) {
-            ImageView(selectedImage: $selectedImage, images: $images)
+            ImageView(selectedImage: $selectedImage, images: $imageType.images)
         }
     }
 }
 
 
 struct ListRow_Previews: PreviewProvider {
-    @State static var sampleImages = ["person","phone"]
+    @State static var imageType = ImageType(name: "haha", images: [UIImage(named: "test_image")!,UIImage(named: "test_image")!])
 
     static var previews: some View {
-        ListRow(images: $sampleImages)
+        ListRow(imageType: imageType)
     }
 }

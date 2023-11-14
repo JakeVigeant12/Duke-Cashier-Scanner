@@ -55,18 +55,19 @@ struct Screen5FileScan: View {
     var body: some View {
         VStack{
             List{
+                
                 ForEach(imageTypeList.imageTypes.indices, id: \.self) { index in
                     let imageType = imageTypeList.imageTypes[index]
                     
                     Section(header: 
-                    HStack{
-                        Text(imageType.name)
-                            .font(.body)
-                            .textCase(nil)
-                        Spacer()
-                        Button(action: {
-                            selectedType = index
-                            startScan = true
+                        HStack{
+                            Text(imageType.name)
+                                .font(.body)
+                                .textCase(nil)
+                            Spacer()
+                            Button(action: {
+                                selectedType = index
+                                startScan = true
                         }) {
                             Image(systemName: "plus.circle")
                                 .padding()
@@ -75,25 +76,25 @@ struct Screen5FileScan: View {
                         }
 
                     }) {
-                        ListRow(images: $imageTypeList.imageTypes[index].images)
+                        ListRow(imageType: imageTypeList.imageTypes[index])
                     }
                 }
             }
-            HStack(spacing: 100) {
-                NavigationLink(destination:
-                                Screen6Submit(bag:bag)
-                                    .environmentObject(imageTypeList)
-                ) {
-                    Text("Done")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                }
-                .cornerRadius(15)
+
+            
+            NavigationLink(destination:
+                            Screen6Submit(bag:bag)
+                                .environmentObject(imageTypeList)
+            ) {
+                Text("Done")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
             }
             .padding(.top)
             .background(Color.blue)
             .opacity(0.8)
+
         }
 
         .navigationTitle("Scan Documents")

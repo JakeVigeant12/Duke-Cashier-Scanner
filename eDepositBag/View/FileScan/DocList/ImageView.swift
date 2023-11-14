@@ -10,14 +10,14 @@ import SwiftUI
 struct ImageView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var selectedImage: Int?
-    @Binding var images: [String]
+    @Binding var images: [UIImage]
     // for image scaling
     @State private var scale: CGFloat = 1.0
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             if let index = selectedImage, images.indices.contains(index) {
-                Image(systemName: images[index])
+                Image(uiImage: images[index])
                     .resizable()
                     .scaledToFit()
                     .scaleEffect(scale)  // apply the scaling factor
@@ -81,6 +81,6 @@ struct ImageView: View {
 
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageView(selectedImage: .constant(2), images: .constant(["square.and.arrow.up", "pencil", "trash"]))
+        ImageView(selectedImage: .constant(0), images: .constant([UIImage(named: "test_image")!, UIImage(named: "test_image")!]))
     }
 }
