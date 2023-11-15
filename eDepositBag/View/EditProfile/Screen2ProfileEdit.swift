@@ -98,20 +98,36 @@ struct Screen2ProfileEdit: View {
                 
                 Spacer().frame(height: 40)
 
-                Button(action: {
-                    submit()
-                    showSuccess = true
-                }) {
-                    Text("Save")
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding()
+                HStack(spacing: 40){
+                    Button(action: {
+                        withAnimation{
+                            clear()
+                        }
+                    }) {
+                        Text("Clear")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(Color.blue)
+                    .opacity(0.9)
+                    .cornerRadius(15)
+                    
+                    Button(action: {
+                        submit()
+                        showSuccess = true
+                    }) {
+                        Text("Save")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(Color.green)
+                    .opacity(0.9)
+                    .cornerRadius(15)
                 }
-                .background(Color.blue)
-                .opacity(0.9)
-                .cornerRadius(15)
-                .padding(.horizontal, 70.0)
-                
+                .padding(.horizontal, 50)
+
                 Spacer()
             }
             .padding(.vertical)
@@ -138,6 +154,16 @@ struct Screen2ProfileEdit: View {
     func submit(){
         bag.cashier = Person(name: name, duid: duid, phone: phone, email: email, department: department, retailLocation: retailLocation, POSName: POSName)
         let _  = bag.save()
+    }
+    
+    func clear(){
+        name = ""
+        duid = ""
+        phone = ""
+        email = ""
+        department = ""
+        retailLocation = ""
+        POSName = ""
     }
 }
 

@@ -36,6 +36,7 @@ struct TabControl: View {
         .onAppear(){
             // Parse
             let _ = bag.parseOptions(url: Bag.selectionOptions!)
+            let _ = bag.load(url: Bag.sandboxUser)
         }
     }//body
 
