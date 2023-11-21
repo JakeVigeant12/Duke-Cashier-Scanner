@@ -49,16 +49,24 @@ struct Screen3BagInfoEdit: View {
                                     Text(dept)
                                 }
                             }
+                            
+                            .environment(\.colorScheme, .dark)
                             .pickerStyle(MenuPickerStyle())
-                            .multilineTextAlignment(.center)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200)
+                            .frame(width: 170)
+                            .padding(.vertical,4)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                             
                             if (department == "Other"){
                                 TextField("Department", text: $departmentOther)
-                                    .multilineTextAlignment(.center)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .frame(width: 200)                        }
+                                    .environment(\.colorScheme, .dark)
+                                    .frame(width: 170)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 15)
+                                    .background(.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            }
                         }
                     }
                     HStack {
@@ -71,16 +79,22 @@ struct Screen3BagInfoEdit: View {
                                     Text(location)
                                 }
                             }
-                            
+                            .environment(\.colorScheme, .dark)
                             .pickerStyle(MenuPickerStyle())
-                            .multilineTextAlignment(.center)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200)
+                            .frame(width: 170)
+                            .padding(.vertical,4)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                             if (retailLocation == "Other"){
                                 TextField("Retail Location", text: $retailLocationOther)
-                                    .multilineTextAlignment(.center)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .frame(width: 200)                        }
+                                    .environment(\.colorScheme, .dark)
+                                    .frame(width: 170)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 15)
+                                    .background(.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            }
                         }
 
                     }
@@ -89,9 +103,12 @@ struct Screen3BagInfoEdit: View {
                             .fontWeight(.medium)
                         Spacer()
                         TextField("POS Name", text: $POSName)
-                            .multilineTextAlignment(.center)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 200)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     }
                     
                     HStack {
@@ -101,13 +118,17 @@ struct Screen3BagInfoEdit: View {
                         DatePicker("Select a date", selection: $revenueDatePicker, displayedComponents: .date)
                             .datePickerStyle(CompactDatePickerStyle())
                             .labelsHidden()
-                            .multilineTextAlignment(.center)
-                            .frame(width: 200)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 15)
+             
                     }
                 }
                 //can not be edited
                 .disabled(showView == .next ? true : false)
                 .font(.body)
+                .foregroundStyle(.white)
                 .padding([.leading, .trailing], 20)
                 
 
@@ -117,6 +138,7 @@ struct Screen3BagInfoEdit: View {
                     HStack {
                         Text("Bag Number")
                             .fontWeight(.medium)
+                            .foregroundStyle(.white)
                         Spacer()
 
                         if let code = scannedCode{
@@ -127,10 +149,12 @@ struct Screen3BagInfoEdit: View {
                                 .foregroundColor(.blue)
                         }else{
                             Text("No Bag Number")
-                                .multilineTextAlignment(.center)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 200)
-                                .foregroundColor(.blue)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                         }
 
                     }
@@ -233,6 +257,7 @@ struct Screen3BagInfoEdit: View {
                         HStack {
                             Text("Bag Number")
                                 .fontWeight(.medium)
+                                .foregroundStyle(.white)
                             Spacer()
                                 
                             Button(action: {
@@ -264,8 +289,16 @@ struct Screen3BagInfoEdit: View {
             }
             .padding(.vertical)
          
+            .background {
+                Image("bg1")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .overlay(Color.black.opacity(0.1))
+                TransparentBlur(removeAllFilters: false)
+            }
             .navigationTitle("Deposit Bag Info")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
         }
 
         
@@ -274,6 +307,7 @@ struct Screen3BagInfoEdit: View {
         }
         
         .onAppear{
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
             // TODO: need info from screen2
             
             // give the picker a default choice
@@ -340,16 +374,7 @@ struct Screen3BagInfoEdit: View {
 
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
-    static var imageTypeList = ImageTypeList()
-    static var bag = Bag()
-    
     static var previews: some View {
-        Screen3BagInfoEdit()
-            .environmentObject(bag)
-            .environmentObject(imageTypeList)
-            .onAppear(){
-                // Parse
-                let _ = bag.parseOptions(url: Bag.selectionOptions!)
-            }
+        TabControl(selection: Tab.bag)
     }
 }

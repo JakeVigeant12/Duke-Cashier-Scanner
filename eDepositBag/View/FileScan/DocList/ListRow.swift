@@ -13,27 +13,28 @@ struct ListRow: View {
     @State private var selectedImage: Int?
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(alignment: .top, spacing: 0) {
-                ForEach(imageType.images.indices, id: \.self) {index in
-                    Button(action: {
-                        withAnimation {
-                            selectedImage = index
-                            showImage = true
+        if !imageType.images.isEmpty{
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: 0) {
+                    ForEach(imageType.images.indices, id: \.self) {index in
+                        Button(action: {
+                            withAnimation {
+                                selectedImage = index
+                                showImage = true
+                            }
+                        }) {
+                            Image(uiImage: imageType.images[index])
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120, height: 120)
+                                .padding(.trailing, 10)
                         }
-                    }) {
-                        Image(uiImage: imageType.images[index])
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.blue)
-                            .padding()
                     }
                 }
             }
-        }
-        .sheet(isPresented: $showImage) {
-            ImageView(selectedImage: $selectedImage, images: $imageType.images)
+            .sheet(isPresented: $showImage) {
+                ImageView(selectedImage: $selectedImage, images: $imageType.images)
+            }
         }
     }
 }

@@ -32,223 +32,272 @@ struct Screen5Submit: View {
 
     
     var body: some View {
-        VStack(spacing: 20) {
-            Group{
-                HStack {
-                    Text("Department")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("Department", text: $department)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+        ScrollView {
+            VStack(spacing: 20) {
+                Group{
+                    HStack {
+                        Text("Department")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("Department", text: $department)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("Retail Location")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("Retail Location", text: $retailLocation)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("POS Name")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("POS Name", text: $POSName)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("Revenue Date")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("Revenue Date", text: $revenueDate)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("Bag Number")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("Bag Number", text: $bagNum)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("Submitted by")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("Name", text: $name)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
+                    HStack {
+                        Text("Date Submitted")
+                            .fontWeight(.medium)
+                        Spacer()
+                        TextField("today", text: $revenueDate)
+                            .environment(\.colorScheme, .dark)
+                            .frame(width: 170)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                            .background(.white.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    }
                 }
-                HStack {
-                    Text("Retail Location")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("Retail Location", text: $retailLocation)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("POS Name")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("POS Name", text: $POSName)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("Revenue Date")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("Revenue Date", text: $revenueDate)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("Bag Number")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("Bag Number", text: $bagNum)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("Submitted by")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("Name", text: $name)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("Date Submitted")
-                        .fontWeight(.medium)
-                    Spacer()
-                    TextField("today", text: $revenueDate)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-            }
-            .disabled(true)
-            .font(.body)
-            .padding([.leading, .trailing], 20)
+                .foregroundStyle(.white)
+                .disabled(true)
+                .font(.body)
+                .padding([.leading, .trailing], 20)
 
-            Spacer().frame(height: 0)
+                Spacer().frame(height: 0)
+                
 
-            Text("Includes Scanned Documents")
-            Group{
-                HStack {
-                    Text("IRIs")
-                        .fontWeight(.medium)
+                VStack{
+                    Text("Includes Scanned Documents")
+                        .font(.title2)
+                        .foregroundStyle(.white)
+                        .padding(.bottom, 10)
                     Spacer()
-                    Text(imageTypeList.imageTypes[0].images.count != 0 ? "Yes" : "No")
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+                    HStack {
+                        Text("IRIs")
+                            .fontWeight(.medium)
+                        Spacer()
+                        Text(imageTypeList.imageTypes[0].images.count != 0 ? "Yes" : "No")
+                            .frame(width: 120)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                    }
+                    HStack {
+                        Text("House Charge")
+                            .fontWeight(.medium)
+                        Spacer()
+                        Text(imageTypeList.imageTypes[1].images.count != 0 ? "Yes" : "No")
+                            .frame(width: 120)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                    }
+                    HStack {
+                        Text("Settlement Reports")
+                            .fontWeight(.medium)
+                        Spacer()
+                        Text(imageTypeList.imageTypes[2].images.count != 0 ? "Yes" : "No")
+                            .frame(width: 120)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                    }
+                    HStack {
+                        Text("CARS")
+                            .fontWeight(.medium)
+                        Spacer()
+                        Text(imageTypeList.imageTypes[3].images.count != 0 ? "Yes" : "No")
+                            .frame(width: 120)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                    }
+                    HStack {
+                        Text("Other")
+                            .fontWeight(.medium)
+                        Spacer()
+                        Text(imageTypeList.imageTypes[4].images.count != 0 ? "Yes" : "No")
+                            .frame(width: 120)
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 15)
+                    }
                 }
-                HStack {
-                    Text("House Charge")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text(imageTypeList.imageTypes[1].images.count != 0 ? "Yes" : "No")
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
+                .foregroundStyle(.white)
+                .padding(20)
+                
+                .background {
+                    TransparentBlur(removeAllFilters: false)
+                        .blur(radius: 9, opaque: true)
+                        .background(.white.opacity(0.05))
                 }
-                HStack {
-                    Text("Settlement Reports")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text(imageTypeList.imageTypes[2].images.count != 0 ? "Yes" : "No")
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("CARS")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text(imageTypeList.imageTypes[3].images.count != 0 ? "Yes" : "No")
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-                HStack {
-                    Text("Other")
-                        .fontWeight(.medium)
-                    Spacer()
-                    Text(imageTypeList.imageTypes[4].images.count != 0 ? "Yes" : "No")
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .frame(width: 200)
-                }
-            }
-            .padding([.leading, .trailing], 20)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
 
-            Spacer().frame(height: 0)
+                .shadow(color: .black.opacity(0.2), radius: 10)
+                .padding(.horizontal, 20)
 
-            switch showView {
-            case .preview:
-                HStack(spacing: 40){
-                    Button(action: {
-                        withAnimation(){
-                            showView = .submit
-                        }
-                        // TODO: some action. here just delete the temp pdf
+                Spacer()
 
-                        let pdfURL = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
-
-                        do {
-                            if FileManager.default.fileExists(atPath: pdfURL.path) {
-                                try FileManager.default.removeItem(at: pdfURL)
-                                print("PDF file deleted successfully.")
-                            } else {
-                                print("PDF file does not exist.")
+                switch showView {
+                case .preview:
+                    HStack(spacing: 40){
+                        Button(action: {
+                            withAnimation(){
+                                showView = .submit
                             }
-                        } catch {
-                            print("An error occurred while trying to delete the PDF file: \(error)")
-                        }
-                        
-                        
-                    }) {
-                        Text("Save")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(Color.green)
-                    .opacity(0.8)
-                    .cornerRadius(15)
+                            // TODO: some action. here just delete the temp pdf
 
-                    Button(action: {
-                        // TODO: create pdf
-                        PDFCreator.createPDF(from: imageTypeList)
-                        
-                        
+                            let pdfURL = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
 
-                        isPresentedPDF.toggle()
-                    }) {
-                        Text("Preview")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(Color.orange)
-                    .opacity(0.8)
-                    .cornerRadius(15)
-                }
-                .sheet(isPresented: $isPresentedPDF) {
-//                                        UploadPDFView(docURL: Bag.testURL!)
-                    UploadPDFView(docURL: FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf"))
+                            do {
+                                if FileManager.default.fileExists(atPath: pdfURL.path) {
+                                    try FileManager.default.removeItem(at: pdfURL)
+                                    print("PDF file deleted successfully.")
+                                } else {
+                                    print("PDF file does not exist.")
+                                }
+                            } catch {
+                                print("An error occurred while trying to delete the PDF file: \(error)")
                             }
-                .padding(.horizontal, 50.0)
-            case .submit:
-                HStack(spacing: 40){
-                    Button(action: {
-                        withAnimation(){
-                            showView = .preview
+                            
+                            
+                        }) {
+                            Text("Save")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
                         }
-                    }) {
-                        Text("Cancel")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(Color.red)
-                    .opacity(0.8)
-                    .cornerRadius(15)
+                        .background(Color.green)
+                        .opacity(0.8)
+                        .cornerRadius(15)
 
-                    Button(action: {
-                        // do somthing
-                    }) {
-                        Text("Submit")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
+                        Button(action: {
+                            // TODO: create pdf
+                            PDFCreator.createPDF(from: imageTypeList)
+                            
+                            
+
+                            isPresentedPDF.toggle()
+                        }) {
+                            Text("Preview")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .background(Color.orange)
+                        .opacity(0.8)
+                        .cornerRadius(15)
                     }
-                    .background(Color.green)
-                    .opacity(0.8)
-                    .cornerRadius(15)
+                    .shadow(color: .black.opacity(0.2), radius: 10)
+                    
+                    .sheet(isPresented: $isPresentedPDF) {
+    //                                        UploadPDFView(docURL: Bag.testURL!)
+                        UploadPDFView(docURL: FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf"))
+                                }
+                    .padding(.horizontal, 50.0)
+                case .submit:
+                    HStack(spacing: 40){
+                        Button(action: {
+                            withAnimation(){
+                                showView = .preview
+                            }
+                        }) {
+                            Text("Cancel")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .background(Color.red)
+                        .opacity(0.8)
+                        .cornerRadius(15)
+
+                        Button(action: {
+                            // do somthing
+                        }) {
+                            Text("Submit")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .background(Color.green)
+                        .opacity(0.8)
+                        .cornerRadius(15)
+                    }
+                    .shadow(color: .black.opacity(0.2), radius: 10)
+                    .padding(.horizontal, 50.0)
                 }
-                .padding(.horizontal, 50.0)
-            }
-
-
-
-            Spacer()
-   }
-        .padding(.vertical)
+                Spacer()
+       }
+            .padding(.vertical)
+        }
+        .background {
+            Image("bg1")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .overlay(Color.black.opacity(0.1))
+            TransparentBlur(removeAllFilters: false)
+        }
+        
         .navigationTitle("Save & Preview")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitleDisplayMode(.large)
         
         .onAppear(){
             if let cashier = bag.cashier {
