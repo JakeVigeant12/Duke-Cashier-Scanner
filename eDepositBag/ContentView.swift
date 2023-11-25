@@ -14,7 +14,8 @@ enum Tab {
 
 // main menu
 struct ContentView: View {
-    
+    @EnvironmentObject var bag: Bag
+
     var body: some View {
         
         NavigationView{
@@ -45,10 +46,24 @@ struct ContentView: View {
                 .padding(.horizontal, 30.0)
 
                 Spacer()
+                
+//                Button(action: {bag.load(url: Bag.sandboxUser)}
+//                       , label: {
+//                        Text("Login")
+//                        .background(Color.blue)
+//                        .cornerRadius(15)
+//                        .padding(.horizontal, 30.0)
+//                })
+                
+           
+
+                Spacer()
+                
             }
             .padding(.vertical)
             
             .navigationTitle("Virtual Deposit Bags")
+            
             
             .toolbar {
                 ToolbarItem(placement: .principal) {  // principal means bisides the title
