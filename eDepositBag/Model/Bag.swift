@@ -12,6 +12,9 @@ class Bag : ObservableObject{
     static let selectionOptions = Bundle.main.url(forResource: "selection_options", withExtension: "json") 
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
+    
+    // TODO change when deployed
+    let SERVER_BASE = "http://localhost:8080/"
 
     @Published var cashier: Person?
     @Published var department: String = ""
@@ -20,6 +23,8 @@ class Bag : ObservableObject{
     @Published var bagNum: Int = 0
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
+    @Published var messages: [Message] = []
+
     var departments: [String] = []
     var locationSelections: [String:[String]] = [:]
     var POSNameSelections: [String:[String]] = [:]
@@ -93,6 +98,35 @@ class Bag : ObservableObject{
         }
     }
 
+    // load user messages
+    func fetchMessages() -> Bool {
+        guard let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)"))
+        else{
+            print("Invalid URL")
+            return false
+        }
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { (data, response, error) in
+            // Handle the response
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Status Code: \(httpResponse.statusCode)")
+                if let data = data {
+                    let responseString = String(data: data, encoding: .utf8)
+                    print("Response: \(responseString ?? "")")
+                    
+                }
+            }
+        }
+
+        task.resume()
+        return true
+
+    }
 
 
 

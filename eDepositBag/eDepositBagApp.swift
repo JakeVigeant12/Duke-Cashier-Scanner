@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct eDepositBagApp: App {
+    @StateObject private var bag = Bag()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainMenu()
+                .environmentObject(bag)
+
         }
     }
 }
