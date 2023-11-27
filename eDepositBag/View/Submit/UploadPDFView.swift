@@ -4,13 +4,12 @@
 //
 //  Created by Jake Vigeant on 11/12/23.
 // PDF View structure taken from https://www.youtube.com/watch?v=hxKS8mZ-alE
-
+import MessageUI
 import SwiftUI
 import PDFKit
 
 struct UploadPDFView: View {
     @Environment(\.presentationMode) var presentationMode // Used for dismissing the view
-
     let docURL: URL
 
     var body: some View {
@@ -42,6 +41,7 @@ struct UploadPDFView: View {
             }
         }
     }
+        
 }
 
 struct tempPDFView: UIViewRepresentable {

@@ -10,7 +10,9 @@ import SwiftUI
 struct MainMenu: View {
     @State private var isMenuVisible = false
     @State private var isLogoTop = false
+    @EnvironmentObject var bag: Bag
     
+
     var body: some View {
         NavigationView {
             ZStack{
@@ -43,6 +45,22 @@ struct MainMenu: View {
                         NavigationLink(destination: TabControl(selection: Tab.bag)
                         ) {
                             Text("Virtual Deposit Bag")
+                                .font(.title3)
+                                .fontWeight(.medium)
+                                .foregroundStyle(.white)
+                                .padding(.vertical, 12)
+                            
+                                .frame(maxWidth: .infinity)
+                                .background(.white.opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        Label("Messages", systemImage: "message")
+                            .font(.callout.bold())
+                            .padding(.top, 15)
+        
+                        NavigationLink(destination: TabControl(selection: Tab.inbox)
+                        ) {
+                            Text("View Messages - \(bag.messages.count) Unresolved")
                                 .font(.title3)
                                 .fontWeight(.medium)
                                 .foregroundStyle(.white)
@@ -101,7 +119,8 @@ struct MainMenu: View {
             .onAppear {
                 withAnimation(.easeInOut(duration: 1)) {
                     isLogoTop = true
-                    
+                    let _ = bag.load(url: Bag.sandboxUser)
+                    let _ = bag.fetchMessages()
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -113,9 +132,8 @@ struct MainMenu: View {
         }
 
     }
-
 }
 
-#Preview {
-    MainMenu()
-}
+//#Preview {
+//    MainMenu()
+//}

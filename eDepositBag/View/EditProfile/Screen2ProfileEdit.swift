@@ -30,7 +30,7 @@ struct Screen2ProfileEdit: View {
                         Text("Name")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Name", text: $name)
+                        TextField( bag.cashier?.name ?? "Name", text: $name)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -118,7 +118,6 @@ struct Screen2ProfileEdit: View {
                 .padding([.leading, .trailing], 20)
                 
                 Spacer().frame(height: 40)
-
                 HStack(spacing: 40){
                     Button(action: {
                         withAnimation{
@@ -190,6 +189,7 @@ struct Screen2ProfileEdit: View {
                 department = cashier.department
                 retailLocation = cashier.retailLocation
                 POSName = cashier.POSName
+
             }
         }
     }

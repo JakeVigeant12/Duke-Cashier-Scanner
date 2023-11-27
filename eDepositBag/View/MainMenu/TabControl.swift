@@ -10,6 +10,7 @@ import SwiftUI
 enum Tab {
     case bag
     case person
+    case inbox
 }
 
 struct TabControl: View {
@@ -22,6 +23,13 @@ struct TabControl: View {
     
     var body: some View {
         TabView(selection: $selection){
+            MessageInbox()
+                .environmentObject(bag)
+                .tabItem {
+                    Label("Inbox" + (bag.messages.count > 0 ? " - \(bag.messages.count)" : ""), systemImage: "message")
+                }
+                .tag(Tab.inbox)
+            
             Screen2ProfileEdit()
                 .environmentObject(bag)
                 .environmentObject(imageTypeList)
@@ -51,6 +59,8 @@ struct TabControl: View {
             // Parse
             let _ = bag.parseOptions(url: Bag.selectionOptions!)
             let _ = bag.load(url: Bag.sandboxUser)
+            let _ = bag.fetchMessages()
+
         }
     }//body
 
