@@ -14,8 +14,7 @@ struct MessageRow: View {
             Text(message.content)
                 .font(.subheadline)
             Divider()
-            Text(message.resolved ? "Completed" : "Unresolved")
-                .font(.subheadline)
+
         }
     }
 }

@@ -119,8 +119,8 @@ struct MainMenu: View {
             .onAppear {
                 withAnimation(.easeInOut(duration: 1)) {
                     isLogoTop = true
-                    bag.load(url: Bag.sandboxUser)
-                    bag.fetchMessages()
+                    let _ = bag.load(url: Bag.sandboxUser)
+                    let _ = bag.fetchMessages()
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

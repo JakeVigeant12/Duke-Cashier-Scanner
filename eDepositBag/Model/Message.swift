@@ -9,7 +9,6 @@ import Foundation
 struct Message: Identifiable, Codable {
     let id: UUID
     let content: String
-    let resolved = false
 
     init(id: UUID, content: String) {
         self.id = id
