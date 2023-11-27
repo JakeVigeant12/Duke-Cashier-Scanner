@@ -169,6 +169,34 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
        return true
 
    }
+    func deleteMessage(id: UUID) -> Bool{
+        let url = URL(string: ("\(SERVER_BASE)/messages/\(id)"))
+        var request = URLRequest(url: url!)
+        let session = URLSession.shared
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        print("URL: \(request.url?.absoluteString ?? "None")")
+
+        print("HTTP Method: \(request.httpMethod ?? "None")")
+
+        print("Headers: \(request.allHTTPHeaderFields ?? [:])")
+        
+        let task = session.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                print("Error: \(error)")
+            } else if let response = response as? HTTPURLResponse {
+                if response.statusCode == 200 {
+                    print("DELETE request successful")
+                } else {
+                    print("DELETE request failed with status code: \(response.statusCode)")
+                }
+            }
+        }
+        
+        task.resume()
+        return false
+    }
 
     // load user messages
 //    func fetchMessages() -> AnyCancellable {

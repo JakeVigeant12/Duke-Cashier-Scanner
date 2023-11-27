@@ -58,7 +58,7 @@ struct MainMenu: View {
                             .font(.callout.bold())
                             .padding(.top, 15)
         
-                        NavigationLink(destination: MessageInbox()
+                        NavigationLink(destination: TabControl(selection: Tab.inbox)
                         ) {
                             Text("View Messages")
                                 .font(.title3)
@@ -127,10 +127,6 @@ struct MainMenu: View {
                         isMenuVisible = true
                     }
                 }
-                // login user
-                let _ = bag.load(url: Bag.sandboxUser)
-                // fetch their messages
-                let _ = bag.fetchMessages()
             }
         }
 
