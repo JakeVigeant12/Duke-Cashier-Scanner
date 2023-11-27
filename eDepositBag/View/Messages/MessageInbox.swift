@@ -1,27 +1,22 @@
-//
-//  MessageInbox.swift
-//  eDepositBag
-//
-//  Created by Jake Vigeant on 11/26/23.
-//
-
 import SwiftUI
 
 struct MessageInbox: View {
-    @State private var netID: String = ""
-    
     @EnvironmentObject var bag: Bag
     
     var body: some View {
-        Text(netID)
-            .onAppear {
-                bag.fetchMessages()
-                
+        List(bag.messages, id: \.id) { message in
+            VStack(alignment: .leading) {
+                Text(message.content)
+                    .font(.subheadline)
             }
+        }
+        
+        
+    }
+}
+struct MessageInbox_Previews: PreviewProvider {
+    static var previews: some View {
+        MessageInbox()
     }
 }
 
-
-#Preview {
-    MessageInbox()
-}

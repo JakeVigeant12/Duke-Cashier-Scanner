@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct Message: Identifiable {
+struct Message: Identifiable, Codable {
     let id: UUID
     let content: String
     let resolved = false

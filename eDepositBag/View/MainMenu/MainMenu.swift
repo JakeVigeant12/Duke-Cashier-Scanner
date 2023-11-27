@@ -127,8 +127,10 @@ struct MainMenu: View {
                         isMenuVisible = true
                     }
                 }
-                let res = bag.load(url: Bag.sandboxUser)
-
+                // login user
+                let _ = bag.load(url: Bag.sandboxUser)
+                // fetch their messages
+                let _ = bag.fetchMessages()
             }
         }
 

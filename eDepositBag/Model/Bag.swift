@@ -5,14 +5,21 @@
 //  Created by Jake Vigeant on 11/2/23.
 
 import Foundation
-class Bag : ObservableObject{
+import Combine
+class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
     static let fileManager = FileManager.default
     static let testURL = Bundle.main.url(forResource: "test_pdf", withExtension: "pdf")
     static let sandboxUser = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent("myProfile.json")
     static let selectionOptions = Bundle.main.url(forResource: "selection_options", withExtension: "json") 
     let decoder = JSONDecoder()
     let encoder = JSONEncoder()
+    var cancellable: AnyCancellable?
     
+    @Published var progress: Float = 0.0
+    @Published var downloadComplete: Bool = false
+    @Published var downloadError: Bool = false
+    @Published var errorText:String = ""
+
     // TODO change when deployed
     let SERVER_BASE = "http://localhost:8080/"
 
@@ -23,18 +30,67 @@ class Bag : ObservableObject{
     @Published var bagNum: Int = 0
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
-    @Published var messages: [Message] = []
+    var messages: [Message] = []
 
     var departments: [String] = []
     var locationSelections: [String:[String]] = [:]
     var POSNameSelections: [String:[String]] = [:]
 
-    
+    override init() {
+            super.init()
+        }
 
+
+    // DOWNLOAD DELEGATE METHODS
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+            progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+            DispatchQueue.main.async {
+            //self.ProgressBar.setProgress(progress, animated: true)
+        }
+        }
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("Download completed. File saved at: \(location.absoluteString)")
+        do {
+            let data = try Data(contentsOf: location)
+            
+            do{
+                    if let decoded = try? decoder.decode([Message].self, from: data) {
+                        self.messages = decoded
+                        downloadComplete = true
+                        progress = 0.0
+                        print("Added messages")
+                    }
+                else{
+                   print("Problem Parsing")
+                }
+                }
+       
+        }
+        catch{
+            downloadError = true
+            print("Error retrieving downloaded data.")
+        }
+        
+            
+        
+    }
+        
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+            if let error = error {
+                downloadError = true
+                errorText = error.localizedDescription
+            } else {
+                print("Download task completed successfully.")
+            }
+        }
+    
+    // drop saved user from current instance
     func logout() {
         cashier = nil
     }
-    //load Person object from saved user
+    
+    //load Person object from saved user in sandbox
     func load(url :URL) -> Bool{
        
        //location of the url passed in
@@ -97,36 +153,67 @@ class Bag : ObservableObject{
             return false
         }
     }
+    
+    func fetchMessages() -> Bool{
+        downloadComplete = false
+        downloadError = false
+        errorText = ""
+       print("Attempting Server Download...")
+       let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)"))
+       var request = URLRequest(url: url!)
+       let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+       request.httpMethod = "GET"
+//     request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
+       let httprequest = session.downloadTask(with: request as URLRequest)
+       httprequest.resume()
+       return true
+
+   }
 
     // load user messages
-    func fetchMessages() -> Bool {
-        guard let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)"))
-        else{
-            print("Invalid URL")
-            return false
-        }
-        let session = URLSession.shared
-        let task = session.dataTask(with: url) { (data, response, error) in
-            // Handle the response
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-                return
-            }
+//    func fetchMessages() -> AnyCancellable {
+//        guard let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)")) else {
+//            print("Invalid URL")
+//            return Empty().eraseToAnyPublisher().sink { _ in }
+//        }
+//
+//        let session = URLSession.shared
+//        return session.dataTaskPublisher(for: url)
+//            .tryMap { (data, response) in
+//                guard let httpResponse = response as? HTTPURLResponse else {
+//                    print("Response Error")
+//                    throw NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse, userInfo: nil)
+//                }
+//
+//                guard (200..<300).contains(httpResponse.statusCode) else {
+//                    print("Unsuccessful response code.")
+//                    throw NSError(domain: NSURLErrorDomain, code: NSURLErrorBadServerResponse, userInfo: nil)
+//                }
+//
+//                return data
+//            }
+//            .decode(type: [Message].self, decoder: decoder)
+//            .receive(on: DispatchQueue.main)
+//            .sink(receiveCompletion: { completion in
+//                switch completion {
+//                case .finished:
+//                    print("Finished Download")
+//                    break
+//                case .failure(let error):
+//                    print("Error: \(error)")
+//                }
+//            }, receiveValue: { messages in
+//                for message in messages {
+//                    self.messages.append(message)
+//                }
+//            })
+//    }
 
-            if let httpResponse = response as? HTTPURLResponse {
-                print("Status Code: \(httpResponse.statusCode)")
-                if let data = data {
-                    let responseString = String(data: data, encoding: .utf8)
-                    print("Response: \(responseString ?? "")")
-                    
-                }
-            }
-        }
+    
 
-        task.resume()
-        return true
 
-    }
+    // download Dept/Location/POSName options
+    func downloadOptions() {}
 
 
 
