@@ -60,7 +60,7 @@ struct MainMenu: View {
         
                         NavigationLink(destination: TabControl(selection: Tab.inbox)
                         ) {
-                            Text("View Messages")
+                            Text("View Messages - \(bag.messages.count) Unresolved")
                                 .font(.title3)
                                 .fontWeight(.medium)
                                 .foregroundStyle(.white)
@@ -119,7 +119,8 @@ struct MainMenu: View {
             .onAppear {
                 withAnimation(.easeInOut(duration: 1)) {
                     isLogoTop = true
-                    
+                    bag.load(url: Bag.sandboxUser)
+                    bag.fetchMessages()
                 }
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

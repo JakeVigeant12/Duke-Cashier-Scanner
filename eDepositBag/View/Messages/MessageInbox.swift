@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MessageInbox: View {
     @EnvironmentObject var bag: Bag
-    
+    @State var delSuccess = false
     var body: some View {
             List(bag.messages, id: \.id) { message in
                 VStack(alignment: .leading) {
@@ -28,6 +28,15 @@ struct MessageInbox: View {
                     .overlay(Color.black.opacity(0.1))
                 TransparentBlur(removeAllFilters: false)
             }
+//        Alert(
+//            title: Text("Deletion Successful"),
+//            message: Text("Messages deleted successfully."),
+//            dismissButton: .default(Text("OK"), action: {
+//                // Reset delSuccess after user dismisses the alert
+//                delSuccess = false
+//            })
+//        ).isPresented($delSuccess)
+
 
         }
     

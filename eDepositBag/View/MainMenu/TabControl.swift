@@ -26,7 +26,7 @@ struct TabControl: View {
             MessageInbox()
                 .environmentObject(bag)
                 .tabItem {
-                    Label("Inbox", systemImage: "message")
+                    Label("Inbox" + (bag.messages.count > 0 ? " - \(bag.messages.count)" : ""), systemImage: "message")
                 }
                 .tag(Tab.inbox)
             

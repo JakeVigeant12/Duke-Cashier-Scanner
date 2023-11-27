@@ -30,7 +30,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
     @Published var bagNum: Int = 0
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
-    var messages: [Message] = []
+    @Published var messages: [Message] = []
 
     var departments: [String] = []
     var locationSelections: [String:[String]] = [:]
@@ -170,6 +170,10 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
 
    }
     func deleteMessage(id: UUID) -> Bool{
+        // remove the message from the UI
+        self.messages = messages.filter { !($0.id == id) }
+
+        // remove the message from the server
         let url = URL(string: ("\(SERVER_BASE)/messages/\(id)"))
         var request = URLRequest(url: url!)
         let session = URLSession.shared
