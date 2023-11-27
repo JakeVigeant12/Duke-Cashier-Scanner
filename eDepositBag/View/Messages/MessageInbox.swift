@@ -12,28 +12,29 @@ struct MessageInbox: View {
             
             
             if bag.messages.isEmpty {
-                VStack {
+                HStack {
                     Text("No Messages At This Time")
                         .foregroundColor(.white)
                         .font(.title)
-                        .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 10)
                                 .foregroundColor(Color.gray.opacity(0.8))
                         )
-                    Text("Refresh Messages")
+                    Image(systemName: "arrow.clockwise.circle")
+                        .font(.title)
                         .foregroundColor(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.gray.opacity(0.8))
-                        )
-                        .padding()
                         .onTapGesture {
                             let _ = bag.fetchMessages()
-                            
                         }
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(Color.gray.opacity(0.8))
+                        )
+                
+                        
                 }
+  
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     Image("bg1")

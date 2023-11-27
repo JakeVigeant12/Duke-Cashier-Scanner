@@ -11,6 +11,8 @@ struct Screen5Submit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
+    @State private var sendEmail = false
+
     
     @State private var bagNum: String = ""
     @State private var name: String = ""
@@ -269,7 +271,7 @@ struct Screen5Submit: View {
                         .cornerRadius(15)
 
                         Button(action: {
-                            // do somthing
+                            sendEmail = true
                         }) {
                             Text("Submit")
                                 .foregroundColor(.white)
@@ -284,9 +286,20 @@ struct Screen5Submit: View {
                     .padding(.horizontal, 50.0)
                 }
                 Spacer()
-       }
+       
             .padding(.vertical)
         }
+        
+        }
+        .sheet(isPresented: $sendEmail) {
+            MailView(
+                content: "Test Message",
+                to: "johndoe@example.com",
+                subject: "Subject",
+                isShowing: $sendEmail
+            )
+        }
+
         .background {
             Image("bg1")
                 .resizable()
