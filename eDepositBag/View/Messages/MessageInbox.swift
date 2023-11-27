@@ -22,7 +22,7 @@ struct MessageInbox: View {
                                 .foregroundColor(Color.gray.opacity(0.8))
                         )
                     Text("Refresh Messages")
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 10)
@@ -30,7 +30,6 @@ struct MessageInbox: View {
                         )
                         .padding()
                         .onTapGesture {
-                            print("fetch")
                             let _ = bag.fetchMessages()
                             
                         }
@@ -46,20 +45,36 @@ struct MessageInbox: View {
                 .opacity(0.8)
             } else {
                 // List of messages
-                List(bag.messages, id: \.id) { message in
-                    VStack(alignment: .leading) {
-                        MessageRow(message: message)
-                            .swipeActions {
-                                // Resolve message
-                                Button {
-                                    delSuccess = bag.deleteMessage(id: message.id)
-                                } label: {
-                                    Label("Complete", systemImage: "checkmark.circle.fill")
-                                }
-                                .tint(.gray)
+                List {
+                    // Refresh button
+                    HStack {
+                        Text("Feedback Tasks")
+                        Spacer()
+                        Image(systemName: "arrow.clockwise.circle")
+                            .font(.title)
+                            .foregroundColor(.white)
+                            .onTapGesture {
+                                let _ = bag.fetchMessages()
                             }
+                            .padding()
                     }
-                    .listRowBackground(Color.black.opacity(0.1))
+                    
+                    // List of messages
+                    ForEach(bag.messages, id: \.id) { message in
+                        VStack(alignment: .leading) {
+                            MessageRow(message: message)
+                                .swipeActions {
+                                    // Resolve message
+                                    Button {
+                                        delSuccess = bag.deleteMessage(id: message.id)
+                                    } label: {
+                                        Label("Complete", systemImage: "checkmark.circle.fill")
+                                    }
+                                    .tint(.gray)
+                                }
+                        }
+                        .listRowBackground(Color.black.opacity(0.1))
+                    }
                 }
                 .scrollContentBackground(.hidden)
                 .background {
@@ -69,6 +84,7 @@ struct MessageInbox: View {
                         .ignoresSafeArea()
                         .overlay(Color.black.opacity(0.1))
                     TransparentBlur(removeAllFilters: false)
+                
                 }
             }
         }
