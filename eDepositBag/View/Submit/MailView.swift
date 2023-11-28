@@ -12,6 +12,8 @@ struct MailView: UIViewControllerRepresentable {
     var content: String
     var to: String
     var subject: String
+    var pdfURL: URL
+//    var pdfURL: String
     // binding from parent to dismiss
     @Binding var isShowing: Bool
 
@@ -27,6 +29,16 @@ struct MailView: UIViewControllerRepresentable {
             viewController.setSubject(subject)
             viewController.setMessageBody(content, isHTML: false)
             viewController.mailComposeDelegate = context.coordinator
+        do {
+            // Read PDF data from the file
+            let pdfData = try Data(contentsOf: pdfURL)
+
+            // Attach the PDF data to the email
+            viewController.addAttachmentData(pdfData, mimeType: "application/pdf", fileName: "YourFileName.pdf")
+        } catch {
+            print("Error attaching PDF: \(error.localizedDescription)")
+        }
+
             return viewController
 
     }

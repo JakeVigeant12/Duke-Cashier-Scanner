@@ -10,6 +10,8 @@ import UIKit
 import PDFKit
 
 class PDFCreator {
+    static let savePath = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
+
     static func createPDF(from imageTypeList: ImageTypeList) {
         let pageSize = CGRect(x: 0, y: 0, width: 8.27 * 72.0, height: 11.69 * 72.0) // A4 size
         let renderer = UIGraphicsPDFRenderer(bounds: pageSize)
@@ -31,7 +33,7 @@ class PDFCreator {
         }
 
         // save to the temporary directory
-        let tempPath = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
+        let tempPath = PDFCreator.savePath
         try? data.write(to: tempPath)
         print("PDF saved to \(tempPath)")
     }

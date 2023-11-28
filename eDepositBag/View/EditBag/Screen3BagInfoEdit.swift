@@ -344,14 +344,15 @@ struct Screen3BagInfoEdit: View {
     
     func submit(){
         //set this information for the bag, account defaults should be changed separate
-        bag.department = (department == "Other") ?  departmentOther : department
+        bag.department = (department == "Other") ?  departmentOther : (department == "" ? bag.cashier!.department : department)
         
-        bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : retailLocation
+        bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : (retailLocation == "" ? bag.cashier!.retailLocation : retailLocation)
 
-        bag.POSName = POSName
+        bag.POSName = POSName == "" ? bag.cashier!.POSName : POSName
         
         bag.revenueDate = getDateString(currentDate: revenueDatePicker)
         
+        print(bag.department)
         if let scanned = scannedCode {
             if let num = Int(scanned) {
                 bag.bagNum = num

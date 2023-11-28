@@ -210,8 +210,8 @@ struct Screen5Submit: View {
 
                             do {
                                 if FileManager.default.fileExists(atPath: pdfURL.path) {
-                                    try FileManager.default.removeItem(at: pdfURL)
-                                    print("PDF file deleted successfully.")
+//                                    try FileManager.default.removeItem(at: pdfURL)
+//                                    print("PDF file deleted successfully.")
                                 } else {
                                     print("PDF file does not exist.")
                                 }
@@ -293,10 +293,12 @@ struct Screen5Submit: View {
         }
         .sheet(isPresented: $sendEmail) {
             MailView(
-                content: "Test Message",
-                to: "johndoe@example.com",
-                subject: "Subject",
+                content:"",
+                to: "afobags@duke.edu",
+                subject: "\(bag.cashier!.duid) - \(bag.retailLocation)",
+                pdfURL: PDFCreator.savePath,
                 isShowing: $sendEmail
+
             )
         }
 

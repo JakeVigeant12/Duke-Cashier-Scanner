@@ -159,14 +159,17 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
         downloadError = false
         errorText = ""
        print("Attempting Server Download...")
-       let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)"))
-       var request = URLRequest(url: url!)
-       let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
-       request.httpMethod = "GET"
-//     request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
-       let httprequest = session.downloadTask(with: request as URLRequest)
-       httprequest.resume()
-       return true
+        if cashier != nil{
+            let url = URL(string: (SERVER_BASE + "messages/\(cashier!.duid)"))
+            var request = URLRequest(url: url!)
+            let session = URLSession(configuration: .default, delegate: self, delegateQueue: .main)
+            request.httpMethod = "GET"
+            //     request.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
+            let httprequest = session.downloadTask(with: request as URLRequest)
+            httprequest.resume()
+            return true
+        }
+        return false
 
    }
     func deleteMessage(id: UUID) -> Bool{
