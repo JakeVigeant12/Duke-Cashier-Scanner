@@ -12,20 +12,8 @@ struct Screen3BagInfoEdit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-
-    @State private var name: String = ""
-    @State private var duid: String = ""
-    @State private var phone: String = ""
-    @State private var email: String = ""
-    @State private var department: String = ""
-    @State private var departmentOther: String = ""
-    @State private var retailLocation: String = ""
-    @State private var retailLocationOther: String = ""
-    @State private var POSName: String = ""
-    @State private var revenueDatePicker: Date = Date()
-
-    @State private var bagNum: Int?
-    @State private var scannedCode: String?
+    @EnvironmentObject var tableModel: TabModel
+    
     @State private var isScanFail = false
     
     enum ShowView{
@@ -37,102 +25,101 @@ struct Screen3BagInfoEdit: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                Group{
-                    HStack {
-                        Text("Department")
-                            .fontWeight(.medium)
-                        Spacer()
-                        VStack{
-                            Picker("Department", selection: $department) {
-                                ForEach(bag.departments, id: \.self) { dept in
-                                    Text(dept)
+            VStack{
+                ScrollView{
+                    VStack(spacing: 20) {
+                        HStack {
+                            Text("Department")
+                                .fontWeight(.medium)
+                            Spacer()
+                            VStack{
+                                Picker("Department", selection: $tableModel.bagDepartment) {
+                                    ForEach(bag.departments, id: \.self) { dept in
+                                        Text(dept)
+                                    }
+                                }
+                                
+                                .environment(\.colorScheme, .dark)
+                                .pickerStyle(MenuPickerStyle())
+                                .frame(width: 170)
+                                .padding(.vertical,4)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                
+                                if (tableModel.bagDepartment == "Other"){
+                                    TextField("Department", text: $tableModel.bagDepartmentOther)
+                                        .environment(\.colorScheme, .dark)
+                                        .frame(width: 170)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 15)
+                                        .background(.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                                 }
                             }
-                            
-                            .environment(\.colorScheme, .dark)
-                            .pickerStyle(MenuPickerStyle())
-                            .frame(width: 170)
-                            .padding(.vertical,4)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            
-                            if (department == "Other"){
-                                TextField("Department", text: $departmentOther)
-                                    .environment(\.colorScheme, .dark)
-                                    .frame(width: 170)
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal, 15)
-                                    .background(.white.opacity(0.2))
-                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            }
                         }
-                    }
-                    HStack {
-                        Text("Retail Location")
-                            .fontWeight(.medium)
-                        Spacer()
-                        VStack{
-                            Picker("Location", selection: $retailLocation) {
-                                ForEach(getLocations(), id: \.self) { location in
-                                    Text(location)
+                        HStack {
+                            Text("Retail Location")
+                                .fontWeight(.medium)
+                            Spacer()
+                            VStack{
+                                Picker("Location", selection: $tableModel.bagRetailLocation) {
+                                    ForEach(tableModel.bagRetailLocationList, id: \.self) { location in
+                                        Text(location)
+                                    }
+                                }
+                                .environment(\.colorScheme, .dark)
+                                .pickerStyle(MenuPickerStyle())
+                                .frame(width: 170)
+                                .padding(.vertical,4)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                if (tableModel.bagRetailLocation == "Other"){
+                                    TextField("Retail Location", text: $tableModel.bagRetailLocationOther)
+                                        .environment(\.colorScheme, .dark)
+                                        .frame(width: 170)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 15)
+                                        .background(.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                                 }
                             }
-                            .environment(\.colorScheme, .dark)
-                            .pickerStyle(MenuPickerStyle())
-                            .frame(width: 170)
-                            .padding(.vertical,4)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            if (retailLocation == "Other"){
-                                TextField("Retail Location", text: $retailLocationOther)
-                                    .environment(\.colorScheme, .dark)
-                                    .frame(width: 170)
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal, 15)
-                                    .background(.white.opacity(0.2))
-                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            }
-                        }
 
+                        }
+                        HStack {
+                            Text("POS Name")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("POS Name", text: $tableModel.bagPOSName)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        
+                        HStack {
+                            Text("Revenue Date")
+                                .fontWeight(.medium)
+                            Spacer()
+                            DatePicker("Select a date", selection: $tableModel.bagRevenueDatePicker, displayedComponents: .date)
+                                .datePickerStyle(CompactDatePickerStyle())
+                                .labelsHidden()
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 4)
+                                .padding(.horizontal, 15)
+                 
+                        }
                     }
-                    HStack {
-                        Text("POS Name")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("POS Name", text: $POSName)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    
-                    HStack {
-                        Text("Revenue Date")
-                            .fontWeight(.medium)
-                        Spacer()
-                        DatePicker("Select a date", selection: $revenueDatePicker, displayedComponents: .date)
-                            .datePickerStyle(CompactDatePickerStyle())
-                            .labelsHidden()
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 4)
-                            .padding(.horizontal, 15)
-             
-                    }
+                    //can not be edited
+                    .disabled(showView == .next ? true : false)
+                    .font(.body)
+                    .foregroundStyle(.white)
+                    .padding([.leading, .trailing], 20)
                 }
-                //can not be edited
-                .disabled(showView == .next ? true : false)
-                .font(.body)
-                .foregroundStyle(.white)
-                .padding([.leading, .trailing], 20)
-                
-
-                
                 
                 if(showView == .next){
                     HStack {
@@ -141,7 +128,7 @@ struct Screen3BagInfoEdit: View {
                             .foregroundStyle(.white)
                         Spacer()
 
-                        if let code = scannedCode{
+                        if let code = tableModel.bagScannedCode{
                             Text(code)
                                 .multilineTextAlignment(.center)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -160,26 +147,23 @@ struct Screen3BagInfoEdit: View {
                     }
                     .padding([.top, .leading, .trailing], 20)
                 }
-
                 
-                
-                Spacer().frame(height: 30)
-
-                switch showView {
-                case .ask:
-                    Group{
+                Spacer()
+                VStack{
+                    Spacer()
+                    switch showView {
+                    case .ask:
                         Text("Are you sending cash deposit to University Cashiering?")
                             .font(.title2)
-                            .foregroundColor(Color.blue)
+                            .foregroundColor(Color.white)
                             .multilineTextAlignment(.center)
 
                         HStack(spacing: 40) {
-
-                            
                             Button(action: {
-                                bag.revenueDate = getDateString(currentDate: revenueDatePicker)
+                                bag.revenueDate = getDateString(currentDate: tableModel.bagRevenueDatePicker)
+                                submit()
                                 withAnimation{
-                                    scannedCode = nil
+                                    tableModel.bagScannedCode = nil
                                     showView = .next
                                 }
                             }) {
@@ -207,42 +191,46 @@ struct Screen3BagInfoEdit: View {
                             .cornerRadius(15)
                         }
                         .padding(.horizontal, 50.0)
-                    }
-                case .next:
-                    HStack(spacing: 40) {
-                        Button(action: {
-                            withAnimation{
-                                showView = .ask
-                                
-                            }
-                        }) {
-                            Text("Back")
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                        }
-                        .background(Color.red)
-                        .opacity(0.8)
-                        .cornerRadius(15)
+                        .shadow(color: .black.opacity(0.2), radius: 10)
+                        .padding(.top, 20)
                         
-                        NavigationLink(destination: Screen4FileScan()
-                            .environmentObject(bag)
-                            .environmentObject(imageTypeList)) {
-                            Text("Next")
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
+                    case .next:
+                        HStack(spacing: 40) {
+                            Button(action: {
+                                withAnimation{
+                                    showView = .ask
+                                    
+                                }
+                            }) {
+                                Text("Back")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+                            .background(Color.red)
+                            .opacity(0.8)
+                            .cornerRadius(15)
+                            
+                            NavigationLink(destination: Screen4FileScan()
+                                .environmentObject(bag)
+                                .environmentObject(imageTypeList)
+                                .environmentObject(tableModel)
+                            ) {
+                                Text("Next")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+                            .background(Color.green)
+                            .opacity(0.8)
+                            .cornerRadius(15)
                         }
-                        .background(Color.green)
-                        .opacity(0.8)
-                        .cornerRadius(15)
-                    }
-                    .padding(.horizontal, 50.0)
-                case .showBagNum:
-                    Group{
+                        .padding(.horizontal, 50.0)
+                        .shadow(color: .black.opacity(0.2), radius: 10)
+                    case .showBagNum:
                         Text("Please press the button below to scan the barcode on the deposit bag.")
                             .font(.title2)
-                            .foregroundColor(Color.blue)
+                            .foregroundColor(Color.white)
                             .padding(.bottom)
                             .multilineTextAlignment(.center)
                         
@@ -265,7 +253,7 @@ struct Screen3BagInfoEdit: View {
                                     startScan = true
                                 }
                             }) {
-                                if let code = scannedCode{
+                                if let code = tableModel.bagScannedCode{
                                     Text(code)
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
@@ -277,18 +265,22 @@ struct Screen3BagInfoEdit: View {
                                         .padding()
                                 }
                             }
-                            .background(Color.blue)
-                            .opacity(0.7)
+                            .background(Color.blue.opacity(0.8))
                             .cornerRadius(15)
                             .frame(width: 200)
+                            .shadow(color: .black.opacity(0.2), radius: 10)
                         }
                         .padding([.top, .leading, .trailing], 20)
                     }
+
                 }
-                Spacer()
+
             }
-            .padding(.vertical)
-         
+            .foregroundStyle(.white)
+            .padding(.horizontal,10)
+            .padding(.vertical, 20)
+
+            
             .background {
                 Image("bg1")
                     .resizable()
@@ -297,41 +289,24 @@ struct Screen3BagInfoEdit: View {
                     .overlay(Color.black.opacity(0.1))
                 TransparentBlur(removeAllFilters: false)
             }
+
             .navigationTitle("Deposit Bag Info")
             .navigationBarTitleDisplayMode(.large)
         }
 
         
         .sheet(isPresented: $startScan, onDismiss: scanSheetDismissed) {
-            BarcodeScan(isPresentingScanner: self.$startScan, scannedCode: self.$scannedCode, isScanFail: self.$isScanFail)
+            BarcodeScan(isPresentingScanner: self.$startScan, scannedCode: self.$tableModel.bagScannedCode, isScanFail: self.$isScanFail)
         }
         
         .onAppear{
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
             // TODO: need info from screen2
             
-            // give the picker a default choice
-            if bag.departments.count != 0 {
-                department = bag.departments[0]
-            }
-            
-            if let cashier = bag.cashier {
-                name = cashier.name
-                duid = cashier.duid
-                phone = cashier.phone
-                email = cashier.email
-                department = cashier.department
-                retailLocation = cashier.retailLocation
-                POSName = cashier.POSName
-            }
-            
-            if bag.bagNum != 0 {
-                scannedCode = String(bag.bagNum)
-            }else{
-                scannedCode = nil
-            }
-            
-
+        }
+        
+        .onChange(of: tableModel.bagDepartment){ _ in
+            tableModel.bagRetailLocationList = bag.locationSelections[tableModel.bagDepartment] ?? []
         }
     }
     
@@ -344,24 +319,19 @@ struct Screen3BagInfoEdit: View {
     
     func submit(){
         //set this information for the bag, account defaults should be changed separate
-        bag.department = (department == "Other") ?  departmentOther : (department == "" ? bag.cashier!.department : department)
+        bag.department = (tableModel.bagDepartment == "Other") ?  tableModel.bagDepartmentOther : tableModel.bagDepartment
         
-        bag.retailLocation = (retailLocation == "Other") ?  retailLocationOther : (retailLocation == "" ? bag.cashier!.retailLocation : retailLocation)
+        bag.retailLocation = (tableModel.bagRetailLocation == "Other") ?  tableModel.bagRetailLocationOther : tableModel.bagRetailLocation
 
-        bag.POSName = POSName == "" ? bag.cashier!.POSName : POSName
+        bag.POSName = tableModel.bagPOSName
         
-        bag.revenueDate = getDateString(currentDate: revenueDatePicker)
+        bag.revenueDate = getDateString(currentDate: tableModel.bagRevenueDatePicker)
         
-        print(bag.department)
-        if let scanned = scannedCode {
+        if let scanned = tableModel.bagScannedCode {
             if let num = Int(scanned) {
                 bag.bagNum = num
             }
         }
-    }
-    
-    func getLocations() -> [String]{
-        return bag.locationSelections[department] ?? []
     }
     
     func getDateString(currentDate:Date) -> String {

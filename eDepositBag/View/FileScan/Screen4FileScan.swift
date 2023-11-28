@@ -11,10 +11,15 @@ struct Screen4FileScan: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-
+    @EnvironmentObject var tableModel: TabModel
+    
     @State private var startScan = false
     @State private var selectedType: Int?
 
+    @State private var showScanner: Bool = false
+    @State private var showImagePicker: Bool = false
+    @State private var showPickerSelection: Bool = false
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -29,14 +34,42 @@ struct Screen4FileScan: View {
                                     .textCase(nil)
                                 Spacer()
                                 Button(action: {
-                                    selectedType = index
-                                    startScan = true
+                                    self.selectedType = index
+                                    self.showPickerSelection = true
                                 }) {
                                     Image(systemName: "plus.circle")
                                         .padding()
                                         .foregroundColor(.white)
                                         .font(.system(size: 20))
                                 }
+                                .actionSheet(isPresented: $showPickerSelection) {
+                                    ActionSheet(title: Text("Choose Image Source"), buttons: [
+                                        .default(Text("Camera")) {
+                                            self.showScanner = true
+                                        },
+                                        .default(Text("Photo Library")) {
+                                            self.showImagePicker = true
+                                        },
+                                        .cancel()
+                                    ])
+                                }
+                                .fullScreenCover(isPresented: $showImagePicker) {
+                                    ImagePicker(){ images in
+                                        imageTypeList.imageTypes[selectedType!].images += images
+                                    }
+                                    
+                                }
+                                .fullScreenCover(isPresented: $showScanner) {
+                                    ZStack {
+                                        // background color
+                                        Color.black.edgesIgnoringSafeArea(.all)
+                                        VNDocumentCameraViewControllerRepresentable() { images in
+                                            imageTypeList.imageTypes[selectedType!].images += images
+                            //                saveImageToSandbox(images: images)
+                                        }
+                                    }
+                               }
+                                
                             }
 
                             // List row content
@@ -61,6 +94,7 @@ struct Screen4FileScan: View {
                                     Screen5Submit()
                                         .environmentObject(bag)
                                         .environmentObject(imageTypeList)
+                                        .environmentObject(tableModel)
                     ) {
                         Text("Done")
                             .font(.headline)
@@ -93,13 +127,6 @@ struct Screen4FileScan: View {
         
         .navigationTitle("Scan Documents")
         .navigationBarTitleDisplayMode(.large)
-        
-
-        
-        .sheet(isPresented: $startScan) {
-            DocScan(selectedType: $selectedType)
-                .environmentObject(imageTypeList)
-        }
 
     }
 }
@@ -107,9 +134,11 @@ struct Screen4FileScan: View {
 struct Screen4FileScan_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
     static var bag = Bag()
+    static var tableModel = TabModel()
     static var previews: some View {
         Screen4FileScan()
             .environmentObject(bag)
             .environmentObject(imageTypeList)
+            .environmentObject(tableModel)
     }
 }

@@ -60,7 +60,7 @@ struct MainMenu: View {
         
                         NavigationLink(destination: TabControl(selection: Tab.inbox)
                         ) {
-                            Text("View Messages - \(bag.messages.count) Unresolved")
+                            Text("View Messages\n\(bag.messages.count) Unresolved")
                                 .font(.title3)
                                 .fontWeight(.medium)
                                 .foregroundStyle(.white)
