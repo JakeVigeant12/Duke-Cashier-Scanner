@@ -45,6 +45,7 @@
 		2E81DB092B009CDA004BD934 /* selection_options.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = selection_options.json; sourceTree = "<group>"; };
 		2E81DB0D2B019415004BD934 /* UploadPDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPDFView.swift; sourceTree = "<group>"; };
 		2E81DB0F2B0197E8004BD934 /* test_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = test_pdf.pdf; path = eDepositBag/ResourceFiles/test_pdf.pdf; sourceTree = SOURCE_ROOT; };
+		2EBE899C2B1CD75F0029A4E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2EE9DC922AF6DB9F004A668C /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Person.swift; path = eDepositBag/Model/Person.swift; sourceTree = SOURCE_ROOT; };
 		B62F88142AF355E50084C733 /* eDepositBag.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eDepositBag.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62F88172AF355E50084C733 /* eDepositBagApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = eDepositBagApp.swift; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 		B62F88162AF355E50084C733 /* eDepositBag */ = {
 			isa = PBXGroup;
 			children = (
+				2EBE899C2B1CD75F0029A4E9 /* README.md */,
 				B63E38CA2AF357240024AEB6 /* View */,
 				B63E38C92AF3571C0024AEB6 /* Model */,
 				B6083DFC2B04151D0038FC4A /* ResourceFiles */,
