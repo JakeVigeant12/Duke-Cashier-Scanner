@@ -11,6 +11,9 @@ struct Screen5Submit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
+    @EnvironmentObject var tableModel: TabModel
+    @State private var sendEmail = false
+
     
     @State private var bagNum: String = ""
     @State private var name: String = ""
@@ -24,6 +27,8 @@ struct Screen5Submit: View {
     
     @State private var isPresentedPDF = false
     @State private var showView = ShowView.preview
+//    @State private var docIncluded: [String] = []
+    @State private var today: String = ""
     
     enum ShowView{
         case preview, submit
@@ -111,7 +116,7 @@ struct Screen5Submit: View {
                         Text("Date Submitted")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("today", text: $revenueDate)
+                        TextField("today", text: $today)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -208,8 +213,8 @@ struct Screen5Submit: View {
 
                             do {
                                 if FileManager.default.fileExists(atPath: pdfURL.path) {
-                                    try FileManager.default.removeItem(at: pdfURL)
-                                    print("PDF file deleted successfully.")
+//                                    try FileManager.default.removeItem(at: pdfURL)
+//                                    print("PDF file deleted successfully.")
                                 } else {
                                     print("PDF file does not exist.")
                                 }
@@ -230,8 +235,7 @@ struct Screen5Submit: View {
 
                         Button(action: {
                             // TODO: create pdf
-                            PDFCreator.createPDF(from: imageTypeList)
-                            
+                            PDFCreator.createPDF(from: imageTypeList, info: bag)
                             
 
                             isPresentedPDF.toggle()
@@ -269,7 +273,7 @@ struct Screen5Submit: View {
                         .cornerRadius(15)
 
                         Button(action: {
-                            // do somthing
+                            sendEmail = true
                         }) {
                             Text("Submit")
                                 .foregroundColor(.white)
@@ -284,9 +288,22 @@ struct Screen5Submit: View {
                     .padding(.horizontal, 50.0)
                 }
                 Spacer()
-       }
+       
             .padding(.vertical)
         }
+        
+        }
+        .sheet(isPresented: $sendEmail) {
+            MailView(
+                content:"",
+                to: "afobags@duke.edu",
+                subject: "\(bag.cashier!.duid) - \(bag.retailLocation)",
+                pdfURL: PDFCreator.savePath,
+                isShowing: $sendEmail
+
+            )
+        }
+
         .background {
             Image("bg1")
                 .resizable()
@@ -311,6 +328,14 @@ struct Screen5Submit: View {
             POSName = bag.POSName
             revenueDate = bag.revenueDate
             bagNum = bag.bagNum == 0 ? "No Bag Number" : String(bag.bagNum)
+            
+//            for type in imageTypeList.imageTypes{
+//                docIncluded.append(type.images.isEmpty ? "No" : "Yes")
+//            }
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            today = dateFormatter.string(from: Date())
 
         }
     }
@@ -321,9 +346,11 @@ struct Screen5Submit: View {
 struct Screen5Submit_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
     static var bag = Bag()
+    static var tableModel = TabModel()
     static var previews: some View {
         Screen5Submit()
             .environmentObject(bag)
             .environmentObject(imageTypeList)
+            .environmentObject(tableModel)
     }
 }

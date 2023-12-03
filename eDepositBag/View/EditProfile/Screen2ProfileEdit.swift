@@ -11,114 +11,108 @@ struct Screen2ProfileEdit: View {
 
     @EnvironmentObject var imageTypeList: ImageTypeList
     @EnvironmentObject var bag: Bag
-
-    @State private var name: String = ""
-    @State private var duid: String = ""
-    @State private var phone: String = ""
-    @State private var email: String = ""
-    @State private var department: String = ""
-    @State private var retailLocation: String = ""
-    @State private var POSName: String = ""
+    @EnvironmentObject var tableModel: TabModel
 
     @State private var showSuccess = false
     
     var body: some View {
         NavigationView{
-            VStack(spacing: 20) {
-                Group{
-                    HStack {
-                        Text("Name")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("Name", text: $name)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            VStack{
+                ScrollView {
+                    VStack(spacing: 20){
+                        HStack {
+                            Text("Name")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("Name", text: $tableModel.userName)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        HStack {
+                            Text("DUID")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("DUID", text: $tableModel.userDuid)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        HStack {
+                            Text("Phone")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("Phone", text: $tableModel.userPhone)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        HStack {
+                            Text("Email")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("Email", text: $tableModel.userEmail)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        
+                        // TODO: need pickers
+                        
+                        HStack {
+                            Text("Department")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("Department", text: $tableModel.userDepartment)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        HStack {
+                            Text("Retail Location")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("Retail Location", text: $tableModel.userRetailLocation)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
+                        HStack {
+                            Text("POS Name")
+                                .fontWeight(.medium)
+                            Spacer()
+                            TextField("POS Name", text: $tableModel.userPOSName)
+                                .environment(\.colorScheme, .dark)
+                                .frame(width: 170)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 15)
+                                .background(.white.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        }
                     }
-                    HStack {
-                        Text("DUID")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("DUID", text: $duid)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    HStack {
-                        Text("Phone")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("Phone", text: $phone)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    HStack {
-                        Text("Email")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("Email", text: $email)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    
-                    // TODO: need pickers
-                    
-                    HStack {
-                        Text("Department")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("Department", text: $department)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    HStack {
-                        Text("Retail Location")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("Retail Location", text: $retailLocation)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                    HStack {
-                        Text("POS Name")
-                            .fontWeight(.medium)
-                        Spacer()
-                        TextField("POS Name", text: $POSName)
-                            .environment(\.colorScheme, .dark)
-                            .frame(width: 170)
-                            .padding(.vertical, 10)
-                            .padding(.horizontal, 15)
-                            .background(.white.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    }
-                }
-                .font(.body)
-                .padding([.leading, .trailing], 20)
-                
-                Spacer().frame(height: 40)
+                    .font(.body)
+                    .padding([.leading, .trailing], 20)
 
+                }
+                Spacer()
                 HStack(spacing: 40){
                     Button(action: {
                         withAnimation{
@@ -130,8 +124,7 @@ struct Screen2ProfileEdit: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                     }
-                    .background(Color.blue)
-                    .opacity(0.9)
+                    .background(Color.blue.opacity(0.8))
                     .cornerRadius(15)
                     
                     Button(action: {
@@ -143,19 +136,17 @@ struct Screen2ProfileEdit: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                     }
-                    .background(Color.green)
-                    .opacity(0.9)
+                    .background(Color.green.opacity(0.8))
                     .cornerRadius(15)
                 }
                 .padding(.horizontal, 50)
                 .shadow(color: .black.opacity(0.2), radius: 10)
-                
-                Spacer()
             }
+
             .foregroundStyle(.white)
             .padding(.horizontal,10)
-            .padding(.top, 10)
-            .padding(.bottom, 10)
+            .padding(.vertical, 20)
+
 
             .background {
                 Image("bg1")
@@ -168,44 +159,32 @@ struct Screen2ProfileEdit: View {
 
             }
             
-            
-            .padding(.vertical)
+
             .navigationTitle("User Profile")
             .navigationBarTitleDisplayMode(.large)
 
         }
- 
         
         .alert(isPresented: $showSuccess) {
             Alert(title: Text("Save Successful"), message: nil, dismissButton: .default(Text("OK")))
         }
         .onAppear(){
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
-            
-            if let cashier = bag.cashier {
-                name = cashier.name
-                duid = cashier.duid
-                phone = cashier.phone
-                email = cashier.email
-                department = cashier.department
-                retailLocation = cashier.retailLocation
-                POSName = cashier.POSName
-            }
         }
     }
     func submit(){
-        bag.cashier = Person(name: name, duid: duid, phone: phone, email: email, department: department, retailLocation: retailLocation, POSName: POSName)
+        bag.cashier = Person(name: tableModel.userName, duid: tableModel.userDuid, phone: tableModel.userPhone, email: tableModel.userEmail, department: tableModel.userDepartment, retailLocation: tableModel.userRetailLocation, POSName: tableModel.userPOSName)
         let _  = bag.save()
     }
     
     func clear(){
-        name = ""
-        duid = ""
-        phone = ""
-        email = ""
-        department = ""
-        retailLocation = ""
-        POSName = ""
+        tableModel.userName = ""
+        tableModel.userDuid = ""
+        tableModel.userPhone = ""
+        tableModel.userEmail = ""
+        tableModel.userDepartment = ""
+        tableModel.userRetailLocation = ""
+        tableModel.userPOSName = ""
     }
 }
 
@@ -213,11 +192,13 @@ struct Screen2ProfileEdit: View {
 struct Screen2ProfileEdit_Previews: PreviewProvider {
     static var imageTypeList = ImageTypeList()
     static var bag = Bag()
+    static var tableModel = TabModel()
     static var previews: some View {
 
         Screen2ProfileEdit()
             .environmentObject(bag)
             .environmentObject(imageTypeList)
+            .environmentObject(tableModel)
 
     }
 }
