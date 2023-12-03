@@ -20,8 +20,8 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
     @Published var downloadError: Bool = false
     @Published var errorText:String = ""
 
-    // TODO change when deployed
-    let SERVER_BASE = "http://localhost:8080/"
+    // Deployed server Location
+    let SERVER_BASE = "https://edeposit-backend-aa3d55395f8f.herokuapp.com/"
 
     @Published var cashier: Person?
     @Published var department: String = ""
