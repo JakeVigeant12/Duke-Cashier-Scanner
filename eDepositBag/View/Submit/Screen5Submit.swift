@@ -207,20 +207,6 @@ struct Screen5Submit: View {
                             withAnimation(){
                                 showView = .submit
                             }
-                            // TODO: some action. here just delete the temp pdf
-
-                            let pdfURL = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
-
-                            do {
-                                if FileManager.default.fileExists(atPath: pdfURL.path) {
-//                                    try FileManager.default.removeItem(at: pdfURL)
-//                                    print("PDF file deleted successfully.")
-                                } else {
-                                    print("PDF file does not exist.")
-                                }
-                            } catch {
-                                print("An error occurred while trying to delete the PDF file: \(error)")
-                            }
                             
                             
                         }) {
