@@ -13,8 +13,6 @@ struct MessageRow: View {
         HStack{
             Text(message.content)
                 .font(.subheadline)
-            Divider()
-
         }
     }
 }

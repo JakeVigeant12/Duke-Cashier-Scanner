@@ -2,22 +2,22 @@
 //  BarcodeScan.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/2/23.
+//  Created by Evan on 11/2/23.
 //
 
 import SwiftUI
 import AVFoundation
 
-// Protocol for ScannerViewController delegate
+// protocol for ScannerViewController delegate
 protocol ScannerViewControllerDelegate: AnyObject {
-    // Callback method when a barcode is found
+    // callback method when a barcode is found
     func didFind(barcode: String)
-    // Callback method when scanning fails
+    // callback method when scanning fails
     func didFail(reason: String)
 }
 
 
-// BarcodeScan adapts a UIKit UIViewController to SwiftUI
+// adapts a UIKit UIViewController to SwiftUI
 struct BarcodeScan: UIViewControllerRepresentable {
     @Binding var isPresentingScanner: Bool
     @Binding var scannedCode: String?
@@ -25,23 +25,22 @@ struct BarcodeScan: UIViewControllerRepresentable {
     
     // MARK: - UIViewControllerRepresentable protocol
     
-    //  Called only once when the view shows up. Create the UIViewController instance.
+    //  called only once when the view shows up. Create the UIViewController instance.
     func makeUIViewController(context: Context) -> UIViewController {
         let scannerViewController = ScannerViewController()
-        // set the delegate to receive scanning results
+        // receive scanning results
         scannerViewController.delegate = context.coordinator
         return scannerViewController
     }
     
-    // Called when the view updates. No need to do anything
+    // called when the view updates. No need to do anything
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
     
-    // Create a coordinator object, which serves as a bridge between SwiftUI and UIKit.
+    // create a coordinator object, which helps handle events passed from the ScannerViewController
     func makeCoordinator() -> Coordinator {
         return Coordinator(scannerView: self)
     }
      
-    // Helps handle events passed from the ScannerViewController
     class Coordinator: ScannerViewControllerDelegate {
         var scannerView: BarcodeScan // self
         
@@ -49,14 +48,14 @@ struct BarcodeScan: UIViewControllerRepresentable {
             self.scannerView = scannerView
         }
         
-        // Called when finding barcode
+        // called when finding barcode
         func didFind(barcode: String) {
             scannerView.scannedCode = barcode
             scannerView.isPresentingScanner = false
             scannerView.isScanFail = false
         }
         
-        // Called when failed
+        // called when failed
         func didFail(reason: String) {
             scannerView.scannedCode = nil
             scannerView.isPresentingScanner = false
@@ -65,27 +64,27 @@ struct BarcodeScan: UIViewControllerRepresentable {
     }
 }
 
-// Responsible for barcode scanning functionality
+// responsible for barcode scanning functionality
 class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    // Used to return the scanning results to the BarcodeScan view
+    // return the scanning results
     var delegate: ScannerViewControllerDelegate? //Coordinator
-    // Used to manage input (camera) and output (scanning results)
+    // manage input (camera) and output (scanning results)
     var captureSession: AVCaptureSession!
-    // Display the real-time video stream captured from the camera.
+    // display the real-time video stream
     var previewLayer: AVCaptureVideoPreviewLayer!
     
-    // Called after the view has finished loading
+    // called after the view has finished loading
     override func viewDidLoad() {
         super.viewDidLoad()
         
         captureSession = AVCaptureSession()
         
-        // Set the camera
+        // set the camera
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video)
             else { return }
         let videoInput: AVCaptureDeviceInput
         
-        // Try video input
+        // video input
         do {
             videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
         } catch {
@@ -93,7 +92,6 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             return
         }
         
-        // Add video to the session
         if (captureSession.canAddInput(videoInput)) {
             captureSession.addInput(videoInput)
         } else {
@@ -101,58 +99,56 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
             return
         }
         
-        // Create and configure barcode metadata output
+        // create and configure barcode metadata output
         let metadataOutput = AVCaptureMetadataOutput()
         
         if (captureSession.canAddOutput(metadataOutput)) {
             captureSession.addOutput(metadataOutput)
             
-            // Set output delegate(self.metadataOutput)
-            // Callbacks should be received on the main queue
+            // set output delegate (self.metadataOutput), callbacks should be received on the main queue
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            // Type of the metadata (type of the barcodes)
+            // type of the barcodes
             metadataOutput.metadataObjectTypes = [.upce, .code39, .code39Mod43, .ean13, .ean8, .code93, .code128, .codabar, .itf14, .interleaved2of5]
         } else {
             delegate?.didFail(reason: "Unable to add metadata output")
             return
         }
         
-        // Initialize the preview layer
+        // initialize the preview layer
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.frame = view.layer.bounds
         previewLayer.videoGravity = .resizeAspectFill
-        // Add the preview layer to the view's layer
         view.layer.addSublayer(previewLayer)
         
-        // Start session
+        // start session
         DispatchQueue.global(qos: .userInitiated).async {
             self.captureSession.startRunning()
         }
     }
 
-    // AVCaptureMetadataOutputObjectsDelegate protocl. Called when finding any barcode
+    // AVCaptureMetadataOutputObjectsDelegate protocl. called when finding any barcode
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        // Stop capturing
+        // stop
         captureSession.stopRunning()
         
-        // Check if there's any object
+        // check the result
         if let metadataObject = metadataObjects.first {
-            // Convert data type to string
+            // convert data to string
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue
                 else { return }
-            // Trigger device vibration to provide physical feedback
+            // trigger device vibration to provide physical feedback
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             delegate?.didFind(barcode: stringValue)
         }
     }
 
-    // Only supporting portrait mode
+    // only supporting portrait mode
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
 
-    // Called when the view is about to appear
+    // called when the view is about to appear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if (!captureSession.isRunning) {
@@ -162,7 +158,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         }
     }
 
-    // Called when the view is about to disappear
+    // called when the view is about to disappear
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if (captureSession.isRunning) {
@@ -170,7 +166,7 @@ class ScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDel
         }
     }
 
-    // Disable automatic rotation
+    // disable automatic rotation
     override var shouldAutorotate: Bool {
         return false
     }

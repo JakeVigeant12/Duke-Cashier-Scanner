@@ -2,124 +2,111 @@
 //  TabControl.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/14/23.
+//  Created by Evan on 11/14/23.
 //
 
 import SwiftUI
 
-enum Tab {
-    case bag
-    case person
-    case inbox
-}
-
-class TabModel: ObservableObject {
-    @Published var userName: String = ""
-    @Published var userDuid: String = ""
-    @Published var userPhone: String = ""
-    @Published var userEmail: String = ""
-    
-    @Published var userDepartment: String = ""
-    @Published var userRetailLocation: String = ""
-    @Published var userPOSName: String = ""
-    
-    @Published var bagName: String = ""
-    @Published var bagDuid: String = ""
-    @Published var bagPhone: String = ""
-    @Published var bagEmail: String = ""
-    
-    @Published var bagDepartment: String = ""
-    @Published var bagDepartmentOther: String = ""
-    @Published var bagRetailLocation: String = ""
-    @Published var bagRetailLocationOther: String = ""
-    @Published var bagRetailLocationList: [String] = []
-    @Published var bagPOSName: String = ""
-    @Published var bagRevenueDatePicker: Date = Date()
-    
-    @Published var bagScannedCode: String?
-
-}
-
-
+// tab view control, and initialize most of the data
 struct TabControl: View {
-    
-    // create and load the data model
-    @StateObject var bag = Bag()
+    @EnvironmentObject var bag: Bag
     @StateObject var imageTypeList = ImageTypeList()
-    @StateObject var tableModel = TabModel()
+    // create and load the data model
+    @StateObject var tabModel = TabModel()
     
-    @State var selection: Tab
+    @State var selection: TabViewTag
     
     var body: some View {
+        // 3 tabs
         TabView(selection: $selection){
-
-            
             Screen2ProfileEdit()
                 .environmentObject(bag)
                 .environmentObject(imageTypeList)
-                .environmentObject(tableModel)
+                .environmentObject(tabModel)
             
                 .tabItem {
                     Label("User", systemImage: "person")
                 }
-                .tag(Tab.person)
+                .tag(TabViewTag.person)
 
             Screen3BagInfoEdit()
                 .environmentObject(bag)
                 .environmentObject(imageTypeList)
-                .environmentObject(tableModel)
+                .environmentObject(tabModel)
             
                 .tabItem {
                     Label("Bag", systemImage: "doc")
                 }
-                .tag(Tab.bag)
+                .tag(TabViewTag.bag)
             
             MessageInbox()
                 .environmentObject(bag)
                 .tabItem {
                     Label("Inbox" + (bag.messages.count > 0 ? " - \(bag.messages.count)" : ""), systemImage: "message")
                 }
-                .tag(Tab.inbox)
+                .tag(TabViewTag.inbox)
             
         }
         .environment(\.colorScheme, .dark)
         .accentColor(.white)
         .navigationBarBackButtonHidden(true)
  
+        // init datamodel
         .onAppear(){
-            // Parse
-            let _ = bag.parseOptions(url: Bag.selectionOptions!)
-            let _ = bag.load(url: Bag.sandboxUser)
-            let _ = bag.fetchMessages()
-
+            // init the tabmodel, so that when switch tabs the data won't be reinitialized
             if let cashier = bag.cashier {
-                tableModel.userName = cashier.name
-                tableModel.userDuid = cashier.duid
-                tableModel.userPhone = cashier.phone
-                tableModel.userEmail = cashier.email
-                tableModel.userDepartment = cashier.department
-                tableModel.userRetailLocation = cashier.retailLocation
-                tableModel.userPOSName = cashier.POSName
+                tabModel.userName = cashier.name
+                tabModel.userDuid = cashier.duid
+                tabModel.userPhone = cashier.phone
+                tabModel.userEmail = cashier.email
+
+                tabModel.userPOSName = cashier.POSName
+                tabModel.bagPOSName = cashier.POSName
                 
-                tableModel.bagDepartment = cashier.department
-                tableModel.bagRetailLocation = cashier.retailLocation
-                tableModel.bagPOSName = cashier.POSName
+                // if department is "Other"
+                if cashier.department != "" && !bag.departments.contains(cashier.department){
+                    tabModel.bagDepartment = "Other"
+                    tabModel.userDepartment = "Other"
+                    tabModel.bagDepartmentOther = cashier.department
+                    tabModel.userDepartmentOther = cashier.department
+                }else{
+                    // department is empty or not "Other"
+                    tabModel.bagDepartment = cashier.department
+                    tabModel.userDepartment = cashier.department
+                }
                 
-                tableModel.bagRetailLocationList = bag.locationSelections[tableModel.bagDepartment] ?? []
+                tabModel.userRetailLocationList = bag.locationSelections[tabModel.bagDepartment] ?? []
+                tabModel.bagRetailLocationList = tabModel.userRetailLocationList
+                
+                // if retailLocation is "Other"
+                if cashier.retailLocation != "" && !tabModel.bagRetailLocationList.contains(cashier.retailLocation){
+                    tabModel.bagRetailLocation = "Other"
+                    tabModel.userRetailLocation = "Other"
+                    tabModel.bagRetailLocationOther = cashier.retailLocation
+                    tabModel.userRetailLocationOther = cashier.retailLocation
+                }else{
+                    // retailLocation is empty or not "Other"
+                    tabModel.bagRetailLocation = cashier.retailLocation
+                    tabModel.userRetailLocation = cashier.retailLocation
+                }
             }
             
-            // give the picker a default choice
-            if !bag.departments.isEmpty && tableModel.bagRetailLocationList.isEmpty {
-                tableModel.bagDepartment = bag.departments[0]
-                tableModel.bagRetailLocationList = bag.locationSelections[tableModel.bagDepartment] ?? []
+            // if there is no cashier or no department, give each department pickers a default choice
+            if tabModel.userDepartment == "" && !bag.departments.isEmpty{
+                tabModel.userDepartment = bag.departments[0]
+                tabModel.bagDepartment = tabModel.userDepartment
+                tabModel.userRetailLocationList = bag.locationSelections[tabModel.bagDepartment] ?? []
+                tabModel.bagRetailLocationList = tabModel.userRetailLocationList
             }
             
-            if bag.bagNum != 0 {
-                tableModel.bagScannedCode = String(bag.bagNum)
-            }else{
-                tableModel.bagScannedCode = nil
+            // give each location pickers a default choice
+            if tabModel.userRetailLocation == "" && !tabModel.userRetailLocationList.isEmpty {
+                tabModel.userRetailLocation = tabModel.userRetailLocationList[0]
+                tabModel.bagRetailLocation = tabModel.userRetailLocation
             }
             
+            bag.bagNum = "No Bag Number"
+            tabModel.bagScannedCode = nil
         }
     }//body
 
@@ -127,6 +114,8 @@ struct TabControl: View {
 
 struct TabControl_Previews: PreviewProvider {
     static var previews: some View {
-        TabControl(selection: Tab.bag)
+        let bag = Bag()
+        TabControl(selection: TabViewTag.bag)
+            .environmentObject(bag)
     }
 }

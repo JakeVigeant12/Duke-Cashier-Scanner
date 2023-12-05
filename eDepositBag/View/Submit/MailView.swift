@@ -38,7 +38,6 @@ struct MailView: UIViewControllerRepresentable {
         } catch {
             print("Error attaching PDF: \(error.localizedDescription)")
         }
-
             return viewController
 
     }

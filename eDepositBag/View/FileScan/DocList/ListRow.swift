@@ -2,11 +2,12 @@
 //  DocList.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/12/23.
+//  Created by Evan on 11/12/23.
 //
 
 import SwiftUI
 
+// a row of the image list
 struct ListRow: View {
     @ObservedObject var imageType: ImageType
     @State private var showImage = false
@@ -16,7 +17,9 @@ struct ListRow: View {
         if !imageType.images.isEmpty{
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: 0) {
+                    // image list
                     ForEach(imageType.images.indices, id: \.self) {index in
+                        // every image is a button, click for full screen view
                         Button(action: {
                             withAnimation {
                                 selectedImage = index
@@ -32,6 +35,7 @@ struct ListRow: View {
                     }
                 }
             }
+            // show the image in full screen 
             .sheet(isPresented: $showImage) {
                 ImageView(selectedImage: $selectedImage, images: $imageType.images)
             }

@@ -2,20 +2,21 @@
 //  MainMenu.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/16/23.
+//  Created by Evan on 11/16/23.
 //
 
 import SwiftUI
 
+// the start menu, and load the data from sanbox
 struct MainMenu: View {
     @State private var isMenuVisible = false
     @State private var isLogoTop = false
     @EnvironmentObject var bag: Bag
     
-
     var body: some View {
         NavigationView {
             ZStack{
+                // menu
                 VStack(spacing: 10){
                     Text("E-Deposit Bag")
                         .font(.title)
@@ -26,7 +27,9 @@ struct MainMenu: View {
                             .font(.callout.bold())
                             .padding(.top, 15)
                         
-                        NavigationLink(destination: TabControl(selection: Tab.person)
+                        // user info button
+                        NavigationLink(destination: TabControl(selection: TabViewTag.person)
+                            .environmentObject(bag)
                         ) {
                             Text("User Information")
                                 .font(.title3)
@@ -41,8 +44,10 @@ struct MainMenu: View {
                         Label("Create A Bag", systemImage: "doc")
                             .font(.callout.bold())
                             .padding(.top, 15)
-        
-                        NavigationLink(destination: TabControl(selection: Tab.bag)
+                        
+                        // bag info button
+                        NavigationLink(destination: TabControl(selection: TabViewTag.bag)
+                            .environmentObject(bag)
                         ) {
                             Text("Virtual Deposit Bag")
                                 .font(.title3)
@@ -58,7 +63,8 @@ struct MainMenu: View {
                             .font(.callout.bold())
                             .padding(.top, 15)
         
-                        NavigationLink(destination: TabControl(selection: Tab.inbox)
+                        // message button
+                        NavigationLink(destination: TabControl(selection: TabViewTag.inbox)
                         ) {
                             Text("View Messages\n\(bag.messages.count) Unresolved")
                                 .font(.title3)
@@ -91,49 +97,60 @@ struct MainMenu: View {
                 .shadow(color: .black.opacity(0.2), radius: 10)
                 .padding(.horizontal, 40)
                 
+                // animation
                 .opacity(isMenuVisible ? 1.0 : 0.0)
                 
-                
-                VStack(alignment: .center){ // 居中对齐
+                // duke logo
+                VStack(alignment: .center){
                     Image("duke_logo_white")
                         .resizable()
                         .scaledToFit()
                         .clipped()
                         .scaleEffect(1.7)
-
                     if(isLogoTop){
                         Spacer()
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity) // 充满整个屏幕
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             }
             .frame(maxWidth: 390)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
             .background {
                 Image("bg1")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
             }
+            
             .onAppear {
+                // animation
                 withAnimation(.easeInOut(duration: 1)) {
                     isLogoTop = true
-                    let _ = bag.load(url: Bag.sandboxUser)
-                    let _ = bag.fetchMessages()
                 }
                 
+                // delay animation
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     withAnimation(.easeInOut(duration: 0.5)) {
                         isMenuVisible = true
                     }
                 }
+                
+                // load data
+                let _ = bag.parseOptions(url: Bag.selectionOptions!)
+                let _ = bag.load(url: Bag.sandboxUser)
+                let _ = bag.fetchMessages()
             }
         }
 
     }
 }
 
-//#Preview {
-//    MainMenu()
-//}
+struct MainMenu_Previews: PreviewProvider {
+    static var previews: some View {
+        let bag = Bag()
+        MainMenu()
+            .environmentObject(bag)
+    }
+}

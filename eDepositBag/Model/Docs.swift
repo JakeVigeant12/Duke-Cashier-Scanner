@@ -2,7 +2,7 @@
 //  Docs.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/12/23.
+//  Created by Evan on 11/12/23.
 //
 
 import Foundation
@@ -18,6 +18,7 @@ class ImageType: ObservableObject{
     }
 }
 
+// data model to hold all the doc images
 class ImageTypeList: ObservableObject {
     @Published var imageTypes: [ImageType]
     

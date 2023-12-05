@@ -2,29 +2,33 @@
 //  PDFCreator.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/14/23.
+//  Created by Evan on 11/14/23.
 //
 
 import Foundation
 import UIKit
 import PDFKit
 
+// create a pdf file
 class PDFCreator {
+    // file path (in temporaryDirectory)
     static let savePath = FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf")
 
     static func createPDF(from imageTypeList: ImageTypeList, info bag: Bag) {
         let pageSize = CGRect(x: 0, y: 0, width: 8.27 * 72.0, height: 11.69 * 72.0) // A4 size
         let renderer = UIGraphicsPDFRenderer(bounds: pageSize)
-
  
         let data = renderer.pdfData { context in
+            // begin
             context.beginPage()
             
+            // handle the info that what type of images are included
             var docIncluded : [String] = []
             for type in imageTypeList.imageTypes{
                 docIncluded.append(type.images.isEmpty ? "No" : "Yes")
             }
             
+            // draw the title page
             PDFCreator.drawTitlePage(types: docIncluded, info: bag, in: context, pageSize: pageSize.size)
             
             for imageType in imageTypeList.imageTypes {
@@ -48,12 +52,13 @@ class PDFCreator {
         print("PDF saved to \(tempPath)")
     }
 
+    // draw the title page
     private static func drawTitlePage(types typeIncluded: [String], info bag: Bag, in context: UIGraphicsPDFRendererContext, pageSize: CGSize) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .left
 
         let titleAttributes = [
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), // Increased font size
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), // increased font size
             NSAttributedString.Key.paragraphStyle: paragraphStyle
         ]
 
@@ -62,26 +67,28 @@ class PDFCreator {
             NSAttributedString.Key.paragraphStyle: paragraphStyle
         ]
 
+        // get the date of today and format it
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let dateString = dateFormatter.string(from: Date())
         
-        // Define the content to be placed on the title page
+        // define the content to be placed on the title page
         let titleData: [(title: String, content: String, isSubtitle: Bool)] = [
-            // Subtitle
+            // subtitle
             ("Bag Information", "", false),
+            // contents
             ("Department", bag.department, false),
             ("Retail Location", bag.retailLocation, false),
             ("POS Name", bag.POSName, false),
             ("Revenue Date", bag.revenueDate, false),
-            ("Deposit Bag #", bag.bagNum == 0 ? "No Bag Number" : String(bag.bagNum), false),
+            ("Deposit Bag #", bag.bagNum, false),
             ("Submitted by", bag.cashier?.name ?? "", false),
             ("Date Submitted", dateString, false),
-            // Space before subtitle
+            // space before subtitle
             ("", "", true),
-            // Subtitle
+            // subtitle
             ("Includes Scanned Documents", "", false),
-            // Contents under subtitle
+            // contents
             ("IRIs", typeIncluded[0], false),
             ("House Charge", typeIncluded[1], false),
             ("Settlement Reports", typeIncluded[2], false),
@@ -90,7 +97,7 @@ class PDFCreator {
         ]
 
         let leftColumnWidth = pageSize.width / 2
-        var yOffset: CGFloat = 72.0 // Start 1 inch from the top of the page
+        var yOffset: CGFloat = 72.0 // start 1 inch from the top of the page
 
         for (title, content, isSubtitle) in titleData {
             let titleString = NSAttributedString(string: title, attributes: titleAttributes)
@@ -99,9 +106,9 @@ class PDFCreator {
             let titleSize = titleString.size()
             let contentSize = contentString.size()
 
-            // Check if it's a space before subtitle
+            // check if it's a space before subtitle
             if isSubtitle {
-                yOffset += titleSize.height // Add space before the subtitle
+                yOffset += titleSize.height // add space before the subtitle
             }
 
             let titleRect = CGRect(x: 72, y: yOffset, width: leftColumnWidth - 72, height: titleSize.height)
@@ -112,12 +119,12 @@ class PDFCreator {
                 contentString.draw(in: contentRect)
             }
 
-            // Increase yOffset for the next row, adding extra space if it is a subtitle
+            // increase yOffset for the next row, adding extra space if it is a subtitle
             yOffset += max(titleSize.height, contentSize.height) + (title.isEmpty ? 20 : 10)
         }
     }
 
-    
+    // draw the subtitle page
     private static func drawSubTitlePage(in context: UIGraphicsPDFRendererContext, title: String, pageSize: CGSize) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
@@ -134,6 +141,7 @@ class PDFCreator {
         attributedTitle.draw(in: textRect)
     }
 
+    // draw the image page
     private static func drawImagePage(in context: UIGraphicsPDFRendererContext, image: UIImage, pageSize: CGSize) {
         let imageSize = image.size
         let widthRatio = pageSize.width / imageSize.width

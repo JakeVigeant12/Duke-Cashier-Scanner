@@ -2,29 +2,29 @@
 //  Screen2ProfileEdit.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/2/23.
+//  Created by Evan on 11/2/23.
 //
 
 import SwiftUI
 
 struct Screen2ProfileEdit: View {
-
     @EnvironmentObject var imageTypeList: ImageTypeList
     @EnvironmentObject var bag: Bag
-    @EnvironmentObject var tableModel: TabModel
+    @EnvironmentObject var tabModel: TabModel
 
     @State private var showSuccess = false
     
     var body: some View {
         NavigationView{
             VStack{
+                // all the textfields
                 ScrollView {
                     VStack(spacing: 20){
                         HStack {
                             Text("Name")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("Name", text: $tableModel.userName)
+                            TextField("Name", text: $tabModel.userName)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -36,7 +36,7 @@ struct Screen2ProfileEdit: View {
                             Text("DUID")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("DUID", text: $tableModel.userDuid)
+                            TextField("DUID", text: $tabModel.userDuid)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -48,7 +48,7 @@ struct Screen2ProfileEdit: View {
                             Text("Phone")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("Phone", text: $tableModel.userPhone)
+                            TextField("Phone", text: $tabModel.userPhone)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -60,7 +60,7 @@ struct Screen2ProfileEdit: View {
                             Text("Email")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("Email", text: $tableModel.userEmail)
+                            TextField("Email", text: $tabModel.userEmail)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -69,37 +69,76 @@ struct Screen2ProfileEdit: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                         }
                         
-                        // TODO: need pickers
+                        // pickers
                         
+                        // department
                         HStack {
                             Text("Department")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("Department", text: $tableModel.userDepartment)
+                            VStack{
+                                Picker("Department", selection: $tabModel.userDepartment) {
+                                    ForEach(bag.departments, id: \.self) { dept in
+                                        Text(dept)
+                                    }
+                                }
+                                
                                 .environment(\.colorScheme, .dark)
+                                .pickerStyle(MenuPickerStyle())
                                 .frame(width: 170)
-                                .padding(.vertical, 10)
+                                .padding(.vertical,4)
                                 .padding(.horizontal, 15)
                                 .background(.white.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                
+                                if (tabModel.userDepartment == "Other"){
+                                    TextField("Department", text: $tabModel.userDepartmentOther)
+                                        .environment(\.colorScheme, .dark)
+                                        .frame(width: 170)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 15)
+                                        .background(.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                }
+                            }
                         }
+                        
+                        // location
                         HStack {
                             Text("Retail Location")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("Retail Location", text: $tableModel.userRetailLocation)
+                            VStack{
+                                Picker("Location", selection: $tabModel.userRetailLocation) {
+                                    ForEach(tabModel.userRetailLocationList, id: \.self) { location in
+                                        Text(location)
+                                    }
+                                }
                                 .environment(\.colorScheme, .dark)
+                                .pickerStyle(MenuPickerStyle())
                                 .frame(width: 170)
-                                .padding(.vertical, 10)
+                                .padding(.vertical,4)
                                 .padding(.horizontal, 15)
                                 .background(.white.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                if (tabModel.userRetailLocation == "Other"){
+                                    TextField("Retail Location", text: $tabModel.userRetailLocationOther)
+                                        .environment(\.colorScheme, .dark)
+                                        .frame(width: 170)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 15)
+                                        .background(.white.opacity(0.2))
+                                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                                }
+                            }
+
                         }
+                        
                         HStack {
                             Text("POS Name")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("POS Name", text: $tableModel.userPOSName)
+                            TextField("POS Name", text: $tabModel.userPOSName)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -109,10 +148,12 @@ struct Screen2ProfileEdit: View {
                         }
                     }
                     .font(.body)
-                    .padding([.leading, .trailing], 20)
-
+                    .padding(.horizontal, 20)
                 }
+                
                 Spacer()
+                
+                // 2 buttons
                 HStack(spacing: 40){
                     Button(action: {
                         withAnimation{
@@ -141,50 +182,68 @@ struct Screen2ProfileEdit: View {
                 }
                 .padding(.horizontal, 50)
                 .shadow(color: .black.opacity(0.2), radius: 10)
-            }
+            }//vstack
 
             .foregroundStyle(.white)
             .padding(.horizontal,10)
             .padding(.vertical, 20)
 
-
+            // background image
             .background {
                 Image("bg1")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
                     .overlay(Color.black.opacity(0.1))
-                
                 TransparentBlur(removeAllFilters: false)
-
             }
             
-
+            // title
             .navigationTitle("User Profile")
             .navigationBarTitleDisplayMode(.large)
 
         }
         
+        // Save Successful
         .alert(isPresented: $showSuccess) {
             Alert(title: Text("Save Successful"), message: nil, dismissButton: .default(Text("OK")))
         }
+        
+        // when picker changes
+        .onChange(of: tabModel.userDepartment){ newValue in
+            tabModel.userRetailLocationList = bag.locationSelections[newValue] ?? []
+            // give the location picker a default choice
+            if !tabModel.userRetailLocationList.contains(tabModel.userRetailLocation) {
+                tabModel.userRetailLocation = tabModel.userRetailLocationList[0]
+            }
+        }
+        
+        // appearance adjustment
         .onAppear(){
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
         }
     }
+    
+    // save to datamodel
     func submit(){
-        bag.cashier = Person(name: tableModel.userName, duid: tableModel.userDuid, phone: tableModel.userPhone, email: tableModel.userEmail, department: tableModel.userDepartment, retailLocation: tableModel.userRetailLocation, POSName: tableModel.userPOSName)
+        bag.cashier = Person(name: tabModel.userName, duid: tabModel.userDuid, phone: tabModel.userPhone, email: tabModel.userEmail, department: tabModel.userDepartment, retailLocation: tabModel.userRetailLocation, POSName: tabModel.userPOSName)
+        
+        bag.cashier!.department = (tabModel.userDepartment == "Other") ?  tabModel.userDepartmentOther : tabModel.userDepartment
+        
+        bag.cashier!.retailLocation = (tabModel.userRetailLocation == "Other") ?  tabModel.userRetailLocationOther : tabModel.userRetailLocation
+        
+        // save to sandbox
         let _  = bag.save()
     }
     
     func clear(){
-        tableModel.userName = ""
-        tableModel.userDuid = ""
-        tableModel.userPhone = ""
-        tableModel.userEmail = ""
-        tableModel.userDepartment = ""
-        tableModel.userRetailLocation = ""
-        tableModel.userPOSName = ""
+        tabModel.userName = ""
+        tabModel.userDuid = ""
+        tabModel.userPhone = ""
+        tabModel.userEmail = ""
+        tabModel.userDepartment = ""
+        tabModel.userRetailLocation = ""
+        tabModel.userPOSName = ""
     }
 }
 

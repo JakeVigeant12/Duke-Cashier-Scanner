@@ -2,7 +2,7 @@
 //  CameraScan.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/13/23.
+//  Created by Evan on 11/13/23.
 //
 
 import SwiftUI

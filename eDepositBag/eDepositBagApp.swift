@@ -2,7 +2,7 @@
 //  eDepositBagApp.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/1/23.
+//  Created by Evan on 11/1/23.
 //
 
 import SwiftUI
@@ -14,7 +14,6 @@ struct eDepositBagApp: App {
         WindowGroup {
             MainMenu()
                 .environmentObject(bag)
-
         }
     }
 }

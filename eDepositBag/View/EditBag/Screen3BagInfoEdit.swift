@@ -2,20 +2,20 @@
 //  Screen4AskScanBarcode.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/2/23.
+//  Created by Evan on 11/2/23.
 //
 
 import SwiftUI
 import Combine
 
 struct Screen3BagInfoEdit: View {
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-    @EnvironmentObject var tableModel: TabModel
+    @EnvironmentObject var tabModel: TabModel
     
     @State private var isScanFail = false
     
+    // view tags
     enum ShowView{
         case ask, next, showBagNum
     }
@@ -26,14 +26,16 @@ struct Screen3BagInfoEdit: View {
     var body: some View {
         NavigationView {
             VStack{
+                // info selection
                 ScrollView{
                     VStack(spacing: 20) {
+                        // department
                         HStack {
                             Text("Department")
                                 .fontWeight(.medium)
                             Spacer()
                             VStack{
-                                Picker("Department", selection: $tableModel.bagDepartment) {
+                                Picker("Department", selection: $tabModel.bagDepartment) {
                                     ForEach(bag.departments, id: \.self) { dept in
                                         Text(dept)
                                     }
@@ -47,8 +49,8 @@ struct Screen3BagInfoEdit: View {
                                 .background(.white.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                                 
-                                if (tableModel.bagDepartment == "Other"){
-                                    TextField("Department", text: $tableModel.bagDepartmentOther)
+                                if (tabModel.bagDepartment == "Other"){
+                                    TextField("Department", text: $tabModel.bagDepartmentOther)
                                         .environment(\.colorScheme, .dark)
                                         .frame(width: 170)
                                         .padding(.vertical, 10)
@@ -58,13 +60,14 @@ struct Screen3BagInfoEdit: View {
                                 }
                             }
                         }
+                        // location
                         HStack {
                             Text("Retail Location")
                                 .fontWeight(.medium)
                             Spacer()
                             VStack{
-                                Picker("Location", selection: $tableModel.bagRetailLocation) {
-                                    ForEach(tableModel.bagRetailLocationList, id: \.self) { location in
+                                Picker("Location", selection: $tabModel.bagRetailLocation) {
+                                    ForEach(tabModel.bagRetailLocationList, id: \.self) { location in
                                         Text(location)
                                     }
                                 }
@@ -75,8 +78,8 @@ struct Screen3BagInfoEdit: View {
                                 .padding(.horizontal, 15)
                                 .background(.white.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                                if (tableModel.bagRetailLocation == "Other"){
-                                    TextField("Retail Location", text: $tableModel.bagRetailLocationOther)
+                                if (tabModel.bagRetailLocation == "Other"){
+                                    TextField("Retail Location", text: $tabModel.bagRetailLocationOther)
                                         .environment(\.colorScheme, .dark)
                                         .frame(width: 170)
                                         .padding(.vertical, 10)
@@ -87,11 +90,12 @@ struct Screen3BagInfoEdit: View {
                             }
 
                         }
+                        // POS
                         HStack {
                             Text("POS Name")
                                 .fontWeight(.medium)
                             Spacer()
-                            TextField("POS Name", text: $tableModel.bagPOSName)
+                            TextField("POS Name", text: $tabModel.bagPOSName)
                                 .environment(\.colorScheme, .dark)
                                 .frame(width: 170)
                                 .padding(.vertical, 10)
@@ -99,12 +103,12 @@ struct Screen3BagInfoEdit: View {
                                 .background(.white.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                         }
-                        
+                        // date
                         HStack {
                             Text("Revenue Date")
                                 .fontWeight(.medium)
                             Spacer()
-                            DatePicker("Select a date", selection: $tableModel.bagRevenueDatePicker, displayedComponents: .date)
+                            DatePicker("Select a date", selection: $tabModel.bagRevenueDatePicker, displayedComponents: .date)
                                 .datePickerStyle(CompactDatePickerStyle())
                                 .labelsHidden()
                                 .environment(\.colorScheme, .dark)
@@ -118,40 +122,45 @@ struct Screen3BagInfoEdit: View {
                     .disabled(showView == .next ? true : false)
                     .font(.body)
                     .foregroundStyle(.white)
-                    .padding([.leading, .trailing], 20)
-                }
-                
-                if(showView == .next){
-                    HStack {
-                        Text("Bag Number")
-                            .fontWeight(.medium)
-                            .foregroundStyle(.white)
-                        Spacer()
+                    .padding(.horizontal, 20)
+                    
+                    
+                    // show bag num
+                    if(showView == .next){
+                        HStack {
+                            Text("Bag Number")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.white)
+                            Spacer()
 
-                        if let code = tableModel.bagScannedCode{
-                            Text(code)
-                                .multilineTextAlignment(.center)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 200)
-                                .foregroundColor(.blue)
-                        }else{
-                            Text("No Bag Number")
-                                .environment(\.colorScheme, .dark)
-                                .frame(width: 170)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 15)
-                                .background(.white.opacity(0.2))
-                                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            if let code = tabModel.bagScannedCode{
+                                Text(code)
+                                    .multilineTextAlignment(.center)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 200)
+                                    .foregroundColor(.blue)
+                            }else{
+                                Text("No Bag Number")
+                                    .environment(\.colorScheme, .dark)
+                                    .frame(width: 170)
+                                    .padding(.vertical, 10)
+                                    .padding(.horizontal, 15)
+                                    .background(.white.opacity(0.2))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                            }
+
                         }
-
+                        .padding([.top, .leading, .trailing], 20)
                     }
-                    .padding([.top, .leading, .trailing], 20)
                 }
+
                 
                 Spacer()
+                
+                // handle scan
                 VStack{
-                    Spacer()
                     switch showView {
+                    // ask if scan is needed
                     case .ask:
                         Text("Are you sending cash deposit to University Cashiering?")
                             .font(.title2)
@@ -160,10 +169,8 @@ struct Screen3BagInfoEdit: View {
 
                         HStack(spacing: 40) {
                             Button(action: {
-                                bag.revenueDate = getDateString(currentDate: tableModel.bagRevenueDatePicker)
-                                submit()
                                 withAnimation{
-                                    tableModel.bagScannedCode = nil
+                                    tabModel.bagScannedCode = nil
                                     showView = .next
                                 }
                             }) {
@@ -193,40 +200,8 @@ struct Screen3BagInfoEdit: View {
                         .padding(.horizontal, 50.0)
                         .shadow(color: .black.opacity(0.2), radius: 10)
                         .padding(.top, 20)
-                        
-                    case .next:
-                        HStack(spacing: 40) {
-                            Button(action: {
-                                withAnimation{
-                                    showView = .ask
-                                    
-                                }
-                            }) {
-                                Text("Back")
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                            }
-                            .background(Color.red)
-                            .opacity(0.8)
-                            .cornerRadius(15)
-                            
-                            NavigationLink(destination: Screen4FileScan()
-                                .environmentObject(bag)
-                                .environmentObject(imageTypeList)
-                                .environmentObject(tableModel)
-                            ) {
-                                Text("Next")
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                            }
-                            .background(Color.green)
-                            .opacity(0.8)
-                            .cornerRadius(15)
-                        }
-                        .padding(.horizontal, 50.0)
-                        .shadow(color: .black.opacity(0.2), radius: 10)
+    
+                    // handle the scan
                     case .showBagNum:
                         Text("Please press the button below to scan the barcode on the deposit bag.")
                             .font(.title2)
@@ -253,7 +228,7 @@ struct Screen3BagInfoEdit: View {
                                     startScan = true
                                 }
                             }) {
-                                if let code = tableModel.bagScannedCode{
+                                if let code = tabModel.bagScannedCode{
                                     Text(code)
                                         .foregroundColor(.white)
                                         .frame(maxWidth: .infinity)
@@ -271,6 +246,41 @@ struct Screen3BagInfoEdit: View {
                             .shadow(color: .black.opacity(0.2), radius: 10)
                         }
                         .padding([.top, .leading, .trailing], 20)
+                        
+                    // scan finished
+                    case .next:
+                        HStack(spacing: 40) {
+                            Button(action: {
+                                withAnimation{
+                                    showView = .ask
+                                    
+                                }
+                            }) {
+                                Text("Back")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+                            .background(Color.red)
+                            .opacity(0.8)
+                            .cornerRadius(15)
+                            
+                            NavigationLink(destination: Screen4FileScan()
+                                .environmentObject(bag)
+                                .environmentObject(imageTypeList)
+                                .environmentObject(tabModel)
+                            ) {
+                                Text("Next")
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                            }
+                            .background(Color.green)
+                            .opacity(0.8)
+                            .cornerRadius(15)
+                        }
+                        .padding(.horizontal, 50.0)
+                        .shadow(color: .black.opacity(0.2), radius: 10)
                     }
 
                 }
@@ -295,50 +305,54 @@ struct Screen3BagInfoEdit: View {
         }
 
         
+        // barcode scan view
         .sheet(isPresented: $startScan, onDismiss: scanSheetDismissed) {
-            BarcodeScan(isPresentingScanner: self.$startScan, scannedCode: self.$tableModel.bagScannedCode, isScanFail: self.$isScanFail)
+            BarcodeScan(isPresentingScanner: self.$startScan, scannedCode: self.$tabModel.bagScannedCode, isScanFail: self.$isScanFail)
         }
         
+        // appearance adjustment
         .onAppear{
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
-            // TODO: need info from screen2
-            
         }
         
-        .onChange(of: tableModel.bagDepartment){ _ in
-            tableModel.bagRetailLocationList = bag.locationSelections[tableModel.bagDepartment] ?? []
+        // when picker changes
+        .onChange(of: tabModel.bagDepartment){ newValue in
+            tabModel.bagRetailLocationList = bag.locationSelections[newValue] ?? []
+            // give the location picker a default choice
+            if !tabModel.bagRetailLocationList.contains(tabModel.bagRetailLocation) {
+                tabModel.bagRetailLocation = tabModel.bagRetailLocationList[0]
+            }
+        }
+        
+        // submit
+        .onChange(of: showView){ _ in
+            //set this information for the bag, account defaults should be changed separate
+            bag.department = (tabModel.bagDepartment == "Other") ?  tabModel.bagDepartmentOther : tabModel.bagDepartment
+            
+            bag.retailLocation = (tabModel.bagRetailLocation == "Other") ?  tabModel.bagRetailLocationOther : tabModel.bagRetailLocation
+
+            bag.POSName = tabModel.bagPOSName
+            
+            // format the date string
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            bag.revenueDate = dateFormatter.string(from: tabModel.bagRevenueDatePicker)
+            
+            if let scanned = tabModel.bagScannedCode {
+                bag.bagNum = scanned
+            }else{
+                bag.bagNum = "No Bag Number"
+            }
+            
+            // save to sandbox
+            let _ = bag.save()
         }
     }
     
     func scanSheetDismissed() {
         if(!isScanFail){
-            submit()
             showView = .next
         }
-    }
-    
-    func submit(){
-        //set this information for the bag, account defaults should be changed separate
-        bag.department = (tableModel.bagDepartment == "Other") ?  tableModel.bagDepartmentOther : tableModel.bagDepartment
-        
-        bag.retailLocation = (tableModel.bagRetailLocation == "Other") ?  tableModel.bagRetailLocationOther : tableModel.bagRetailLocation
-
-        bag.POSName = tableModel.bagPOSName
-        
-        bag.revenueDate = getDateString(currentDate: tableModel.bagRevenueDatePicker)
-        
-        if let scanned = tableModel.bagScannedCode {
-            if let num = Int(scanned) {
-                bag.bagNum = num
-            }
-        }
-    }
-    
-    func getDateString(currentDate:Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: currentDate)
-        return dateString
     }
 }
 
@@ -346,6 +360,8 @@ struct Screen3BagInfoEdit: View {
 
 struct Screen3BagInfoEdit_Previews: PreviewProvider {
     static var previews: some View {
-        TabControl(selection: Tab.bag)
+        let bag = Bag()
+        TabControl(selection: TabViewTag.bag)
+            .environmentObject(bag)
     }
 }

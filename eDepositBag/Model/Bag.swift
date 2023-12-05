@@ -27,7 +27,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
     @Published var department: String = ""
     @Published var retailLocation: String = ""
     @Published var POSName: String = ""
-    @Published var bagNum: Int = 0
+    @Published var bagNum: String = "No Bag Number"
     @Published var imageScans: [String:String] = [:]
     @Published var revenueDate: String = ""
     @Published var messages: [Message] = []

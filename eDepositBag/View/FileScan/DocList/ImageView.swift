@@ -2,11 +2,12 @@
 //  ImageView.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/13/23.
+//  Created by Evan on 11/13/23.
 //
 
 import SwiftUI
 
+// full screen image view
 struct ImageView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var selectedImage: Int?

@@ -2,7 +2,7 @@
 //  Screen6Submit.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/2/23.
+//  Created by Evan on 11/2/23.
 //
 
 import SwiftUI
@@ -11,40 +11,28 @@ struct Screen5Submit: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-    @EnvironmentObject var tableModel: TabModel
+    @EnvironmentObject var tabModel: TabModel
     @State private var sendEmail = false
-
-    
-    @State private var bagNum: String = ""
-    @State private var name: String = ""
-    @State private var duid: String = ""
-    @State private var phone: String = ""
-    @State private var email: String = ""
-    @State private var department: String = ""
-    @State private var retailLocation: String = ""
-    @State private var POSName: String = ""
-    @State private var revenueDate: String = ""
     
     @State private var isPresentedPDF = false
     @State private var showView = ShowView.preview
-//    @State private var docIncluded: [String] = []
     @State private var today: String = ""
     
+    // view tags
     enum ShowView{
         case preview, submit
     }
 
-
-    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                // list all the info with textfields
                 Group{
                     HStack {
                         Text("Department")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Department", text: $department)
+                        TextField("Department", text: $bag.department)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -56,7 +44,7 @@ struct Screen5Submit: View {
                         Text("Retail Location")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Retail Location", text: $retailLocation)
+                        TextField("Retail Location", text: $bag.retailLocation)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -68,7 +56,7 @@ struct Screen5Submit: View {
                         Text("POS Name")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("POS Name", text: $POSName)
+                        TextField("POS Name", text: $bag.POSName)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -80,7 +68,7 @@ struct Screen5Submit: View {
                         Text("Revenue Date")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Revenue Date", text: $revenueDate)
+                        TextField("Revenue Date", text: $bag.revenueDate)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -92,7 +80,7 @@ struct Screen5Submit: View {
                         Text("Bag Number")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Bag Number", text: $bagNum)
+                        TextField("Bag Number", text: $bag.bagNum)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -104,7 +92,7 @@ struct Screen5Submit: View {
                         Text("Submitted by")
                             .fontWeight(.medium)
                         Spacer()
-                        TextField("Name", text: $name)
+                        TextField("Name", text: $tabModel.userName)
                             .environment(\.colorScheme, .dark)
                             .frame(width: 170)
                             .padding(.vertical, 10)
@@ -132,7 +120,7 @@ struct Screen5Submit: View {
 
                 Spacer().frame(height: 0)
                 
-
+                // included document type list
                 VStack{
                     Text("Includes Scanned Documents")
                         .font(.title2)
@@ -194,12 +182,12 @@ struct Screen5Submit: View {
                         .background(.white.opacity(0.05))
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-
                 .shadow(color: .black.opacity(0.2), radius: 10)
                 .padding(.horizontal, 20)
 
                 Spacer()
 
+                // buttons
                 switch showView {
                 case .preview:
                     HStack(spacing: 40){
@@ -207,8 +195,6 @@ struct Screen5Submit: View {
                             withAnimation(){
                                 showView = .submit
                             }
-                            
-                            
                         }) {
                             Text("Save")
                                 .foregroundColor(.white)
@@ -220,10 +206,8 @@ struct Screen5Submit: View {
                         .cornerRadius(15)
 
                         Button(action: {
-                            // TODO: create pdf
+                            // create pdf
                             PDFCreator.createPDF(from: imageTypeList, info: bag)
-                            
-
                             isPresentedPDF.toggle()
                         }) {
                             Text("Preview")
@@ -238,7 +222,6 @@ struct Screen5Submit: View {
                     .shadow(color: .black.opacity(0.2), radius: 10)
                     
                     .sheet(isPresented: $isPresentedPDF) {
-    //                                        UploadPDFView(docURL: Bag.testURL!)
                         UploadPDFView(docURL: FileManager.default.temporaryDirectory.appendingPathComponent("TempPDF.pdf"))
                                 }
                     .padding(.horizontal, 50.0)
@@ -279,6 +262,8 @@ struct Screen5Submit: View {
         }
         
         }
+        
+        // create a email
         .sheet(isPresented: $sendEmail) {
             MailView(
                 content:"",
@@ -303,26 +288,10 @@ struct Screen5Submit: View {
         .navigationBarTitleDisplayMode(.large)
         
         .onAppear(){
-            if let cashier = bag.cashier {
-                name = cashier.name
-                duid = cashier.duid
-                phone = cashier.phone
-                email = cashier.email
-            }
-            department = bag.department
-            retailLocation = bag.retailLocation
-            POSName = bag.POSName
-            revenueDate = bag.revenueDate
-            bagNum = bag.bagNum == 0 ? "No Bag Number" : String(bag.bagNum)
-            
-//            for type in imageTypeList.imageTypes{
-//                docIncluded.append(type.images.isEmpty ? "No" : "Yes")
-//            }
-            
+            // get the date of today
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             today = dateFormatter.string(from: Date())
-
         }
     }
     

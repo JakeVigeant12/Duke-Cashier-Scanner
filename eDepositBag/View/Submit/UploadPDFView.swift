@@ -17,7 +17,6 @@ struct UploadPDFView: View {
             tempPDFView(docURL: docURL)
             
             VStack(alignment: .center) {
-                    
                 Spacer()
                     .frame(height: 725)
                 // dismiss button at bottom

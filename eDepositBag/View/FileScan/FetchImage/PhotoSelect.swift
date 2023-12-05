@@ -2,7 +2,7 @@
 //  PhotoSelect.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/13/23.
+//  Created by Evan on 11/13/23.
 //
 
 import SwiftUI
@@ -37,8 +37,9 @@ struct ImagePicker: UIViewControllerRepresentable {
 
         func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             let itemProviders = results.map(\.itemProvider)
-            var images: [UIImage] = []
-
+            var images: [UIImage] = [] // hold the result
+            
+            // try to handle all the selected images
             for item in itemProviders {
                 if item.canLoadObject(ofClass: UIImage.self) {
                     item.loadObject(ofClass: UIImage.self) { (object, error) in

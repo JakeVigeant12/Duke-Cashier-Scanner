@@ -2,7 +2,7 @@
 //  Screen5FileScan.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/2/23.
+//  Created by Evan on 11/2/23.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ struct Screen4FileScan: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var bag: Bag
     @EnvironmentObject var imageTypeList: ImageTypeList
-    @EnvironmentObject var tableModel: TabModel
+    @EnvironmentObject var tabModel: TabModel
     
     @State private var startScan = false
     @State private var selectedType: Int?
@@ -22,7 +22,8 @@ struct Screen4FileScan: View {
     
     var body: some View {
         VStack {
-            ScrollView {
+            // image list, sorted by type
+            ScrollView {// using scrollview instead of list for more customized functions
                 VStack(spacing: 25){
                     ForEach(imageTypeList.imageTypes.indices, id: \.self) { index in
                         let imageType = imageTypeList.imageTypes[index]
@@ -42,6 +43,7 @@ struct Screen4FileScan: View {
                                         .foregroundColor(.white)
                                         .font(.system(size: 20))
                                 }
+                                // choose a way to upload images
                                 .actionSheet(isPresented: $showPickerSelection) {
                                     ActionSheet(title: Text("Choose Image Source"), buttons: [
                                         .default(Text("Camera")) {
@@ -53,25 +55,25 @@ struct Screen4FileScan: View {
                                         .cancel()
                                     ])
                                 }
+                                // select from photo library
                                 .fullScreenCover(isPresented: $showImagePicker) {
                                     ImagePicker(){ images in
                                         imageTypeList.imageTypes[selectedType!].images += images
                                     }
                                     
                                 }
+                                // camera scan
                                 .fullScreenCover(isPresented: $showScanner) {
                                     ZStack {
                                         // background color
                                         Color.black.edgesIgnoringSafeArea(.all)
                                         VNDocumentCameraViewControllerRepresentable() { images in
                                             imageTypeList.imageTypes[selectedType!].images += images
-                            //                saveImageToSandbox(images: images)
                                         }
                                     }
                                }
                                 
                             }
-
                             // List row content
                             ListRow(imageType: imageTypeList.imageTypes[index])
                         }
@@ -87,14 +89,13 @@ struct Screen4FileScan: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                         .shadow(color: .black.opacity(0.25), radius: 10)
                     }
-
-                    // Navigation link
                     
+                    // "Done" button
                     NavigationLink(destination:
                                     Screen5Submit()
                                         .environmentObject(bag)
                                         .environmentObject(imageTypeList)
-                                        .environmentObject(tableModel)
+                                        .environmentObject(tabModel)
                     ) {
                         Text("Done")
                             .font(.headline)

@@ -2,11 +2,13 @@
 //  TransparentBlur.swift
 //  eDepositBag
 //
-//  Created by Fall 2023 on 11/16/23.
+//  Created by Evan on 11/16/23.
 //
+// idea and code taken from https://youtu.be/LGUbQt_EOrg
 
 import SwiftUI
 
+// blur effect
 struct TransparentBlur: UIViewRepresentable {
     var removeAllFilters: Bool
 
@@ -15,7 +17,6 @@ struct TransparentBlur: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: TransparentBlurViewHelper, context: Context) {
-        // Implement any updates here
     }
 }
 
