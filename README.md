@@ -1,5 +1,6 @@
 #  SilenceIsGolden - EDeposit Bag Project
 
+## Note - Add User Information on the Profile Page First to See All Functionality 
 
 ## 1. **Main Menu**
     1.1 Displayed when the app is opened, corresponding to three different pages.
