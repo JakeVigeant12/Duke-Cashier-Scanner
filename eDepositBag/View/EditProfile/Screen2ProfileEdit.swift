@@ -211,11 +211,14 @@ struct Screen2ProfileEdit: View {
         
         // when picker changes
         .onChange(of: tabModel.userDepartment){ newValue in
-            tabModel.userRetailLocationList = bag.locationSelections[newValue] ?? []
-            // give the location picker a default choice
-            if !tabModel.userRetailLocationList.contains(tabModel.userRetailLocation) {
-                tabModel.userRetailLocation = tabModel.userRetailLocationList[0]
+            DispatchQueue.main.async {
+                tabModel.userRetailLocationList = bag.locationSelections[newValue] ?? []
+                // give the location picker a default choice
+                if !tabModel.userRetailLocationList.contains(tabModel.userRetailLocation) {
+                    tabModel.userRetailLocation = tabModel.userRetailLocationList[0]
+                }
             }
+
         }
         
         // appearance adjustment
@@ -241,9 +244,13 @@ struct Screen2ProfileEdit: View {
         tabModel.userDuid = ""
         tabModel.userPhone = ""
         tabModel.userEmail = ""
-        tabModel.userDepartment = ""
-        tabModel.userRetailLocation = ""
         tabModel.userPOSName = ""
+
+        if !bag.departments.isEmpty {
+            tabModel.userRetailLocation = ""
+            // this will trigger .onChange(of: tabModel.userDepartment)
+            tabModel.userDepartment = bag.departments[0]
+        }
     }
 }
 

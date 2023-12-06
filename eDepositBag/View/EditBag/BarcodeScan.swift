@@ -4,6 +4,7 @@
 //
 //  Created by Evan on 11/2/23.
 //
+//  Methods learned from https://gist.github.com/WunDaii/497d44da694d4a013d378df5e47977be
 
 import SwiftUI
 import AVFoundation

@@ -4,6 +4,7 @@
 //
 //  Created by Evan on 11/13/23.
 //
+//  Methods learned from https://mistergrizzly.medium.com/scanning-documents-with-vision-and-visionkit-on-ios-13-913c0a6f9392
 
 import SwiftUI
 import VisionKit

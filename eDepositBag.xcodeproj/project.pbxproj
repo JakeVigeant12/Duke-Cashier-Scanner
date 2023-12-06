@@ -103,6 +103,7 @@
 		B62F880B2AF355E50084C733 = {
 			isa = PBXGroup;
 			children = (
+				2EBE899C2B1CD75F0029A4E9 /* README.md */,
 				B62F88162AF355E50084C733 /* eDepositBag */,
 				B62F88152AF355E50084C733 /* Products */,
 			);
@@ -119,7 +120,6 @@
 		B62F88162AF355E50084C733 /* eDepositBag */ = {
 			isa = PBXGroup;
 			children = (
-				2EBE899C2B1CD75F0029A4E9 /* README.md */,
 				B63E38CA2AF357240024AEB6 /* View */,
 				B63E38C92AF3571C0024AEB6 /* Model */,
 				B6083DFC2B04151D0038FC4A /* ResourceFiles */,

@@ -17,7 +17,7 @@ struct Screen3BagInfoEdit: View {
     
     // view tags
     enum ShowView{
-        case ask, next, showBagNum
+        case ask, didScan, handleScan
     }
     
     @State private var showView = ShowView.ask
@@ -119,14 +119,32 @@ struct Screen3BagInfoEdit: View {
                         }
                     }
                     //can not be edited
-                    .disabled(showView == .next ? true : false)
+                    .disabled(showView == .didScan ? true : false)
                     .font(.body)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 20)
                     
+                    if (showView == .ask || showView == .handleScan){
+                        Button(action: {
+                            withAnimation{
+                                setDefault()
+                            }
+                        }) {
+                            Text("Set As Defalt")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                        }
+                        .background(Color.blue.opacity(0.8))
+                        .cornerRadius(15)
+                        .padding(.horizontal, 50.0)
+                        .padding(.vertical, 20)
+                        .shadow(color: .black.opacity(0.2), radius: 10)
+
+                    }
                     
                     // show bag num
-                    if(showView == .next){
+                    if(showView == .didScan){
                         HStack {
                             Text("Bag Number")
                                 .fontWeight(.medium)
@@ -152,7 +170,7 @@ struct Screen3BagInfoEdit: View {
                         }
                         .padding([.top, .leading, .trailing], 20)
                     }
-                }
+                }// scrollview ends
 
                 
                 Spacer()
@@ -171,7 +189,7 @@ struct Screen3BagInfoEdit: View {
                             Button(action: {
                                 withAnimation{
                                     tabModel.bagScannedCode = nil
-                                    showView = .next
+                                    showView = .didScan
                                 }
                             }) {
                                 Text("No")
@@ -185,7 +203,7 @@ struct Screen3BagInfoEdit: View {
                             
                             Button(action: {
                                 withAnimation{
-                                    showView = .showBagNum
+                                    showView = .handleScan
                                 }
                             }) {
                                 Text("Yes")
@@ -202,7 +220,7 @@ struct Screen3BagInfoEdit: View {
                         .padding(.top, 20)
     
                     // handle the scan
-                    case .showBagNum:
+                    case .handleScan:
                         Text("Please press the button below to scan the barcode on the deposit bag.")
                             .font(.title2)
                             .foregroundColor(Color.white)
@@ -247,8 +265,8 @@ struct Screen3BagInfoEdit: View {
                         }
                         .padding([.top, .leading, .trailing], 20)
                         
-                    // scan finished
-                    case .next:
+                    // scan finished or no need to scan
+                    case .didScan:
                         HStack(spacing: 40) {
                             Button(action: {
                                 withAnimation{
@@ -315,43 +333,86 @@ struct Screen3BagInfoEdit: View {
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white.withAlphaComponent(0.9)]
         }
         
-        // when picker changes
+        // when Department picker changes, the location picker changes along with it
         .onChange(of: tabModel.bagDepartment){ newValue in
-            tabModel.bagRetailLocationList = bag.locationSelections[newValue] ?? []
-            // give the location picker a default choice
-            if !tabModel.bagRetailLocationList.contains(tabModel.bagRetailLocation) {
-                tabModel.bagRetailLocation = tabModel.bagRetailLocationList[0]
+            DispatchQueue.main.async {
+                tabModel.bagRetailLocationList = bag.locationSelections[newValue] ?? []
+                
+                // give the location picker a default choice
+                // it will always contain "Other", so it has no impact on setDefault()
+                if !tabModel.bagRetailLocationList.contains(tabModel.bagRetailLocation) {
+                    tabModel.bagRetailLocation = tabModel.bagRetailLocationList[0]
+                }
             }
+
         }
         
-        // submit
+        // when view changes, submit
         .onChange(of: showView){ _ in
-            //set this information for the bag, account defaults should be changed separate
-            bag.department = (tabModel.bagDepartment == "Other") ?  tabModel.bagDepartmentOther : tabModel.bagDepartment
-            
-            bag.retailLocation = (tabModel.bagRetailLocation == "Other") ?  tabModel.bagRetailLocationOther : tabModel.bagRetailLocation
+            DispatchQueue.main.async {
+                //set this information for the bag, account defaults should be changed separate
+                bag.department = (tabModel.bagDepartment == "Other") ?  tabModel.bagDepartmentOther : tabModel.bagDepartment
+                
+                bag.retailLocation = (tabModel.bagRetailLocation == "Other") ?  tabModel.bagRetailLocationOther : tabModel.bagRetailLocation
 
-            bag.POSName = tabModel.bagPOSName
-            
-            // format the date string
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            bag.revenueDate = dateFormatter.string(from: tabModel.bagRevenueDatePicker)
-            
-            if let scanned = tabModel.bagScannedCode {
-                bag.bagNum = scanned
-            }else{
-                bag.bagNum = "No Bag Number"
+                bag.POSName = tabModel.bagPOSName
+                
+                // format the date string
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                bag.revenueDate = dateFormatter.string(from: tabModel.bagRevenueDatePicker)
+                
+                if let scanned = tabModel.bagScannedCode {
+                    bag.bagNum = scanned
+                }else{
+                    bag.bagNum = "No Bag Number"
+                }
+                
+                // save to sandbox
+                let _ = bag.save()
             }
-            
-            // save to sandbox
-            let _ = bag.save()
+
         }
     }
     
+    // after scan sheet dismissed
     func scanSheetDismissed() {
         if(!isScanFail){
-            showView = .next
+            showView = .didScan
+        }
+    }
+    
+    // set as defalt button, set all data to the data in the user profile
+    func setDefault() {
+        tabModel.bagRevenueDatePicker = Date()
+        
+        if let cashier = bag.cashier {
+            tabModel.bagPOSName = cashier.POSName
+            
+            // this may trigger .onChange(of: tabModel.bagDepartment)
+            // if department is "Other"
+            if !bag.departments.contains(cashier.department){
+                tabModel.bagDepartment = "Other"
+                tabModel.bagDepartmentOther = cashier.department
+            }else{
+                // department is not "Other"
+                tabModel.bagDepartment = cashier.department
+            }
+            
+            let tmpLocationList = bag.locationSelections[cashier.department] ?? []
+            
+            // if retailLocation is "Other"
+            if !tmpLocationList.contains(cashier.retailLocation){
+                tabModel.bagRetailLocation = "Other"
+                tabModel.bagRetailLocationOther = cashier.retailLocation
+            }else{
+                // retailLocation is not "Other"
+                tabModel.bagRetailLocation = cashier.retailLocation
+            }
+        }else if !bag.departments.isEmpty {
+            tabModel.userRetailLocation = ""
+            // this will trigger .onChange(of: tabModel.bagDepartment)
+            tabModel.userDepartment = bag.departments[0]
         }
     }
 }
