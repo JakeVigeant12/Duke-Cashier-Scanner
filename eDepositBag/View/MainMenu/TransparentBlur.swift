@@ -4,7 +4,7 @@
 //
 //  Created by Evan on 11/16/23.
 //
-// idea and code taken from https://youtu.be/LGUbQt_EOrg
+//  Idea and code learned from https://youtu.be/LGUbQt_EOrg
 
 import SwiftUI
 
