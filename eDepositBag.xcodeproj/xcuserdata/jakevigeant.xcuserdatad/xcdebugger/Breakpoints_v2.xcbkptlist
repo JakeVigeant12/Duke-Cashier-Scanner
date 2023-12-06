@@ -200,7 +200,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "42034C22-1850-49DD-9126-E2B2A5E49782"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "eDepositBag/Model/Bag.swift"
@@ -210,6 +210,38 @@
             endingLineNumber = "58"
             landmarkName = "urlSession(_:downloadTask:didFinishDownloadingTo:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "42034C22-1850-49DD-9126-E2B2A5E49782 - bbf3bd64c3cca13a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "eDepositBag.Bag.urlSession(_: __C.NSURLSession, downloadTask: __C.NSURLSessionDownloadTask, didFinishDownloadingTo: Foundation.URL) -&gt; ()"
+                  moduleName = "eDepositBag"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jakevigeant/ECE564/silenceisgolden/eDepositBag/Model/Bag.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "892">
+               </Location>
+               <Location
+                  uuid = "42034C22-1850-49DD-9126-E2B2A5E49782 - bbf3bd64c3cca13a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "eDepositBag.Bag.urlSession(_: __C.NSURLSession, downloadTask: __C.NSURLSessionDownloadTask, didFinishDownloadingTo: Foundation.URL) -&gt; ()"
+                  moduleName = "eDepositBag"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jakevigeant/ECE564/silenceisgolden/eDepositBag/Model/Bag.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58"
+                  offsetFromSymbolStart = "920">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

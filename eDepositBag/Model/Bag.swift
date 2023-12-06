@@ -41,7 +41,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
         }
 
 
-    // DOWNLOAD DELEGATE METHODS
+    // MARK: DOWNLOAD DELEGATE METHODS
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
             progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             DispatchQueue.main.async {
@@ -90,7 +90,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
         cashier = nil
     }
     
-    //load Person object from saved user in sandbox
+    // MARK: Sandbox Login Logic
     func load(url :URL) -> Bool{
        
        //location of the url passed in
@@ -133,6 +133,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
         }
     }
     
+    // MARK: Loads selection jsons
     func parseOptions(url: URL) -> Bool {
         do {
             let jsonData = try Data(contentsOf: url)
@@ -154,6 +155,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
         }
     }
     
+    // MARK: Server call logic for messages
     func fetchMessages() -> Bool{
         downloadComplete = false
         downloadError = false
