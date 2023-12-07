@@ -6,6 +6,7 @@
 //
 
 import Foundation
+//MARK: Used to parse JSON response for Messages
 struct Message: Identifiable, Codable {
     let id: UUID
     let content: String

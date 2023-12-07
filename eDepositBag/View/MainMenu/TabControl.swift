@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// tab view control, and initialize most of the data
+//MARK: tab view control, and initialize most of the data and place in the environment for future pages
 struct TabControl: View {
     @EnvironmentObject var bag: Bag
     @StateObject var imageTypeList = ImageTypeList()
@@ -18,6 +18,7 @@ struct TabControl: View {
     var body: some View {
         // 3 tabs
         TabView(selection: $selection){
+            // MARK: Tab for profile
             Screen2ProfileEdit()
                 .environmentObject(bag)
                 .environmentObject(imageTypeList)
@@ -27,7 +28,7 @@ struct TabControl: View {
                     Label("User", systemImage: "person")
                 }
                 .tag(TabViewTag.person)
-
+            // MARK: Tab for Bag information
             Screen3BagInfoEdit()
                 .environmentObject(bag)
                 .environmentObject(imageTypeList)
@@ -37,7 +38,7 @@ struct TabControl: View {
                     Label("Bag", systemImage: "doc")
                 }
                 .tag(TabViewTag.bag)
-            
+            //MARK: Tab to move to inbox
             MessageInbox()
                 .environmentObject(bag)
                 .tabItem {
@@ -50,7 +51,7 @@ struct TabControl: View {
         .accentColor(.white)
         .navigationBarBackButtonHidden(true)
  
-        // init datamodel
+        // iitialize the datamodel on open
         .onAppear(){
             DispatchQueue.main.async {
                 // init the tabmodel, so that when switch tabs the data won't be reinitialized

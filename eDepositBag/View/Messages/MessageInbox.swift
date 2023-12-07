@@ -1,3 +1,8 @@
+//
+//  MessageInbox.swift
+//  eDepositBag
+//  Created by Jake Vigeant on 11/27/23.
+//
 import SwiftUI
 
 struct MessageInbox: View {

@@ -13,11 +13,11 @@ struct Screen2ProfileEdit: View {
     @EnvironmentObject var tabModel: TabModel
 
     @State private var showSuccess = false
-    
+    // MARK: Profile editing screen
     var body: some View {
         NavigationView{
             VStack{
-                // all the textfields
+                // all the textfields for data entry
                 ScrollView {
                     VStack(spacing: 20){
                         HStack {
@@ -103,7 +103,7 @@ struct Screen2ProfileEdit: View {
                             }
                         }
                         
-                        // location
+                        // pickers Duke-specific information
                         HStack {
                             Text("Retail Location")
                                 .fontWeight(.medium)
@@ -153,7 +153,7 @@ struct Screen2ProfileEdit: View {
                 
                 Spacer()
                 
-                // 2 buttons
+                // Save and Clear buttons
                 HStack(spacing: 40){
                     Button(action: {
                         withAnimation{

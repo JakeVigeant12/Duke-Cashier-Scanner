@@ -6,6 +6,7 @@
 //
 
 import Foundation
+// MARK: Used to save the cashier user in the sandbox
 class Person : ObservableObject, Codable, Identifiable{
     var name: String 
     var duid: String

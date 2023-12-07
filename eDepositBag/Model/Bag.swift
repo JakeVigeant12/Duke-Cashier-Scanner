@@ -42,13 +42,14 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
 
 
     // MARK: DOWNLOAD DELEGATE METHODS
+    // used to store the progress readout for the UI
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
             progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
             DispatchQueue.main.async {
             //self.ProgressBar.setProgress(progress, animated: true)
         }
         }
-    
+    // completion function
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("Download completed. File saved at: \(location.absoluteString)")
         do {
@@ -75,7 +76,7 @@ class Bag : NSObject, ObservableObject, URLSessionDownloadDelegate{
             
         
     }
-        
+    // error handler 
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
             if let error = error {
                 downloadError = true

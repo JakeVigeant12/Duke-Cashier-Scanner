@@ -9,7 +9,7 @@
 import SwiftUI
 import AVFoundation
 
-// protocol for ScannerViewController delegate
+//MARK: protocol for ScannerViewController delegate
 protocol ScannerViewControllerDelegate: AnyObject {
     // callback method when a barcode is found
     func didFind(barcode: String)
@@ -18,7 +18,7 @@ protocol ScannerViewControllerDelegate: AnyObject {
 }
 
 
-// adapts a UIKit UIViewController to SwiftUI
+//MARK: adapts a UIKit UIViewController to SwiftUI
 struct BarcodeScan: UIViewControllerRepresentable {
     @Binding var isPresentingScanner: Bool
     @Binding var scannedCode: String?

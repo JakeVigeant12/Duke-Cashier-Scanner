@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// the start menu, and load the data from sanbox
+// MARK: the start menu, and load the data from sanbox
 struct MainMenu: View {
     @State private var isMenuVisible = false
     @State private var isLogoTop = false
