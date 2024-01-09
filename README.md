@@ -1,4 +1,5 @@
-#  SilenceIsGolden - EDeposit Bag Project
+#  Duke Cashier Scanner Project
+This SwiftUI application was developed to streamline document entry procedures for cashiers at all 50 of Duke's retail/dining/service locations daily. Previous solutions failed to provide a clean., intuitive interface to scan, collect, and mark all relevant documents and email them to the finance office. The application generates and emails PDF of all relevant document scans, coupled with pre-populated account and cash register location information to save time. 
 
 ## Note - Add User Information on the Profile Page First to See All Functionality 
 ## Demo - https://www.youtube.com/watch?v=5iO2yDALrhE
